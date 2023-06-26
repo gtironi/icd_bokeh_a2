@@ -47,12 +47,13 @@ def csv_to_columndatasouce(path, colunas = []):
     return data_source
 
 
-def csv_get_top(path, sort_colum, num = 10):
+def csv_get_top(path, sort_column, duplicated_column = "", num = 10):
     """Gera um objeto ColumnDataSource a partir de um arquivo .csv
 
     Lê o arquivo .csv, o transforma em um data frame do pandas, e, a partir
     da coluna selecionada, orderna os valores em ordem decrescente e pega
-    apenas a quantidade definida (por padrão os 10 primeiros).
+    apenas a quantidade definida (por padrão os 10 primeiros), é possível
+    também remover valores duplicados de alguma coluna.
 
     Parametros
         ----------
@@ -63,6 +64,9 @@ def csv_get_top(path, sort_colum, num = 10):
             Deve conter o nome de uma coluna da base de dados, a qual
             será feita a ordenação de valores.
             Deve conter exatamente um valor.
+        duplicated_column : str
+            Deve conter o nome de uma coluna da base de dados, a qual
+            possui valores duplicados
         num : int
             Deve conter a quantidade de observações coletadas a partir
             da ordenação de valores (Por padrão 10).
@@ -74,7 +78,11 @@ def csv_get_top(path, sort_colum, num = 10):
             data frame.
     """
     df = pd.read_csv(path)
-    top_values = df.sort_values(sort_colum, ascending = False).head(num)
+
+    if duplicated_column != "":
+        df = df.drop_duplicates(duplicated_column)
+
+    top_values = df.sort_values(sort_column, ascending = False).head(num)
 
     data_source = ColumnDataSource(top_values)
 
