@@ -10,7 +10,7 @@ Funcionalidades:
 import pandas as pd
 from bokeh.models import ColumnDataSource
 
-def csv_to_columndatasouce(path, colunas = []):
+def csv_to_columndatasource(path, colunas = []):
     '''Gera um objeto ColumnDataSource a partir de um arquivo .csv
 
     Lê o arquivo .csv, armazenando o conteudo dele em um dataframe do 
@@ -35,7 +35,7 @@ def csv_to_columndatasouce(path, colunas = []):
 
         Examples
         --------
-        >>> csv_to_columndatasouce("data/sleep_efficiency.csv", ['Exercise frequency', 'Deep sleep percentage'])
+        >>> csv_to_columndatasource("data/sleep_efficiency.csv", ['Exercise frequency', 'Deep sleep percentage'])
     '''
 
     df = pd.read_csv(path) 
