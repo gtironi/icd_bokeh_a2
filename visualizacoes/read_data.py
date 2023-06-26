@@ -45,3 +45,37 @@ def csv_to_columndatasouce(path, colunas = []):
     data_source = ColumnDataSource(df)
 
     return data_source
+
+
+def csv_get_top(path, sort_colum, num = 10):
+    """Gera um objeto ColumnDataSource a partir de um arquivo .csv
+
+    Lê o arquivo .csv, o transforma em um data frame do pandas, e, a partir
+    da coluna selecionada, orderna os valores em ordem decrescente e pega
+    apenas a quantidade definida (por padrão os 10 primeiros).
+
+    Parametros
+        ----------
+        path : str, path object or file-like object
+            Deve indicar o local onde está armazenado o .csv a ser lido. 
+            Deve conter exatamente um valor.
+        sort_colum : str
+            Deve conter o nome de uma coluna da base de dados, a qual
+            será feita a ordenação de valores.
+            Deve conter exatamente um valor.
+        num : int
+            Deve conter a quantidade de observações coletadas a partir
+            da ordenação de valores (Por padrão 10).
+
+        Retorna
+        -------
+        data_source
+            Retorna o ColumnDataSource gerado a partir da ordenação do
+            data frame.
+    """
+    df = pd.read_csv(path)
+    top_values = df.sort_values(sort_colum, ascending = False).head(num)
+
+    data_source = ColumnDataSource(top_values)
+
+    return data_source
