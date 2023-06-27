@@ -37,34 +37,32 @@ output_file("testando.html")
 
 # density_plot = figure(title = f"{initial_category} X Vezes tocadas no Spotify")
 
-# histogram = read_data.histogram_count("visualizacoes/data/spotify_youtube.csv",
+# histogram_data = read_data.histogram_count("visualizacoes/data/spotify_youtube.csv",
 #                                         initial_category, 10, proportion_column = "Stream")
 
-# density_plot.quad(top = histogram[0], bottom = 0,
-#                     left = histogram[1][:-1],
-#                     right = histogram[1][1:], fill_color = 'skyblue', fill_alpha = 0.7)
+# density_plot.quad(top = histogram_data[0], bottom = 0,
+#                     left = histogram_data[1][:-1],
+#                     right = histogram_data[1][1:], fill_color = 'skyblue', fill_alpha = 0.7)
 
 # density_plot.circle(x = initial_category, y = "Stream", source = all_data)
 
 
 # def update_density_plot(attr, old, new):
-#     curdoc().clear()
-#     category = filter_category.value
+#     new_category = filter_category.value
+#     density_plot.renderers = []
 
-#     density_plot = figure(title = f"{category} X Vezes tocadas no Spotify")
+#     density_plot.title.text = f"{new_category} X Vezes tocadas no Spotify"
+#     density_plot.xaxis.axis_label = new_category
     
-#     histogram = read_data.histogram_count("visualizacoes/data/spotify_youtube.csv",
-#                                         category, 10, proportion_column = "Stream")
-
-#     density_plot.quad(top = histogram[0], bottom = 0,
-#                     left = histogram[1][:-1],
-#                     right = histogram[1][1:], fill_color = 'skyblue', fill_alpha = 0.7)
-
-#     density_plot.circle(x = category, y = "Stream", source = all_data)
+#     histogram_data = read_data.histogram_count("visualizacoes/data/spotify_youtube.csv",
+#                                         new_category, 10, proportion_column = "Stream")
     
-#     layout = column(filter_category, density_plot)
+#     density_plot.quad(top = histogram_data[0], bottom = 0,
+#                     left = histogram_data[1][:-1],
+#                     right = histogram_data[1][1:], fill_color = 'skyblue', fill_alpha = 0.7)
+    
+#     density_plot.circle(x = new_category, y = "Stream", source = all_data)
 
-#     curdoc().add_root(layout)
 
 # filter_category.on_change("value", update_density_plot)
 
@@ -74,13 +72,13 @@ output_file("testando.html")
 
 ################################################################################
 
-dare_data = read_data.csv_filter_by_name_to_cds("visualizacoes/data/spotify_youtube.csv",
-                                     "Track", "DARE")
+# dare_data = read_data.csv_filter_by_name_to_cds("visualizacoes/data/spotify_youtube.csv",
+#                                      "Track", "DARE")
 
-filter_plot = figure(x_range = categories,
-                     title = "Testando a plotagem")
+# filter_plot = figure(x_range = categories,
+#                      title = "Testando a plotagem")
 
-filter_plot.vbar(x = "Columns", top = "Values", source = dare_data, width = 0.8)
+# filter_plot.vbar(x = "Columns", top = "Values", source = dare_data, width = 0.8)
 
-show(filter_plot)
+# show(filter_plot)
 
