@@ -19,7 +19,7 @@ def csv_to_columndatasource(path, colunas = []):
     gera um objeto ColumnDataSource corespondente. O objeto gerado pode
     ser usado para elaboração das visualizações com a biblioteca bokeh.
 
-    Parametros
+    Parâmetros
         ----------
         path : str, path object or file-like object
             Deve indicar o local onde está armazenado o .csv a ser lido. 
@@ -56,7 +56,7 @@ def csv_get_top(path, sort_column, duplicated_column = "", num = 10):
     apenas a quantidade definida (por padrão os 10 primeiros), é possível
     também remover valores duplicados de alguma coluna.
 
-    Parametros
+    Parâmetros
         ----------
         path : str, path object or file-like object
             Deve indicar o local onde está armazenado o .csv a ser lido. 
@@ -99,7 +99,7 @@ def csv_get_top_names(path, names_column, sort_column, num = 10):
     ordena os valores a partir da coluna de ordenação e retorna
     uma lista com a quantidade definida dos primeiros nomes.
 
-    Parametros
+    Parâmetros
         ----------
         path : str, path object or file-like object
             Deve indicar o local onde está armazenado o .csv a ser lido. 
@@ -144,7 +144,7 @@ def histogram_count(path, column, bins = 10, proportion_column = "",
     histograma, seu intervalo e sua proporção, retorna uma tupla 
     com os intervalos e a contagem dos intervalos.
 
-    Parametros
+    Parâmetros
         ----------
         path : str, path object or file-like object
             Deve indicar o local onde está armazenado o .csv a ser lido. 
@@ -189,3 +189,45 @@ def histogram_count(path, column, bins = 10, proportion_column = "",
     count = count * base_proportion
 
     return count, intervals
+
+
+def csv_filter_by_name_to_cds(path, filter_column, name):
+    """Filtra dados de uma linha de um .csv e retorna um ColumnDataSource
+
+    Lê o arquivo csv, seleciona apenas a linha que contém o valor
+    e gera um dicionário com as chaves "Columns" que contém o nome
+    das colunas e "Values" que contém os valores das colunas na
+    linha selecionada, retorna um ColumnDataSource feito a partir
+    desse dicionário.
+
+    Parâmetros
+        ----------
+        path : str, path object or file-like object
+            Deve indicar o local onde está armazenado o .csv a ser lido. 
+            Deve conter exatamente um valor.
+        filter_column : str
+            Deve indiicar o nome da coluna que contém o valor procurado.
+            Deve conter exatamente um valor.
+        name : str
+            Deve indicar o valor procurado na coluna que retornará a linha.
+            Deve conter exatamente um valor.
+
+        Retorna
+        -------
+        filtered_data
+            Retorna um ColumnDataSource do dicionário gerado a partir
+            das Colunas e dos Valores da linha filtrada, que possui
+            como chaves as strings "Columns" e "Values".
+    """
+    
+    df = pd.read_csv(path)
+    df.drop_duplicates(filter_column, inplace = True)
+    selected_row = df[df[filter_column] == name]
+    columns = selected_row.columns
+    values = selected_row.values[0]
+
+    filtered_data = dict()
+    filtered_data["Columns"] = columns
+    filtered_data["Values"] = values
+
+    return ColumnDataSource(filtered_data)
