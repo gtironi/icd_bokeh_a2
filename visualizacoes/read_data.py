@@ -191,7 +191,7 @@ def histogram_count(path, column, bins = 10, proportion_column = "",
     return count, intervals
 
 
-def column_as_size(path, column, parameter):
+def column_as_size(dataframe, column, parameter):
     """Gera um data frame do pandas a partir de um arquivo .csv
 
     Lê o arquivo .csv, o transforma em um data frame do pandas, e cria uma nova
@@ -201,7 +201,7 @@ def column_as_size(path, column, parameter):
 
     Parametros
         ----------
-        path : str, path object or file-like object
+        dataframe : pandas.DataFrame
             Deve indicar o local onde está armazenado o .csv a ser lido. 
             Deve conter exatamente um valor.
         column : str
@@ -217,10 +217,8 @@ def column_as_size(path, column, parameter):
         df
             Retorna o data frame com a nova coluna.
     """
+    
+    if 'size' not in dataframe.columns:
+        dataframe["size"] = dataframe[column] / parameter
 
-    df = pd.read_csv(path)
-
-    if 'size' not in df.columns:
-        df["size"] = df[column] / parameter
-
-        return df
+        return dataframe

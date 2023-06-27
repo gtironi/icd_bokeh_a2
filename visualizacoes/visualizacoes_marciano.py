@@ -1,23 +1,62 @@
 # Arquivo para os códigos das  visualizacoes
 
-from read_data import csv_to_columndatasource, column_as_size
+import pandas as pd
+from read_data import column_as_size
 from bokeh.plotting import figure
 from bokeh.io import output_file, show
-from bokeh.models.annotations import Span, BoxAnnotation
+from bokeh.models.annotations import BoxAnnotation
+
+from bokeh.models import HoverTool, ColumnDataSource
+
 
 output_file("vis_marciano.html")
 
 
 # scatter plot speechiness X (outra variável) rascunho 
 
-data = column_as_size("visualizacoes/data/spotify_youtube.csv", "Stream", 70000000)
+data = pd.read_csv("visualizacoes/data/spotify_youtube_year.csv")
 
-plot_1 = figure()
+#data = column_as_size(data, "Stream", 70000000)
 
-plot_1.circle(x = "Speechiness", y = "Loudness", source = data, color = "DeepPink", alpha = 0.4, size = "size")
+color = []
 
-box_annotation = BoxAnnotation(left=0, right=0.3333, fill_color = "DeepPink", fill_alpha = 0.3)
-plot_1.add_layout(box_annotation)
+for each_float in data["Liveness"]:
+    if each_float >= 0.8:
+        color.append("Red")
+    else:
+        color.append("Gray")
+    # if each_float >= 2/3:
+    #     color.append("Red")
+    # elif each_float >= 1/3:
+    #     color.append("Blue")
+    # else:
+    #     color.append("Green")
+
+data["color"] = color
+
+plot_1 = figure(width=600, height = 600, title = "Circle Glyphs")
+
+data = ColumnDataSource(data)
+
+plot_1.circle(x = "Liveness", y = "Energy", source = data, color = "color", alpha = 0.4, size = 8)
+
+# box_annotation_1 = BoxAnnotation(bottom=0, top=1/3, fill_color = "Green", fill_alpha = 0.2)
+# plot_1.add_layout(box_annotation_1)
+# box_annotation_2 = BoxAnnotation(bottom=1/3, top=2/3, fill_color = "Blue", fill_alpha = 0.2)
+# plot_1.add_layout(box_annotation_2)
+# box_annotation_3 = BoxAnnotation(bottom=2/3, top=1, fill_color = "Red", fill_alpha = 0.2)
+# plot_1.add_layout(box_annotation_3)
+box_annotation_4 = BoxAnnotation(left=0.8, right=1, fill_color = "Red", fill_alpha = 0.2)
+plot_1.add_layout(box_annotation_4)
+
+tooltips = [
+    ('Música', '@Track'),
+    ('Artista', '@Artist'),
+    ('Álbum', '@Album'),
+    ('Streams', '@Stream')]
+
+plot_1.add_tools(HoverTool(tooltips=tooltips))
+
 
 show(plot_1)
 
