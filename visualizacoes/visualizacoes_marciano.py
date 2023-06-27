@@ -5,8 +5,8 @@ from bokeh.plotting import figure
 from bokeh.io import output_file, show
 from bokeh.models.annotations import Span, BoxAnnotation
 
-
 output_file("vis_marciano.html")
+
 
 # scatter plot speechiness X (outra variável) rascunho 
 
