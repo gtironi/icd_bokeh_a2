@@ -11,7 +11,7 @@ import read_data
 # names_spotify = read_data.csv_get_top_names("visualizacoes/data/spotify_youtube.csv",
 #                                             "Track", "Stream")
 
-all_data = read_data.csv_to_columndatasouce("visualizacoes/data/spotify_youtube.csv")
+all_data = read_data.csv_to_columndatasource("visualizacoes/data/spotify_youtube.csv")
 
 
 categories = ["Danceability", "Energy", 
