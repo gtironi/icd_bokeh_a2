@@ -36,9 +36,9 @@ data["color"] = color
 
 plot_1 = figure(width=600, height = 600, title = "Circle Glyphs")
 
-data = ColumnDataSource(data)
+data_source_1 = ColumnDataSource(data)
 
-plot_1.circle(x = "Liveness", y = "Energy", source = data, color = "color", alpha = 0.4, size = 8)
+plot_1.circle(x = "Liveness", y = "Energy", source = data_source_1, color = "color", alpha = 0.4, size = 8)
 
 # box_annotation_1 = BoxAnnotation(bottom=0, top=1/3, fill_color = "Green", fill_alpha = 0.2)
 # plot_1.add_layout(box_annotation_1)
@@ -58,11 +58,18 @@ tooltips = [
 plot_1.add_tools(HoverTool(tooltips=tooltips))
 
 
-show(plot_1)
+# show(plot_1)
 
-# ranking de artistas rascunho
+######################################################################################
+# (variável) X tempo
 plot_2 = figure()
 
-#plot_2.
+data = pd.DataFrame(data.groupby(["release_date"])["Tempo"].mean())
 
-# (variável) X tempo
+data_source_2 = ColumnDataSource(data)
+
+plot_2.line(x = "release_date", y = "Tempo", source = data_source_2)
+
+show(plot_2)
+######################################################################################
+# ranking de artistas rascunho
