@@ -192,12 +192,12 @@ def histogram_count(path, column, bins = 10, proportion_column = "",
 
 
 def column_as_size(path, column, parameter):
-    """Gera um objeto ColumnDataSource a partir de um arquivo .csv
+    """Gera um data frame do pandas a partir de um arquivo .csv
 
     Lê o arquivo .csv, o transforma em um data frame do pandas, e cria uma nova
     coluna chamada "size" a partir de uma coluna e do parâmetro selecionados. Atribui
     à coluna "size" os valores da coluna indicada divididos pelo parâmetro. E retorna
-    um ColumDataSource desse data frame.
+    o data frame.
 
     Parametros
         ----------
@@ -214,15 +214,13 @@ def column_as_size(path, column, parameter):
 
         Retorna
         -------
-        data_source
-            Retorna o ColumnDataSource gerado a partir do data frame
-            com a nova coluna.
+        df
+            Retorna o data frame com a nova coluna.
     """
 
     df = pd.read_csv(path)
 
     if 'size' not in df.columns:
         df["size"] = df[column] / parameter
-        data_source = ColumnDataSource(df)
 
-        return data_source
+        return df
