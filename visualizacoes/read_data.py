@@ -131,3 +131,40 @@ def csv_get_top_names(path, names_column, sort_column, num = 10):
         names.append(each_name)
 
     return names
+
+
+def column_as_size(path, column, parameter):
+    """Gera um objeto ColumnDataSource a partir de um arquivo .csv
+
+    Lê o arquivo .csv, o transforma em um data frame do pandas, e cria uma nova
+    coluna chamada "size" a partir de uma coluna e do parâmetro selecionados. Atribui
+    à coluna "size" os valores da coluna indicada divididos pelo parâmetro. E retorna
+    um ColumDataSource desse data frame.
+
+    Parametros
+        ----------
+        path : str, path object or file-like object
+            Deve indicar o local onde está armazenado o .csv a ser lido. 
+            Deve conter exatamente um valor.
+        column : str
+            Deve conter o nome de uma coluna da base de dados, a qual
+            será feita a divisão.
+            Deve conter exatamente um valor.
+        parameter : float
+            Deve conter o número que será feita a divisão da coluna.
+            Deve conter exatamente um valor.
+
+        Retorna
+        -------
+        data_source
+            Retorna o ColumnDataSource gerado a partir do data frame
+            com a nova coluna.
+    """
+
+    df = pd.read_csv(path)
+
+    if 'size' not in df.columns:
+        df["size"] = df[column] / parameter
+        data_source = ColumnDataSource(df)
+
+        return data_source
