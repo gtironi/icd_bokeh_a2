@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 
-from bokeh.layouts import column
+from bokeh.layouts import column, row
 from bokeh.models import ColumnDataSource, RangeTool
 from bokeh.plotting import figure, show
 
@@ -22,15 +22,17 @@ to_cds = df.groupby('year').count()
 
 source = ColumnDataSource(to_cds)
 
-p = figure(height=300, width=800, tools="xpan", toolbar_location=None,
+####
+
+p = figure(height=350, width=640, tools="xpan", toolbar_location=None,
            x_axis_type="datetime", x_axis_location="above",
-           background_fill_color="#efefef", x_range=(df['year'].min(), df['year'].max()))
+           background_fill_color="#efefef", x_range=(np.datetime64('1970-01-01'), np.datetime64('2020-01-01')))
 
 p.line('year', 'Key', source=source)
 p.yaxis.axis_label = 'Contagem'
 
 select = figure(title="Drag the middle and edges of the selection box to change the range above",
-                height=130, width=800, y_range=p.y_range,
+                height=130, width=640, y_range=p.y_range,
                 x_axis_type="datetime", y_axis_type=None,
                 tools="", toolbar_location=None, background_fill_color="#efefef")
 
@@ -42,5 +44,23 @@ select.line('year', 'Key', source=source)
 select.ygrid.grid_line_color = None
 select.add_tools(range_tool)
 
-show(column(p, select))
+####
+
+datetime = pd.to_datetime(df['Duration_ms'], unit='ms')
+
+df['Duration_s'] = (datetime.dt.minute)*60 + datetime.dt.second
+
+source = ColumnDataSource(df)
+
+p2 = figure(height=480, width=640, tools="xpan", toolbar_location=None,
+            x_axis_location="below", background_fill_color="#efefef",
+            x_range=(0, 0.5), y_range=(0, 500))
+
+p2.circle('Liveness', 'Duration_s', source=source)
+p2.yaxis.axis_label = 'Duração em segundos'
+p2.xaxis.axis_label = 'Speechiness'
+
+
+
+show(row(column(p, select), p2))
 
