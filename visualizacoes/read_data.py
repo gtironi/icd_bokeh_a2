@@ -36,7 +36,7 @@ def csv_to_columndatasource(path, colunas = []):
 
         Examples
         --------
-        >>> csv_to_columndatasource("data/sleep_efficiency.csv", ['Exercise frequency', 'Deep sleep percentage'])
+        >>> csv_to_columndatasource("data/spotify_youtube_year.csv", ['Artist, 'Track'])
     '''
 
     df = pd.read_csv(path) 
@@ -191,7 +191,7 @@ def histogram_count(path, column, bins = 10, proportion_column = "",
     return count, intervals
 
 
-def csv_filter_by_name_to_cds(path, filter_column, name):
+def csv_filter_by_name_to_cds(path, filter_column, value, lowercase = False):
     """Filtra dados de uma linha de um .csv e retorna um ColumnDataSource
 
     Lê o arquivo csv, seleciona apenas a linha que contém o valor
@@ -208,9 +208,12 @@ def csv_filter_by_name_to_cds(path, filter_column, name):
         filter_column : str
             Deve indiicar o nome da coluna que contém o valor procurado.
             Deve conter exatamente um valor.
-        name : str
+        value : str
             Deve indicar o valor procurado na coluna que retornará a linha.
             Deve conter exatamente um valor.
+        lowercase : bool, optional
+            Deve indicar se é necessária a realização da busca com o caso
+            de caixa baixa.
 
         Retorna
         -------
@@ -219,10 +222,14 @@ def csv_filter_by_name_to_cds(path, filter_column, name):
             das Colunas e dos Valores da linha filtrada, que possui
             como chaves as strings "Columns" e "Values".
     """
-    
+
     df = pd.read_csv(path)
     df.drop_duplicates(filter_column, inplace = True)
-    selected_row = df[df[filter_column] == name]
+    if lowercase == False:
+        selected_row = df[df[filter_column] == value]
+    else:
+        selected_row = df[df[filter_column].apply(str.lower) == value.lower()]
+
     columns = selected_row.columns
     values = selected_row.values[0]
 
@@ -231,3 +238,45 @@ def csv_filter_by_name_to_cds(path, filter_column, name):
     filtered_data["Values"] = values
 
     return ColumnDataSource(filtered_data)
+
+
+def get_column_observations(path, column, sort_column = "", lowercase = False):
+    """Retorna uma lista com os dados de uma coluna especificada de um arquivo .csv
+
+    Parâmetros
+        ----------
+        path : str, path object or file-like object
+            Deve indicar o local onde está armazenado o .csv a ser lido. 
+            Deve conter exatamente um valor.
+        column : str
+            Deve indicar a coluna onde será feita a coleta das observações.
+            Deve conter exatamente um valor.
+        sort_column: str, optional
+            Deve conter a coluna por onde a ordenação deve ser feita,
+            se necessário.
+        lowercase : bool, optional
+            Deve indicar se é necessária a realização da busca com o caso
+            de caixa baixa.
+
+        Retorna
+        -------
+        values
+            Uma lista contendo os valores da coluna coletados a partir
+            dos parâmetros definidos.
+    """
+
+    df = pd.read_csv(path)
+    df.drop_duplicates(column, inplace = True)
+
+    if sort_column != "":
+        df = df.sort_values(sort_column, ascending = False)
+    
+    values = []
+    if lowercase == False:
+        for value in df[column]:
+            values.append(value)
+    else:
+        for value in df[column]:
+            values.append(value.lower())
+
+    return values

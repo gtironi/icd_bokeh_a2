@@ -14,7 +14,7 @@ spoty_youtube = pd.read_csv("visualizacoes/data/spotify_youtube.csv") #lê o arq
 
 spoty_year = pd.read_csv("visualizacoes/data/tracks.csv", usecols = ['release_date','name', 'popularity'] , dtype = {'name': str, 'popularity': float}) #lê o arquivo tracks.csv
 
-spoty_year['release_date'] = pd.to_datetime(spoty_year['release_date'], format = '%Y-%m-%d').dt.year #transforma a data em datetime64 e extrai apenas o ano com o 'dt.year'
+spoty_year['release_date'] = pd.to_datetime(spoty_year['release_date'], format = 'ISO8601').dt.year #transforma a data em datetime64 e extrai apenas o ano com o 'dt.year'
 
 spoty_year.rename(columns={'name': 'Track'}, inplace=True) #renomeia a coluna, para o nome coincidir nas bases
 
