@@ -52,11 +52,17 @@ plot_2 = figure()
 
 data = pd.read_csv("visualizacoes/data/spotify_youtube_year.csv")
 
-data = pd.DataFrame(data.groupby(["release_date"])["Duration_ms"].mean())
+data["Duration_ms"] = data["Duration_ms"]/1000
+duration_by_year = pd.DataFrame(data.groupby(["release_date"])["Duration_ms"].mean())
+count_by_year = pd.DataFrame(data.groupby(["release_date"])["Track"].count())
+data_by_year = duration_by_year
+data_by_year["Track Count"] = count_by_year["Track"]
 
-data_source_2 = ColumnDataSource(data)
+data_by_year_filtered = data_by_year[data_by_year['Track Count'] > 90]
 
-plot_2.line(x = "release_date", y = "duration_ms", source = data_source_2)
+data_source_2 = ColumnDataSource(data_by_year_filtered)
+
+plot_2.line(x = "release_date", y = "Duration_ms", source = data_source_2)
 
 show(plot_2)
 
