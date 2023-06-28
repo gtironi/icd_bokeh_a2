@@ -19,7 +19,7 @@ def csv_to_columndatasource(path, colunas = []):
     gera um objeto ColumnDataSource corespondente. O objeto gerado pode
     ser usado para elaboração das visualizações com a biblioteca bokeh.
 
-    Parametros
+    Parâmetros
         ----------
         path : str, path object or file-like object
             Deve indicar o local onde está armazenado o .csv a ser lido. 
@@ -36,7 +36,7 @@ def csv_to_columndatasource(path, colunas = []):
 
         Examples
         --------
-        >>> csv_to_columndatasource("data/sleep_efficiency.csv", ['Exercise frequency', 'Deep sleep percentage'])
+        >>> csv_to_columndatasource("data/spotify_youtube_year.csv", ['Artist, 'Track'])
     '''
 
     df = pd.read_csv(path) 
@@ -56,7 +56,7 @@ def csv_get_top(path, sort_column, duplicated_column = "", num = 10):
     apenas a quantidade definida (por padrão os 10 primeiros), é possível
     também remover valores duplicados de alguma coluna.
 
-    Parametros
+    Parâmetros
         ----------
         path : str, path object or file-like object
             Deve indicar o local onde está armazenado o .csv a ser lido. 
@@ -99,7 +99,7 @@ def csv_get_top_names(path, names_column, sort_column, num = 10):
     ordena os valores a partir da coluna de ordenação e retorna
     uma lista com a quantidade definida dos primeiros nomes.
 
-    Parametros
+    Parâmetros
         ----------
         path : str, path object or file-like object
             Deve indicar o local onde está armazenado o .csv a ser lido. 
@@ -144,7 +144,7 @@ def histogram_count(path, column, bins = 10, proportion_column = "",
     histograma, seu intervalo e sua proporção, retorna uma tupla 
     com os intervalos e a contagem dos intervalos.
 
-    Parametros
+    Parâmetros
         ----------
         path : str, path object or file-like object
             Deve indicar o local onde está armazenado o .csv a ser lido. 
@@ -199,7 +199,7 @@ def column_as_size(path, column, parameter):
     à coluna "size" os valores da coluna indicada divididos pelo parâmetro. E retorna
     um ColumDataSource desse data frame.
 
-    Parametros
+    Parametros  
         ----------
         path : str, path object or file-like object
             Deve indicar o local onde está armazenado o .csv a ser lido. 
@@ -226,3 +226,99 @@ def column_as_size(path, column, parameter):
         data_source = ColumnDataSource(df)
 
         return data_source
+
+
+def csv_filter_by_name_to_cds(path, filter_column, value, lowercase = False):
+    """Filtra dados de uma linha de um .csv e retorna um ColumnDataSource
+
+    Lê o arquivo csv, seleciona apenas a linha que contém o valor
+    e gera um dicionário com as chaves "Columns" que contém o nome
+    das colunas e "Values" que contém os valores das colunas na
+    linha selecionada, retorna um ColumnDataSource feito a partir
+    desse dicionário, caso lowercase esteja ativado, a busca é feita
+    independente do tipo de caixa da palavra procurada.
+
+    Parâmetros
+        ----------
+        path : str, path object or file-like object
+            Deve indicar o local onde está armazenado o .csv a ser lido. 
+            Deve conter exatamente um valor.
+        filter_column : str
+            Deve indiicar o nome da coluna que contém o valor procurado.
+            Deve conter exatamente um valor.
+        value : str
+            Deve indicar o valor procurado na coluna que retornará a linha.
+            Deve conter exatamente um valor.
+        lowercase : bool, optional
+            Deve indicar se é necessária a realização da busca com o caso
+            de caixa baixa.
+
+        Retorna
+        -------
+        filtered_data
+            Retorna um ColumnDataSource do dicionário gerado a partir
+            das Colunas e dos Valores da linha filtrada, que possui
+            como chaves as strings "Columns" e "Values".
+    """
+
+    df = pd.read_csv(path)
+    df.drop_duplicates(filter_column, inplace = True)
+    if lowercase == False:
+        selected_row = df[df[filter_column] == value]
+    else:
+        selected_row = df[df[filter_column].apply(str.lower) == value.lower()]
+
+    columns = selected_row.columns
+    values = selected_row.values[0]
+
+    filtered_data = dict()
+    filtered_data["Columns"] = columns
+    filtered_data["Values"] = values
+
+    return ColumnDataSource(filtered_data)
+
+
+def get_column_observations(path, column, sort_column = "", lowercase = False):
+    """Retorna uma lista com os dados de uma coluna especificada de um arquivo .csv
+    
+    Lê o arquivo csv, seleciona os dados de uma coluna, caso haja uma coluna
+    de ordenação, ordena os dados com base nela, caso lowercase seja verdadeira,
+    retorna todos os valores como caixa baixa.
+
+    Parâmetros
+        ----------
+        path : str, path object or file-like object
+            Deve indicar o local onde está armazenado o .csv a ser lido. 
+            Deve conter exatamente um valor.
+        column : str
+            Deve indicar a coluna onde será feita a coleta das observações.
+            Deve conter exatamente um valor.
+        sort_column: str, optional
+            Deve conter a coluna por onde a ordenação deve ser feita,
+            se necessário.
+        lowercase : bool, optional
+            Deve indicar se é necessária a realização da busca com o caso
+            de caixa baixa.
+
+        Retorna
+        -------
+        values
+            Uma lista contendo os valores da coluna coletados a partir
+            dos parâmetros definidos.
+    """
+
+    df = pd.read_csv(path)
+    df.drop_duplicates(column, inplace = True)
+
+    if sort_column != "":
+        df = df.sort_values(sort_column, ascending = False)
+    
+    values = []
+    if lowercase == False:
+        for value in df[column]:
+            values.append(value)
+    else:
+        for value in df[column]:
+            values.append(value.lower())
+
+    return values
