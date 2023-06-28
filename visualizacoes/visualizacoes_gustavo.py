@@ -3,16 +3,11 @@ import pandas as pd
 import numpy as np
 
 from bokeh.layouts import column, row
-from bokeh.models import ColumnDataSource, RangeTool
+from bokeh.io import curdoc
+from bokeh.models import ColumnDataSource, RangeTool, OpenURL, TapTool, CustomJS
 from bokeh.plotting import figure, show
 
 df = pd.read_csv('visualizacoes/data/spotify_youtube_year.csv')
-
-df_views_por_artista = df.groupby('Artist')['Views'].sum().sort_values(ascending=False)
-
-df_views_por_track = df.groupby('Track')['Views'].sum().sort_values(ascending=False)
-
-df_100_mais_vistos = df_views_por_track.head(100)
 
 df.rename(columns={'release_date': 'year'}, inplace=True)
 
@@ -60,7 +55,24 @@ p2.circle('Liveness', 'Duration_s', source=source)
 p2.yaxis.axis_label = 'Duração em segundos'
 p2.xaxis.axis_label = 'Speechiness'
 
+####
 
+df_views_por_track = df.sort_values(by = 'Views', ascending=False).drop_duplicates('Track')
 
-show(row(column(p, select), p2))
+df_100_mais_vistos_completo = (df_views_por_track).head(100)
+
+df_100_mais_vistos_completo['Views'] = df_100_mais_vistos_completo['Views']/1000000
+
+source = ColumnDataSource(df_100_mais_vistos_completo)
+
+p3 = figure(height=480, width=640, toolbar_location='right',
+            x_axis_location="below", background_fill_color="#efefef")
+
+p3.circle('Liveness', 'Views', size=6, source=source)
+p3.yaxis.axis_label = 'Visualizações (em milhões)'
+p3.xaxis.axis_label = 'Liveness'
+
+select_layout = column(row(column(p, select), p2), p3)
+
+show(select_layout)
 
