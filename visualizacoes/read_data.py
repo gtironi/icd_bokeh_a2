@@ -135,14 +135,16 @@ def csv_get_top_names(path, names_column, sort_column, num = 10):
     return names
 
 
-def histogram_count(path, column, bins = 10, proportion_column = "",
-                    base_proportion = 1, interval = [0, 1]):
+def histogram_data(path, column, start = 0, end = 1, bins = 10, proportion_column = "",
+                    base_proportion = 1):
     """Gera dados para criar um histograma a partir de um .csv
 
     Lê o arquivo csv, gera os dados para a criação do histograma
     a partir do numpy, é possível alterar a quantidade de barras do
-    histograma, seu intervalo e sua proporção, retorna uma tupla 
-    com os intervalos e a contagem dos intervalos.
+    histograma, seu começo, fim e sua proporção, retorna um
+    ColumnDataSource contendo os parâmetros "top", a altura
+    do histograma, "start", os pontos do lado esquerdo e "end",
+    os pontos do lado direito.
 
     Parâmetros
         ----------
@@ -153,6 +155,12 @@ def histogram_count(path, column, bins = 10, proportion_column = "",
             Deve conter a coluna a qual haverá a contagem de ocorrências
             para o histograma.
             Deve conter exatamente um valor.
+        start : int, optional
+            Deve conter o ponto do eixo em que seu histograma começa.
+            (Por padrão 0).
+        end : int, optional
+            Deve conter o ponto do eixo em que seu histograma termina.
+            (Por padrão 1).
         bins : int, optional
             Deve conter a quantidade de barras do histograma
             (Por padrão 10).
@@ -163,24 +171,25 @@ def histogram_count(path, column, bins = 10, proportion_column = "",
         base_proportion : float, optional
             Deve conter um número que indique a proporção base
             do histograma (Por padrão 1/100%).
-        interval : list, optional
-            Deve conter uma lista com o intervalo do eixo x do 
-            Histograma, sendo o primeiro valor o início e o
-            segundo o fim (Por padrão [0, 1]).
 
         Retorna
         -------
-        (count, intervals)
-            Retorna uma tupla contendo a contagem dos intervalos
-            como primeiro valor e os intervalos como segundo.
+        values
+            Retorna um ColumnDataSource contendo os valores da
+            altura dos quadrados, "top", os pontos esquredos,
+            "start" e os pontos direitos, "end" para a geração
+            do histograma a partir do ".quad()".
     """
 
     df = pd.read_csv(path)
     data = df[column]
+    interval = [start, end]
 
     hist_count = np.histogram(data, bins = bins, range = interval)
     intervals = hist_count[1]
     count = hist_count[0]
+    starts = intervals[:-1]
+    ends = intervals[1:]
 
     if proportion_column != "":
         max_value = df[proportion_column].max()
@@ -188,7 +197,10 @@ def histogram_count(path, column, bins = 10, proportion_column = "",
         count = count * proportion
     count = count * base_proportion
 
-    return count, intervals
+    values = {"top": count, "start": starts,
+              "end": ends}
+
+    return ColumnDataSource(values)
 
 
 def column_as_size(path, column, parameter):
@@ -273,9 +285,8 @@ def csv_filter_by_name_to_cds(path, filter_column, value, lowercase = False):
     columns = selected_row.columns
     values = selected_row.values[0]
 
-    filtered_data = dict()
-    filtered_data["Columns"] = columns
-    filtered_data["Values"] = values
+    filtered_data = {"Columns": columns,
+                     "Values": values}
 
     return ColumnDataSource(filtered_data), ColumnDataSource(selected_row)
 

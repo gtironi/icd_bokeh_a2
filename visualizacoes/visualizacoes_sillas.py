@@ -28,7 +28,7 @@ categories = ["Danceability", "Energy", "Valence", "Speechiness", "Acousticness"
 initial_category = categories[0]
 
 histogram_data = read_data.histogram_count("visualizacoes/data/spotify_youtube_year.csv",
-                                        initial_category, 10, proportion_column = "Stream")
+                                        initial_category, proportion_column = "Stream")
 
 firts_music_data = read_data.csv_filter_by_name_to_cds("visualizacoes/data/spotify_youtube_year.csv",
                                      "Track", all_music_names[0])
@@ -48,8 +48,10 @@ filter_top = Select(title = "Opções", options = list(top_columns.keys()),
 # Top spotify Plot
 ################################################################################
 
-top_spotify_plot = figure(title = "Músicas mais ouvidas no Spotify", y_range = FactorRange(names_spotify),
-                      height = 300, width = 700)
+top_spotify_plot = figure(title = "Músicas mais ouvidas no Spotify", height = 600, width = 700,
+    y_range = FactorRange(names_spotify[0], names_spotify[1], names_spotify[2], names_spotify[3],
+                        names_spotify[4], names_spotify[5], names_spotify[6], names_spotify[7],
+                        names_spotify[8], names_spotify[9]))
 
 top_spotify_plot.hbar(y = "Track", right = "Stream",
                   height = 0.8, source = data_spotify)
@@ -60,9 +62,8 @@ top_spotify_plot.hbar(y = "Track", right = "Stream",
 density_plot = figure(title = f"{initial_category} X Vezes tocadas no Spotify")
 density_plot.xaxis.axis_label = initial_category
 
-density_plot.quad(top = histogram_data[0], bottom = 0,
-                    left = histogram_data[1][:-1],
-                    right = histogram_data[1][1:], fill_color = 'skyblue', fill_alpha = 0.7)
+density_plot.quad(top = "top", bottom = 0, left = "start", right = "end",
+                  fill_color = 'skyblue', fill_alpha = 0.7, source = histogram_data)
 
 density_plot.circle(x = initial_category, y = "Stream", source = all_data)
 
@@ -73,6 +74,7 @@ density_plot.circle(x = initial_category, y = "Stream", source = firts_music_row
 ################################################################################
 
 filter_plot = figure(x_range = categories, title = f"{all_music_names[0]} Stats")
+filter_plot.xaxis.axis_label = all_music_names[0]
 
 filter_plot.vbar(x = "Columns", top = "Values", source = firt_music_values, width = 0.8)
 
@@ -107,11 +109,10 @@ def update_density_plot(attr, old, new):
     density_plot.xaxis.axis_label = new_category
         
     histogram_data = read_data.histogram_count("visualizacoes/data/spotify_youtube_year.csv",
-                                        new_category, 10, proportion_column = "Stream")
+                                        new_category, proportion_column = "Stream")
         
-    density_plot.quad(top = histogram_data[0], bottom = 0,
-                    left = histogram_data[1][:-1],
-                    right = histogram_data[1][1:], fill_color = 'skyblue', fill_alpha = 0.7)
+    density_plot.quad(top = "top", bottom = 0, left = "start", right = "end",
+                      fill_color = 'skyblue', fill_alpha = 0.7, source = histogram_data)
         
     density_plot.circle(x = new_category, y = "Stream", source = all_data)
 
