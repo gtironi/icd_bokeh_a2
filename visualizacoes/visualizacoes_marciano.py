@@ -5,13 +5,12 @@ from read_data import column_as_size
 from bokeh.plotting import figure
 from bokeh.io import output_file, show
 from bokeh.models.annotations import BoxAnnotation
-
 from bokeh.models import HoverTool, ColumnDataSource
 
 
 output_file("vis_marciano.html")
 
-
+'''
 # scatter plot speechiness X (outra variável) rascunho 
 
 data = pd.read_csv("visualizacoes/data/spotify_youtube_year.csv")
@@ -59,17 +58,36 @@ plot_1.add_tools(HoverTool(tooltips=tooltips))
 
 
 # show(plot_1)
-
+'''
 ######################################################################################
 # (variável) X tempo
-plot_2 = figure()
 
-data = pd.DataFrame(data.groupby(["release_date"])["Tempo"].mean())
+# plot_2 = figure()
 
-data_source_2 = ColumnDataSource(data)
+# data = pd.read_csv("visualizacoes/data/spotify_youtube_year.csv")
 
-plot_2.line(x = "release_date", y = "Tempo", source = data_source_2)
+# data = pd.DataFrame(data.groupby(["release_date"])["Duration_ms"].mean())
 
-show(plot_2)
+# data_source_2 = ColumnDataSource(data)
+
+# plot_2.line(x = "release_date", y = "duration_ms", source = data_source_2)
+
+# show(plot_2)
+
 ######################################################################################
+
 # ranking de artistas rascunho
+data = pd.read_csv("visualizacoes/data/spotify_youtube_year.csv")
+
+data = pd.DataFrame(data.groupby(["Artist"])["Stream"].mean().sort_values(ascending=False).head(30))
+
+data_source_3 = ColumnDataSource(data=dict(Artist=data.index, Stream=data.values))
+
+plot_3 = figure(y_range=data.index.tolist(), height=600, width=600, title="Top 30 Artistas Mais Ouvidos")
+
+plot_3.hbar(y='Artist', right='Stream', height=0.8, source=data_source_3)
+
+# plot_3.ygrid.grid_line_color = None
+# plot_3.yaxis.axis_label = "Artistas"
+
+show(plot_3)
