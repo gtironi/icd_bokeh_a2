@@ -255,10 +255,12 @@ def csv_filter_by_name_to_cds(path, filter_column, value, lowercase = False):
 
         Retorna
         -------
-        filtered_data
-            Retorna um ColumnDataSource do dicionário gerado a partir
-            das Colunas e dos Valores da linha filtrada, que possui
-            como chaves as strings "Columns" e "Values".
+        filtered_data, selected_row
+            Retorna uma tupla contendo o ColumnDataSource do 
+            dicionário gerado a partir das Colunas e dos Valores 
+            da linha filtrada, que possui como chaves as strings 
+            "Columns" e "Values" e um ColumnDataSource da linha 
+            selecionada.
     """
 
     df = pd.read_csv(path)
@@ -275,7 +277,7 @@ def csv_filter_by_name_to_cds(path, filter_column, value, lowercase = False):
     filtered_data["Columns"] = columns
     filtered_data["Values"] = values
 
-    return ColumnDataSource(filtered_data)
+    return ColumnDataSource(filtered_data), ColumnDataSource(selected_row)
 
 
 def get_column_observations(path, column, sort_column = "", lowercase = False):
