@@ -2,7 +2,7 @@
 from bokeh.io import save, show, output_file
 from bokeh.plotting import figure, curdoc
 from bokeh.layouts import column, row
-from bokeh.models import Select, Button, TextInput, Div, FixedTicker
+from bokeh.models import Select, Button, TextInput, Div, Range1d, FactorRange
 import read_data
 
 
@@ -43,12 +43,12 @@ filter_music = Select(title = "Músicas disponíveis", options = all_music_names
 filter_top = Select(title = "Opções", options = list(top_columns.keys()),
                     value = "Stream")
 
-output_file("testando.html")
+# output_file("testando.html")
 
 # Top spotify Plot
 ################################################################################
 
-top_spotify_plot = figure(title = "Músicas mais ouvidas no Spotify", y_range = names_spotify,
+top_spotify_plot = figure(title = "Músicas mais ouvidas no Spotify", y_range = FactorRange(names_spotify),
                       height = 300, width = 700)
 
 top_spotify_plot.hbar(y = "Track", right = "Stream",
