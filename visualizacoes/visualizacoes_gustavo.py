@@ -67,7 +67,15 @@ df_100_mais_vistos_completo.loc[:, 'Views'] = df_100_mais_vistos_completo['Views
 source1 = ColumnDataSource(df_100_mais_vistos_completo)
 
 def plot_2_gustavo(datasource, column):
-    plot_2 = figure_generator_gustavo(figure(height=480, width=640, toolbar_location=None, tools = ''))
+
+    tooltips = [
+    ("Nome", "@Track"),
+    ("Artista", "@Artist"),
+    ("Views", "@Views"),
+    ("URL", "@Url_youtube"),]
+
+    plot_2 = figure_generator_gustavo(figure(height=480, width=640, toolbar_location=None,
+                                             tools="hover", tooltips=tooltips))
 
     plot_2.circle(column, 'Views', size=8, source=datasource)
     plot_2.yaxis.axis_label = 'Visualizações (em milhões)'
