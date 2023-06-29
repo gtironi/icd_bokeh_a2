@@ -2,9 +2,10 @@
 from bokeh.io import save, show, output_file
 from bokeh.plotting import figure, curdoc
 from bokeh.layouts import column, row
-from bokeh.models import Select, Button, TextInput, Div, RangeSlider, BoxAnnotation, PolyAnnotation
-from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool, TapTool
+from bokeh.models import Select, Button, TextInput, Div, RangeSlider, BoxAnnotation, Image
+from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool, Label, TapTool
 from bokeh.transform import dodge
+from bokeh.embed import components
 import read_data
 
 
@@ -27,9 +28,6 @@ firts_music_data = read_data.csv_filter_by_name_to_cds("visualizacoes/data/spoti
                                      "Track", all_music_names[0])
 
 first_music_values, firts_music_row = firts_music_data
-
-top_columns = {"Streamed Times": "Stream",
-               "Popularity": "popularity"}
 
 categories = ["Danceability", "Energy", "Valence", "Speechiness", "Acousticness"]
 
@@ -57,26 +55,33 @@ filter_category = Select(title = "Categorias", value = initial_category, options
 filter_music = Select(title = "Músicas disponíveis", options = all_music_names,
                        value = all_music_names[0])
 
-filter_top = Select(title = "Opções", options = list(top_columns.keys()),
-                    value = "Stream")
-
 # output_file("testando.html")
 
-# Top spotify Plot
+# Mean popularity by Year Plot
 ################################################################################
 
-years_plot = figure(title = "Years", height = 700, width = 800,
-                    x_axis_label = None, y_axis_label = None,
+years_plot = figure(title = "Crescimento da Popularidade média das músicas por Ano",
+                    height = 500, width = 500, 
+                    x_axis_label = "Anos", y_axis_label = "Popularidade Média",
                     x_range = [1993, 2022], y_range = [0, 100])
 
-years_plot.line(x = "Years", y = "Values", source = years_data)
+years_plot.line(x = "Years", y = "Values", source = years_data,
+                line_color = "SpringGreen")
 
-years_plot.circle(x = "Years", y = "Values", source = years_data)
+years_plot.circle(x = "Years", y = "Values", source = years_data,
+                  fill_color = "MediumSeaGreen")
 
-box = BoxAnnotation(left = 2016.5, right = 2021.5, bottom = 60, top = 82,
+best_popularity_years_annotation = BoxAnnotation(left = 2016.5, right = 2021.5, bottom = 60, top = 85,
                     fill_alpha = 0.3, fill_color = 'red')
 
-years_plot.add_layout(box)
+years_plot.add_layout(best_popularity_years_annotation)
+
+best_popularity_years_label = Label(x = 2013.5, y = 80,
+                    text = "Popularidade média\nvem aumentando\ndesde 2017.",
+                    text_align = "center", text_font_size = "12px")
+
+years_plot.add_layout(best_popularity_years_label)
+
 
 # Density Plot
 ###############################################################################
@@ -87,26 +92,32 @@ density_plot.xaxis.axis_label = initial_category
 density_plot.xaxis[0].formatter = NumeralTickFormatter(format = "#0%")
 
 density_plot.quad(top = "top", bottom = 0, left = "start", right = "end",
-                  fill_color = 'skyblue', fill_alpha = 0.7, source = histogram_data)
+                  fill_color = 'LightGreen', fill_alpha = 0.7, source = histogram_data)
 
-density_plot.circle(x = initial_category, y = "Stream", source = all_data)
+density_plot.circle(x = initial_category, y = "Stream", source = all_data,
+                    fill_color = "#1DB954", line_color = "DarkGreen")
 
-density_plot.circle(x = initial_category, y = "Stream", source = firts_music_row,
-                    size = 20, fill_color = "red")
+density_plot.star(x = initial_category, y = "Stream", source = firts_music_row,
+                    size = 20, fill_color = "OrangeRed")
 
-# Track Plot
+# Track Status Plot
 ################################################################################
 
-filter_plot = figure(x_range = categories, title = f"{all_music_names[0]} Stats")
+filter_plot = figure(x_range = categories, title = f"{all_music_names[0]} Stats",
+                     y_range = [0, 1])
+
 filter_plot.xaxis.axis_label = all_music_names[0]
 
 filter_plot.yaxis[0].formatter = NumeralTickFormatter(format = "#0%")
 
-filter_plot.vbar(x = dodge("Columns", -0.15, range = filter_plot.x_range),
-                 top = "Values", source = first_music_values, width = 0.25)
+filter_plot.vbar(x = dodge("Columns", 0.22, range = filter_plot.x_range),
+                 top = "Means", source = first_music_values, width = 0.4,
+                 fill_color = "OrangeRed", legend_label = "Médias das 10 Músicas mais ouvidas no Spotify")
 
-filter_plot.vbar(x = dodge("Columns", 0.15, range = filter_plot.x_range),
-                 top = "Means", source = first_music_values, width = 0.25)
+
+filter_plot.vbar(x = dodge("Columns", -0.22, range = filter_plot.x_range),
+                 top = "Values", source = first_music_values, width = 0.4,
+                 fill_color = "#1DB954", legend_label = f"{all_music_names[0]} Médias")
 
 spotify_player_html = f"""
 <iframe src="https://open.spotify.com/embed?uri={firts_music_row.data["Uri"][0]}"
@@ -115,7 +126,7 @@ spotify_player_html = f"""
 
 spotify_player = Div(text=spotify_player_html)
 
-# Year Plot Filter
+# Year Plot Slider
 ###############################################################################
 
 years_selection = RangeSlider(title = "Selecione o intervalo de anos desejados",
@@ -147,22 +158,23 @@ def update_density_plot(attr, old, new):
                                         new_category, proportion_column = "Stream")
         
     density_plot.quad(top = "top", bottom = 0, left = "start", right = "end",
-                      fill_color = 'skyblue', fill_alpha = 0.7, source = histogram_data)
+                      fill_color = 'LightGreen', fill_alpha = 0.7, source = histogram_data)
         
-    density_plot.circle(x = new_category, y = "Stream", source = all_data)
+    density_plot.circle(x = new_category, y = "Stream", source = all_data,
+                        fill_color = "#1DB954", line_color = "DarkGreen")
 
-    update_music_circle(filter_plot.xaxis.axis_label, new_category)
+    update_music_star(filter_plot.xaxis.axis_label, new_category)
 
 
-def update_music_circle(music_name, category_type):
+def update_music_star(music_name, category_type):
     if len(density_plot.renderers) > 2:
         del density_plot.renderers[2]
 
     filter_data = read_data.csv_filter_by_name_to_cds("visualizacoes/data/spotify_youtube_year.csv",
                                             "Track", music_name, lowercase = True)
     
-    density_plot.circle(x = category_type, y = "Stream", source = filter_data[1],
-                        size = 20, fill_color = "red")
+    density_plot.star(x = category_type, y = "Stream", source = filter_data[1],
+                        size = 20, fill_color = "OrangeRed")
 
 
 filter_category.on_change("value", update_density_plot)
@@ -186,9 +198,10 @@ def make_search():
         filter_music.value = search_term
         update_music_selected(None, None, None)
 
-search_input = TextInput(title="Busque uma música", value="")
 
-search_button = Button(label="Buscar", button_type = "success")
+search_input = TextInput(title = "Insira uma música e da um Play",value="")
+
+search_button = Button(label="Play", button_type = "success")
 search_button.on_click(make_search)
 
 def update_music_selected(attr, old, new):
@@ -200,16 +213,19 @@ def update_music_selected(attr, old, new):
     music_name = row.data["Track"][0]
     music_uri = row.data["Uri"][0]
 
-    filter_plot.renderers = []
-        
+    del filter_plot.renderers[1]
+    del filter_plot.legend.items[1]
+    
     filter_music.value = music_name
 
     filter_plot.title.text = f"{music_name} Stats"
     filter_plot.xaxis.axis_label = music_name
-    filter_plot.vbar(x = "Columns", top = "Values", source = values, width = 0.8)
+    filter_plot.vbar(x = dodge("Columns", -0.22, range = filter_plot.x_range),
+                     top = "Values", source = values, width = 0.4,
+                     fill_color = "#1DB954", legend_label = f"{music_name} Status")
 
     update_spotify_player(music_uri)
-    update_music_circle(music_name, density_plot.xaxis.axis_label)
+    update_music_star(music_name, density_plot.xaxis.axis_label)
 
 
 filter_music.on_change("value", update_music_selected)
@@ -218,3 +234,5 @@ layout = row(column(search_input, search_button, filter_music, spotify_player),
              filter_plot, column_density_plot, column_years)
 
 curdoc().add_root(layout)
+
+# script, div = components(layout)
