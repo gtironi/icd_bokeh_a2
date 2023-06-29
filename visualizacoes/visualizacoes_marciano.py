@@ -3,10 +3,10 @@
 # Importando os módulos utilizados
 import pandas as pd
 from bokeh.plotting import figure
-from bokeh.io import show
+#from bokeh.io import show
 from bokeh.models.annotations import BoxAnnotation
 from bokeh.models import HoverTool, ColumnDataSource, Label, RangeTool
-from bokeh.layouts import column, row, gridplot
+from bokeh.layouts import column, row
 
 
 ########################################################################################################################
@@ -184,3 +184,4 @@ tooltips = [                       # Definindo as informações das músicas que
     ]
 plot_3.add_tools(HoverTool(tooltips=tooltips))
 
+layout = column(row(plot_1, plot_2), plot_3)
