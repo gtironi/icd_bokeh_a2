@@ -25,8 +25,8 @@ source = ColumnDataSource(df_by_year) #transforma o .csv em ColumnDataSource
 
 def plot_1_gustavo(datasource):
     plot_1 = figure_generator_gustavo(figure(height=350, width=640, tools="xpan", toolbar_location=None, 
-                        x_axis_type="datetime", x_axis_location="above", 
-                        x_range=(np.datetime64('1970-01-01'), np.datetime64('2020-01-01'))))
+                                             x_axis_type="datetime", x_axis_location="above", 
+                                             x_range=(np.datetime64('1970-01-01'), np.datetime64('2020-01-01'))))
 
     plot_1.xgrid.grid_line_color = 'gray'
     plot_1.xgrid.grid_line_alpha = 0.1
@@ -37,39 +37,24 @@ def plot_1_gustavo(datasource):
 
     plot_1.line('year', 'Key', source=source)
 
-    select = figure_generator_gustavo(figure(height=130, width=640, y_range = plot_1.y_range,
-                    x_axis_type="datetime", y_axis_type=None, tools="", toolbar_location=None))
-
-    select.xgrid.grid_line_color = 'gray'
-    select.xgrid.grid_line_alpha = 0.1
-    select.title.text = 'Arraste para mover o gráfico'
+    barra_de_rolagem = figure_generator_gustavo(figure(height=130, width=640, y_range = plot_1.y_range,
+                                                       x_axis_type="datetime", y_axis_type=None, tools="", toolbar_location=None))
+    
+    barra_de_rolagem.title.text_font_size = '16px'
+    barra_de_rolagem.xgrid.grid_line_color = 'gray'
+    barra_de_rolagem.xgrid.grid_line_alpha = 0.1
+    barra_de_rolagem.title.text = 'Arraste para mover o gráfico'
 
     range_tool = RangeTool(x_range=plot_1.x_range)
     range_tool.overlay.fill_color = "navy"
     range_tool.overlay.fill_alpha = 0.2
 
-    select.line('year', 'Key', source=source)
-    select.add_tools(range_tool)
+    barra_de_rolagem.line('year', 'Key', source=source)
+    barra_de_rolagem.add_tools(range_tool)
 
-    return column(plot_1, select)
+    return column(plot_1, barra_de_rolagem)
 
 p1 = plot_1_gustavo(source)
-
-####
-
-datetime = pd.to_datetime(df['Duration_ms'], unit='ms')
-
-df['Duration_s'] = (datetime.dt.minute)*60 + datetime.dt.second
-
-source = ColumnDataSource(df)
-
-p2 = figure(height=480, width=640, tools="xpan", toolbar_location=None,
-            x_axis_location="below", background_fill_color="#efefef",
-            x_range=(0, 0.5), y_range=(0, 500))
-
-p2.circle('Liveness', 'Duration_s', source=source)
-p2.yaxis.axis_label = 'Duração em segundos'
-p2.xaxis.axis_label = 'Speechiness'
 
 ####
 
@@ -79,14 +64,19 @@ df_100_mais_vistos_completo = (df_views_por_track).head(100)
 
 df_100_mais_vistos_completo.loc[:, 'Views'] = df_100_mais_vistos_completo['Views']/1000000
 
-source = ColumnDataSource(df_100_mais_vistos_completo)
+source1 = ColumnDataSource(df_100_mais_vistos_completo)
 
-p3 = figure(height=480, width=640, toolbar_location='right',
-            x_axis_location="below", background_fill_color="#efefef")
+def plot_2_gustavo(datasource, column):
+    plot_2 = figure_generator_gustavo(figure(height=480, width=640, toolbar_location=None, tools = ''))
 
-p3.circle('Liveness', 'Views', size=6, source=source)
-p3.yaxis.axis_label = 'Visualizações (em milhões)'
-p3.xaxis.axis_label = 'Liveness'
+    plot_2.circle(column, 'Views', size=8, source=datasource)
+    plot_2.yaxis.axis_label = 'Visualizações (em milhões)'
+    plot_2.xaxis.axis_label = column.capitalize()
+    plot_2.title.text = f'{column.capitalize()} vs Visualizações'
+
+    return plot_2
+
+p2 = plot_2_gustavo(source1, 'Acousticness')
 
 ####
 
@@ -126,6 +116,6 @@ p4.xgrid.grid_line_color = None
 p4.axis.major_label_text_font_size="14px"
 p4.axis.axis_label_text_font_size="12px"
 
-select_layout = column(row(p1, p2), row(p3, p4))
+select_layout = column(p1, row(p2, p4))
 
 show(select_layout)
