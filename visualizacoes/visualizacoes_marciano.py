@@ -6,7 +6,7 @@ from bokeh.plotting import figure
 from bokeh.io import show
 from bokeh.models.annotations import BoxAnnotation
 from bokeh.models import HoverTool, ColumnDataSource, Label, RangeTool
-from bokeh.layouts import column, row
+from bokeh.layouts import column, row, gridplot
 
 
 ########################################################################################################################
@@ -38,26 +38,26 @@ plot_1.background_fill_color = (243, 235, 34, 0.2) # Definindo cor de fundo do g
 # Definindo o Título
 plot_1.title.text = "Liveness X Energy"
 plot_1.title.text_color = "Black"
-plot_1.title.text_font = "fantasy"
+plot_1.title.text_font = "Arial Black"
 plot_1.title.text_font_size = "30px"
 plot_1.title.align = "center"
 
 # Legenda do eixo X
 plot_1.xaxis.axis_label = "Liveness" # Definindo texto
-plot_1.xaxis.axis_label_text_font = 'fantasy' # Definindo fonte 
+plot_1.xaxis.axis_label_text_font = 'Arial Black' # Definindo fonte 
 plot_1.xaxis.axis_label_text_font_size = '18px' # Definindo tamanho da letra
 plot_1.xaxis.axis_label_text_color = 'Black' # Definindo cor da letra
 
 # Legenda do eixo Y
 plot_1.yaxis.axis_label = "Energy" # Definindo texto
-plot_1.yaxis.axis_label_text_font = 'fantasy' # Definindo fonte
+plot_1.yaxis.axis_label_text_font = 'Arial Black' # Definindo fonte
 plot_1.yaxis.axis_label_text_font_size = '18px' # Definindo tamanho da letra
 plot_1.yaxis.axis_label_text_color = 'Black' # Definindo cor da letra
 
 box_annotation = BoxAnnotation(left=0.8, right=1, fill_color = "Blue", fill_alpha = 0.15) # Criando retângulo e adicionando ao gráfico
 plot_1.add_layout(box_annotation) 
 
-annotation = Label(x=0.806, y=0.1, text="Músicas ao vivo", text_font_size="10pt",text_font = "fantasy"   # Criando uma anotação do gráfico
+annotation = Label(x=0.775, y=0.1, text="Músicas ao vivo", text_font_size="10pt",text_font = "Arial Black"   # Criando uma anotação do gráfico
                    , text_color="Blue", background_fill_alpha=0.0)                                 
 plot_1.add_layout(annotation)                                                                            # Adicionando anotação por cima do gráfico
 
@@ -68,7 +68,6 @@ tooltips = [                       # Definindo as informações das músicas que
     ('Streams', '@Stream')]
 plot_1.add_tools(HoverTool(tooltips=tooltips))
 
-show(plot_1)
 ########################################################################################################################
 # Segundo gráfico: Duração das músicas X Anos #
 
@@ -97,19 +96,19 @@ plot_2.background_fill_color = (243, 235, 34, 0.2) # Definindo cor de fundo do g
 # Definindo o Título
 plot_2.title.text = "Music Duration in Time"
 plot_2.title.text_color = "Black"
-plot_2.title.text_font = "fantasy"
+plot_2.title.text_font = "Arial Black"
 plot_2.title.text_font_size = "30px"
 plot_2.title.align = "center"
 
 # Legenda do eixo X
 plot_2.xaxis.axis_label = "Years" # Definindo texto
-plot_2.xaxis.axis_label_text_font = 'fantasy' # Definindo fonte
+plot_2.xaxis.axis_label_text_font = 'Arial Black' # Definindo fonte
 plot_2.xaxis.axis_label_text_font_size = '18px' # Definindo tamanho da letra
 plot_2.xaxis.axis_label_text_color = 'Black' # Definindo cor da letra
 
 # Legenda do eixo Y
 plot_2.yaxis.axis_label = "Music Duration (segundos)" # Definindo texto
-plot_2.yaxis.axis_label_text_font = 'fantasy' # Definindo fonte
+plot_2.yaxis.axis_label_text_font = 'Arial Black' # Definindo fonte
 plot_2.yaxis.axis_label_text_font_size = '18px' # Definindo tamanho da letra
 plot_2.yaxis.axis_label_text_color = 'Black' # Definindo cor da letra
 
@@ -157,13 +156,13 @@ plot_3.background_fill_color = (243, 235, 34, 0.2) # Definindo cor de fundo do g
 # Definindo o Título
 plot_3.title.text = "Top 30 Artists Streams"
 plot_3.title.text_color = "Black"
-plot_3.title.text_font = "fantasy"
+plot_3.title.text_font = "Arial Black"
 plot_3.title.text_font_size = "30px"
 plot_3.title.align = "center"
 
 # Labels do eixo Y
 plot_3.yaxis.major_label_text_color = "Black" # Definindo a cor do nome dos artistas
-plot_3.yaxis.major_label_text_font = "fantasy" # Definindo a fonte do nome dos artistas
+plot_3.yaxis.major_label_text_font = "Arial Black" # Definindo a fonte do nome dos artistas
 
 # Eixo X
 plot_3.xgrid.grid_line_color = None # Tirando o grid do eixo X
@@ -174,7 +173,7 @@ plot_3.xaxis.major_label_text_alpha = 0 # Tirando as labels do eixo X
 
 # Eixo Y
 plot_3.yaxis.axis_label = "Artists" # Definindo texto
-plot_3.yaxis.axis_label_text_font = 'fantasy' # Definindo fonte
+plot_3.yaxis.axis_label_text_font = 'Arial Black' # Definindo fonte
 plot_3.yaxis.axis_label_text_font_size = '18px' # Definindo tamanho da letra
 plot_3.yaxis.axis_label_text_color = 'Black' # Definindo cor da letra
 plot_3.ygrid.grid_line_color = None # Tirando o grid do eixo Y
@@ -184,3 +183,4 @@ tooltips = [                       # Definindo as informações das músicas que
     ('Nº Médio de Streams', '@Stream'),
     ]
 plot_3.add_tools(HoverTool(tooltips=tooltips))
+
