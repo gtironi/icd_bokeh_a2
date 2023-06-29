@@ -1,17 +1,17 @@
 # Arquivo para os códigos das  visualizacoes
 import pandas as pd
 import numpy as np
-from read_data import histogram_count
+from temporary import figure_generator_gustavo
 
 from bokeh.layouts import column, row
 from bokeh.io import curdoc
-from bokeh.models import ColumnDataSource, RangeTool, Whisker
+from bokeh.models import ColumnDataSource, RangeTool, Whisker, PanTool
 from bokeh.plotting import figure, show
 from bokeh.transform import factor_cmap
 
 
 
-df = pd.read_csv('visualizacoes/data/spotify_youtube_year.csv')
+df = pd.read_csv('visualizacoes/data/spotify_youtube_year.csv') #lê o csv
 
 df.rename(columns={'release_date': 'year'}, inplace=True) #Renomeia a coluna, para melhor legibilidade do código.
 
@@ -21,29 +21,39 @@ df.drop_duplicates('Track', inplace= True) #Retira as musicas duplicadas
 
 df_by_year = df.groupby('year').count() #Agrupa por ano e conta a quantidade de musicas em cada ano
 
-source = ColumnDataSource(df_by_year)
+source = ColumnDataSource(df_by_year) #transforma o .csv em ColumnDataSource
 
-####
+def plot_1_gustavo(datasource):
+    plot_1 = figure_generator_gustavo(figure(height=350, width=640, tools="xpan", toolbar_location=None, 
+                        x_axis_type="datetime", x_axis_location="above", 
+                        x_range=(np.datetime64('1970-01-01'), np.datetime64('2020-01-01'))))
 
-p = figure(height=350, width=640, tools="xpan", toolbar_location=None,
-           x_axis_type="datetime", x_axis_location="above",
-           background_fill_color="#efefef", x_range=(np.datetime64('1970-01-01'), np.datetime64('2020-01-01')))
+    plot_1.xgrid.grid_line_color = 'gray'
+    plot_1.xgrid.grid_line_alpha = 0.1
 
-p.line('year', 'Key', source=source)
-p.yaxis.axis_label = 'Contagem'
+    plot_1.xaxis.axis_label = 'Anos'
+    plot_1.yaxis.axis_label = 'Músicas lançadas'
+    plot_1.title.text = 'Quantidade de músicas lançadas por ano'
 
-select = figure(title="Drag the middle and edges of the selection box to change the range above",
-                height=130, width=640, y_range=p.y_range,
-                x_axis_type="datetime", y_axis_type=None,
-                tools="", toolbar_location=None, background_fill_color="#efefef")
+    plot_1.line('year', 'Key', source=source)
 
-range_tool = RangeTool(x_range=p.x_range)
-range_tool.overlay.fill_color = "navy"
-range_tool.overlay.fill_alpha = 0.2
+    select = figure_generator_gustavo(figure(height=130, width=640, y_range = plot_1.y_range,
+                    x_axis_type="datetime", y_axis_type=None, tools="", toolbar_location=None))
 
-select.line('year', 'Key', source=source)
-select.ygrid.grid_line_color = None
-select.add_tools(range_tool)
+    select.xgrid.grid_line_color = 'gray'
+    select.xgrid.grid_line_alpha = 0.1
+    select.title.text = 'Arraste para mover o gráfico'
+
+    range_tool = RangeTool(x_range=plot_1.x_range)
+    range_tool.overlay.fill_color = "navy"
+    range_tool.overlay.fill_alpha = 0.2
+
+    select.line('year', 'Key', source=source)
+    select.add_tools(range_tool)
+
+    return column(plot_1, select)
+
+p1 = plot_1_gustavo(source)
 
 ####
 
@@ -116,6 +126,6 @@ p4.xgrid.grid_line_color = None
 p4.axis.major_label_text_font_size="14px"
 p4.axis.axis_label_text_font_size="12px"
 
-select_layout = column(row(column(p, select), p2), row(p3, p4))
+select_layout = column(row(p1, p2), row(p3, p4))
 
 show(select_layout)
