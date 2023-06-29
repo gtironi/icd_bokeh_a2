@@ -57,8 +57,9 @@ plot_1.yaxis.axis_label_text_color = 'Black' # Definindo cor da letra
 box_annotation = BoxAnnotation(left=0.8, right=1, fill_color = "Blue", fill_alpha = 0.2) # Criando retângulo e adicionando ao gráfico
 plot_1.add_layout(box_annotation) 
 
-annotation = Label(x=0.805, y=0.1, text="Músicas ao vivo", text_font_size="10pt", text_color="Black", background_fill_alpha=0.0) # Adicionando anotação
-plot_1.add_layout(annotation)                                                                                                   # por cima do gráfico
+annotation = Label(x=0.805, y=0.1, text="Músicas ao vivo", text_font_size="10pt",text_font = "fantasy"   # Criando uma anotação do gráfico
+                   , text_color="Black", background_fill_alpha=0.0)                                 
+plot_1.add_layout(annotation)                                                                            # Adicionando anotação por cima do gráfico
 
 tooltips = [                       # Definindo as informações das músicas que aparecerão ao passar o mouse sobre os glifos
     ('Música', '@Track'),
