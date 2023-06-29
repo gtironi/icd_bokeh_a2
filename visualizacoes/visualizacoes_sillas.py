@@ -2,7 +2,9 @@
 from bokeh.io import save, show, output_file
 from bokeh.plotting import figure, curdoc
 from bokeh.layouts import column, row
-from bokeh.models import Select, Button, TextInput, Div, RangeSlider, FactorRange
+from bokeh.models import Select, Button, TextInput, Div, RangeSlider, BoxAnnotation, PolyAnnotation
+from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool, TapTool
+from bokeh.transform import dodge
 import read_data
 
 
@@ -21,20 +23,34 @@ years_data = read_data.get_statistic_by_year("visualizacoes/data/spotify_youtube
 
 years = years_data.data["Years"]
 
+firts_music_data = read_data.csv_filter_by_name_to_cds("visualizacoes/data/spotify_youtube_year.csv",
+                                     "Track", all_music_names[0])
+
+first_music_values, firts_music_row = firts_music_data
+
 top_columns = {"Streamed Times": "Stream",
                "Popularity": "popularity"}
 
 categories = ["Danceability", "Energy", "Valence", "Speechiness", "Acousticness"]
 
+top_ten_categories_mean = {"Danceability": 0.6999, "Energy": 0.5804,
+                           "Valence": 0.6048, "Speechiness": 0.06073,
+                           "Acousticness": 0.342142}
+categories_means = []
+
+for column_name in first_music_values.data["Columns"]:
+    column_data = column_name
+    if column_data in categories:
+        column_data = top_ten_categories_mean[column_name]
+    
+    categories_means.append(column_data)
+
+first_music_values.data["Means"] = categories_means
+
 initial_category = categories[0]
 
 histogram_data = read_data.histogram_data("visualizacoes/data/spotify_youtube_year.csv",
                                         initial_category, proportion_column = "Stream")
-
-firts_music_data = read_data.csv_filter_by_name_to_cds("visualizacoes/data/spotify_youtube_year.csv",
-                                     "Track", all_music_names[0])
-
-firt_music_values, firts_music_row = firts_music_data
 
 filter_category = Select(title = "Categorias", value = initial_category, options = categories)
 
@@ -55,12 +71,20 @@ years_plot = figure(title = "Years", height = 700, width = 800,
 
 years_plot.line(x = "Years", y = "Values", source = years_data)
 
+years_plot.circle(x = "Years", y = "Values", source = years_data)
+
+box = BoxAnnotation(left = 2016.5, right = 2021.5, bottom = 60, top = 82,
+                    fill_alpha = 0.3, fill_color = 'red')
+
+years_plot.add_layout(box)
 
 # Density Plot
 ###############################################################################
 
 density_plot = figure(title = f"{initial_category} X Vezes tocadas no Spotify")
 density_plot.xaxis.axis_label = initial_category
+
+density_plot.xaxis[0].formatter = NumeralTickFormatter(format = "#0%")
 
 density_plot.quad(top = "top", bottom = 0, left = "start", right = "end",
                   fill_color = 'skyblue', fill_alpha = 0.7, source = histogram_data)
@@ -76,7 +100,13 @@ density_plot.circle(x = initial_category, y = "Stream", source = firts_music_row
 filter_plot = figure(x_range = categories, title = f"{all_music_names[0]} Stats")
 filter_plot.xaxis.axis_label = all_music_names[0]
 
-filter_plot.vbar(x = "Columns", top = "Values", source = firt_music_values, width = 0.8)
+filter_plot.yaxis[0].formatter = NumeralTickFormatter(format = "#0%")
+
+filter_plot.vbar(x = dodge("Columns", -0.15, range = filter_plot.x_range),
+                 top = "Values", source = first_music_values, width = 0.25)
+
+filter_plot.vbar(x = dodge("Columns", 0.15, range = filter_plot.x_range),
+                 top = "Means", source = first_music_values, width = 0.25)
 
 spotify_player_html = f"""
 <iframe src="https://open.spotify.com/embed?uri={firts_music_row.data["Uri"][0]}"
@@ -90,7 +120,8 @@ spotify_player = Div(text=spotify_player_html)
 
 years_selection = RangeSlider(title = "Selecione o intervalo de anos desejados",
                             start = min(years), end = max(years),
-                            value = (1993, max(years)), step = 1)
+                            value = (1993, max(years)), step = 1,
+                            width = 400)
 
 def update_years(attr, old, new):
     start, end = years_selection.value
