@@ -46,7 +46,7 @@ plot_1.xgrid.grid_line_color = None
 plot_1.ygrid.grid_line_color = None
 plot_1.background_fill_color = "Gainsboro"
 
-#Customização dos eixos
+# Customização dos eixos
 
 plot_1.xaxis.axis_label = "Energia"
 plot_1.xaxis.axis_label_text_color = "black"
@@ -112,7 +112,7 @@ plot_2.height = 600
 plot_2.ygrid.grid_line_color = None
 plot_2.background_fill_color = "Gainsboro"
 
-#Customização dos eixos
+# Customização dos eixos
 
 plot_2.xaxis.axis_label_text_color = "black"
 plot_2.xaxis.axis_label_text_font = "Arial"
@@ -139,7 +139,7 @@ YouTube.
 
 likes_by_year = df.groupby(["release_date"])["Curtidas"].mean() 
 
-# Transformando a pd.Series em um DataFrame
+# Transformando a pd.Series em uma DataFrame
 
 likes_by_year = pd.DataFrame(likes_by_year)
 
@@ -169,7 +169,7 @@ plot_3.xgrid.grid_line_color = None
 plot_3.ygrid.grid_line_color = None
 plot_3.background_fill_color = "Gainsboro"
 
-#Customização dos eixos
+# Customização dos eixos
 
 plot_3.xaxis.axis_label_text_color = "black"
 plot_3.xaxis.axis_label_text_font = "Arial"
@@ -179,12 +179,12 @@ plot_3.yaxis.axis_label_text_color = "black"
 plot_3.yaxis.axis_label_text_font = "Arial"
 plot_3.yaxis.axis_label_text_font_size = "12px"
 
-# Exibição das visualizações
-
 """
 O gráfico de linha acima apresenta a média de curtidas das músicas, contidas na
 base dados, no Youtube ao longo dos anos. Assim, o leitor pode observar os
 aumentos e as quedas em determinados intervalos de tempo. 
 """
+
+# Exibição das visualizações
 
 show(row(plot_1, plot_2, plot_3))
