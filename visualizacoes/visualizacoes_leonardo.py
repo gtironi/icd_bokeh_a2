@@ -139,7 +139,7 @@ YouTube.
 
 likes_by_year = df.groupby(["release_date"])["Curtidas"].mean() 
 
-# Transformando pd.Series em um DataFrame
+# Transformando a pd.Series em um DataFrame
 
 likes_by_year = pd.DataFrame(likes_by_year)
 
