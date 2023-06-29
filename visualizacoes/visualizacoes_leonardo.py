@@ -5,7 +5,7 @@ import pandas as pd
 import read_data
 from bokeh.plotting import figure, curdoc
 from bokeh.io import output_file, save, show
-from bokeh.models import HoverTool, ColumnDataSource
+from bokeh.models import HoverTool, ColumnDataSource, Div
 from bokeh.layouts import column, row
 
 # Leitura do arquivo
@@ -58,7 +58,13 @@ plot_1.yaxis.axis_label_text_font_size = "12px"
 
 plot_1.add_tools(HoverTool(tooltips=tooltips))
 
-# show(plot_1)
+"""
+A danceabilidade representa o quão dançante é a música no intervalo de 1 a 0 e a 
+energia indica o quão energizada uma música está no intervalo de 1 a 0. A partir 
+dessas duas variáveis, produziu-se um gráfico de dispersão.
+Pelo gráfico, pode-se perceber que a danceabilidade de uma música tende a 
+aumentar conforme o aumento da sua energia.
+"""
 
 ################################################################################
 
@@ -108,7 +114,14 @@ plot_2.yaxis.axis_label_text_color = "black"
 plot_2.yaxis.axis_label_text_font = "Arial"
 plot_2.yaxis.axis_label_text_font_size = "12px"
 
-#show(plot_2)
+"""
+Uma das principais formas de avaliar uma música é por meio da quantidade de 
+curtidas. 
+Nesse caso, o gráfico de barras é muito útil, pois, com o seu esboço, torna-se 
+possível a construção de um ranking.
+Portanto, construiu-se um gráfico de barras das 10 músicas com mais curtidas no
+YouTube.
+"""
 
 ################################################################################
 
@@ -155,5 +168,11 @@ plot_3.yaxis.axis_label_text_font = "Arial"
 plot_3.yaxis.axis_label_text_font_size = "12px"
 
 # Exibição das visualizações
+
+"""
+O gráfico de linha acima apresenta a média de curtidas das músicas, contidas na
+base dados, no Youtube ao longo dos anos. Assim, o leitor pode observar os
+aumentos e as quedas em determinados intervalos de tempo. 
+"""
 
 show(row(plot_1, plot_2, plot_3))
