@@ -2,15 +2,10 @@
 from bokeh.io import save, show, output_file
 from bokeh.plotting import figure, curdoc
 from bokeh.layouts import column, row
-from bokeh.models import Select, Button, TextInput, Div, Range1d, FactorRange
+from bokeh.models import Select, Button, TextInput, Div, RangeSlider, FactorRange
 import read_data
 
 
-data_spotify = read_data.csv_get_top("visualizacoes/data/spotify_youtube_year.csv",
-                                     "Stream", duplicated_column = "Track")
-
-names_spotify = read_data.csv_get_top_names("visualizacoes/data/spotify_youtube_year.csv",
-                                            "Track", "Stream")
 
 all_data = read_data.csv_to_columndatasource("visualizacoes/data/spotify_youtube_year.csv")
 
@@ -20,6 +15,12 @@ all_music_names = read_data.get_column_observations("visualizacoes/data/spotify_
 all_music_names_lower = read_data.get_column_observations("visualizacoes/data/spotify_youtube_year.csv",
                                          "Track", sort_column = "Stream", lowercase = True)
 
+
+years_data = read_data.get_statistic_by_year("visualizacoes/data/spotify_youtube_year.csv",
+                                       "release_date", "popularity")
+
+years = years_data.data["Years"]
+
 top_columns = {"Streamed Times": "Stream",
                "Popularity": "popularity"}
 
@@ -27,7 +28,7 @@ categories = ["Danceability", "Energy", "Valence", "Speechiness", "Acousticness"
 
 initial_category = categories[0]
 
-histogram_data = read_data.histogram_count("visualizacoes/data/spotify_youtube_year.csv",
+histogram_data = read_data.histogram_data("visualizacoes/data/spotify_youtube_year.csv",
                                         initial_category, proportion_column = "Stream")
 
 firts_music_data = read_data.csv_filter_by_name_to_cds("visualizacoes/data/spotify_youtube_year.csv",
@@ -48,13 +49,12 @@ filter_top = Select(title = "Opções", options = list(top_columns.keys()),
 # Top spotify Plot
 ################################################################################
 
-top_spotify_plot = figure(title = "Músicas mais ouvidas no Spotify", height = 600, width = 700,
-    y_range = FactorRange(names_spotify[0], names_spotify[1], names_spotify[2], names_spotify[3],
-                        names_spotify[4], names_spotify[5], names_spotify[6], names_spotify[7],
-                        names_spotify[8], names_spotify[9]))
+years_plot = figure(title = "Years", height = 700, width = 800,
+                    x_axis_label = None, y_axis_label = None,
+                    x_range = [1993, 2022], y_range = [0, 100])
 
-top_spotify_plot.hbar(y = "Track", right = "Stream",
-                  height = 0.8, source = data_spotify)
+years_plot.line(x = "Years", y = "Values", source = years_data)
+
 
 # Density Plot
 ###############################################################################
@@ -85,18 +85,22 @@ spotify_player_html = f"""
 
 spotify_player = Div(text=spotify_player_html)
 
-# Top Spotify Plot Filter
+# Year Plot Filter
 ###############################################################################
 
-def update_top_plot(attr, old, new):
-    top_column = top_columns[filter_top.value]
+years_selection = RangeSlider(title = "Selecione o intervalo de anos desejados",
+                            start = min(years), end = max(years),
+                            value = (1993, max(years)), step = 1)
 
-    names = read_data.csv_get_top_names("visualizacoes/data/spotify_youtube_year.csv",
-                                            "Track", top_column)
+def update_years(attr, old, new):
+    start, end = years_selection.value
 
-filter_top.on_change("value", update_top_plot)
+    years_plot.x_range.start = start
+    years_plot.x_range.end = end
 
-column_top_plot = column(filter_top, top_spotify_plot)
+years_selection.on_change("value", update_years)
+
+column_years = column(years_selection, years_plot)
 
 # Density Plot Filter
 ###############################################################################
@@ -108,7 +112,7 @@ def update_density_plot(attr, old, new):
     density_plot.title.text = f"{new_category} X Vezes tocadas no Spotify"
     density_plot.xaxis.axis_label = new_category
         
-    histogram_data = read_data.histogram_count("visualizacoes/data/spotify_youtube_year.csv",
+    histogram_data = read_data.histogram_data("visualizacoes/data/spotify_youtube_year.csv",
                                         new_category, proportion_column = "Stream")
         
     density_plot.quad(top = "top", bottom = 0, left = "start", right = "end",
@@ -180,6 +184,6 @@ def update_music_selected(attr, old, new):
 filter_music.on_change("value", update_music_selected)
 
 layout = row(column(search_input, search_button, filter_music, spotify_player),
-             filter_plot, column_density_plot, column_top_plot)
+             filter_plot, column_density_plot, column_years)
 
 curdoc().add_root(layout)

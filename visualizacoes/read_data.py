@@ -292,7 +292,7 @@ def csv_filter_by_name_to_cds(path, filter_column, value, lowercase = False):
 
 
 def get_column_observations(path, column, sort_column = "", lowercase = False):
-    """Retorna uma lista com os dados de uma coluna especificada de um arquivo .csv
+    """Gera uma lista com os dados de uma coluna especificada de um arquivo .csv
     
     Lê o arquivo csv, seleciona os dados de uma coluna, caso haja uma coluna
     de ordenação, ordena os dados com base nela, caso lowercase seja verdadeira,
@@ -335,3 +335,63 @@ def get_column_observations(path, column, sort_column = "", lowercase = False):
             values.append(value.lower())
 
     return values
+
+
+def get_statistic_by_year(path, years_column, target_column, interval = [1960, 2021],
+                          method = "mean"):
+    """Gera um ColumDataSource e uma lista com as estatísticas do ano a partir de um arquivo .csv
+
+    Lê o arquivo csv, ordena os dados do ano mais antigo para o mais recente,
+    e filtra para os anos do intervalo selecionado (Pré-definido de 1960 à 2021),
+    gera a lista dos anos e gera os valores a partir do agrupamento por ano e
+    da aplicação do método selecionado (Por padrão a média) na coluna dos
+    valores desejados.
+
+    Parâmetros
+        ----------
+        path : str, path object or file-like object
+            Deve indicar o local onde está armazenado o .csv a ser lido. 
+            Deve conter exatamente um valor.
+        years_column : srt
+            Deve indicar a coluna dos anos da base de dados.
+            Deve conter exatamente um valor.
+        target_column : str
+            Deve indicar a coluna onde será feita a coleta dos valores.
+            Deve conter exatamente um valor.
+        interval : list, optional
+            Deve conter uma lista com o intervalo dos anos da coleta, sendo
+            o primeiro valor o ano inicial e o segundo o ano final
+            (Por padrão [1960, 2021]).
+        method : str, optional
+            Deve indicar o método da coleta de valores, possíveis métodos são
+            a média ("mean"), a soma ("sum") e a contagem ("count")
+            (Por padrão "mean").
+
+        Retorna
+        -------
+        result
+            Retorna o dicionário result como ColumnDataSource, que contém
+            "Values", os valores coletados, e "Years" os anos em que foram
+            feitas as coletas, e years.
+    """
+
+    df = pd.read_csv(path)
+    df = df.sort_values(years_column)
+    data = df[(df[years_column] >= interval[0]) & (df[years_column] <= interval[1])]
+
+    years = data[years_column].unique()
+    years = list(years)
+
+    if method == "mean":
+        values = data.groupby(years_column)[target_column].mean()
+    elif method == "sum":
+        values = data.groupby(years_column)[target_column].sum()
+    elif method == "count":
+        values = data.groupby(years_column)[target_column].count()
+    
+    values = list(values)
+
+    result = {"Values": values,
+              "Years": years}
+
+    return ColumnDataSource(result)
