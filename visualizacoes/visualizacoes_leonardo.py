@@ -34,6 +34,10 @@ tooltips = [
 
 plot_1.title.text = "Correlação Entre Energia e Danceabilidade"
 
+# Posicionando o título do gráfico
+
+plot_1.title.align = "center"
+
 # Configurando as dimensões e o fundo da visualização
 
 plot_1.width = 600
@@ -97,6 +101,10 @@ plot_2.hbar(y = "Track", right = "Curtidas", height=0.7, source = to_cds,
 
 plot_2.title.text = "As 10 músicas com mais curtidas no YouTube (em milhões)"
 
+# Posicionando o título do gráfico
+
+plot_2.title.align = "left"
+
 # Configurando as dimensões e o fundo das visualizações
 
 plot_2.width = 600
@@ -148,6 +156,10 @@ plot_3.line(x = "release_date", y = "Curtidas", source = to_cds, line_width=2)
 # Nomeando o gráfico
 
 plot_3.title.text = "Média de curtidas (em milhões)"
+
+# Posicionando o título do gráfico
+
+plot_3.title.align = "center"
 
 # Configurando as dimensões e o fundo das visualizações
 
