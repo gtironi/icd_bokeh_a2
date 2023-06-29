@@ -1,0 +1,5 @@
+Gráfico 1:
+
+Scatter plot Liveness X Energy
+
+Gráfico de distribuição das variáveis Liveness e Energy. Olhando a base de dados no Kaggle foi dito que as músicas com valores de Liveness superiores a 0.8 são, muito provavelmente, 
