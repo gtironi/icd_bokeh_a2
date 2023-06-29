@@ -94,7 +94,7 @@ plot_2.line(x = "release_date", y = "Duration_s", source = data_source_2, line_w
 plot_2.background_fill_color = (243, 235, 34, 0.2) # Definindo cor de fundo do gráfico
 
 # Definindo o Título
-plot_2.title.text = "Duration of Music in Time"
+plot_2.title.text = "Music Duration in Time"
 plot_2.title.text_color = "Black"
 plot_2.title.text_font = "fantasy"
 plot_2.title.text_font_size = "30px"
@@ -131,7 +131,7 @@ stream_by_artist = pd.DataFrame(data.groupby(["Artist"])["Stream"].mean().sort_v
 
 data_source_3 = ColumnDataSource(stream_by_artist) # Transformando em ColumnDataSource
 
-plot_3 = figure(y_range=stream_by_artist.index.tolist(), height=600, width=600, title="Top 30 Artistas Mais Ouvidos") # Criando a figura do gráfico 3
+plot_3 = figure(y_range=stream_by_artist.index.tolist(), height=600, width=600) # Criando a figura do gráfico 3
 
 plot_3.hbar(y='Artist', right='Stream', height=0.8, source=data_source_3) # Criando o horizontal bar plot com os dados co ColumnDataSource
 
