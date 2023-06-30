@@ -6,7 +6,7 @@ from bokeh.models import Select, Button, TextInput, Div, RangeTool, BoxAnnotatio
 from bokeh.models import NumeralTickFormatter, HoverTool, Label
 from bokeh.transform import dodge
 import read_data
-import temporary
+import plot_style
 
 # output_file("testando.html")
 
@@ -63,7 +63,7 @@ filter_plot.xgrid.grid_line_color = None
 filter_plot.yaxis.ticker = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
 
 # Iremos carregar o tema pré definido de rótulos e cor de fundo.
-filter_plot = temporary.figure_text_generator_sillas(filter_plot)
+filter_plot = plot_style.figure_text_generator_sillas(filter_plot)
 
 # Alteraremos o formato do eixo Y para exibir porcentagem, como todas as categorias
 # vão de 0 à 1, é possível computar seus valores como porcentagens.
@@ -200,7 +200,7 @@ density_plot.xgrid.grid_line_color = None
 density_plot.ygrid.grid_line_color = None
 
 # Utilizaremos o tema pré definido.
-density_plot = temporary.figure_text_generator_sillas(density_plot)
+density_plot = plot_style.figure_text_generator_sillas(density_plot)
 
 # Alteraremos o formato dos eixos, o eixo x novamente irá de 0 à 1 pois é uma das categorias,
 # entretanto o eixo Y chega à escala de bilhões.
@@ -294,7 +294,7 @@ years_plot = figure(title = "Crescimento da Popularidade média das músicas por
                     x_range = [2001, 2021], y_range = [0, 100],
                     x_axis_label = "Anos", y_axis_label = "Popularidade Média",)
 # Adicionaremos o tema pré definido à figura.
-years_plot = temporary.figure_text_generator_sillas(years_plot)
+years_plot = plot_style.figure_text_generator_sillas(years_plot)
 # Removeremos o grid do eixo X para uma análise temporal.
 years_plot.xgrid.grid_line_color = None
 # Adicionaremos os intervalos do eixo Y.
