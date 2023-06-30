@@ -3,9 +3,9 @@
 # Importando os módulos utilizados
 import pandas as pd
 from bokeh.plotting import figure
-#from bokeh.io import show
+from bokeh.io import show
 from bokeh.models.annotations import BoxAnnotation
-from bokeh.models import HoverTool, ColumnDataSource, Label, RangeTool
+from bokeh.models import HoverTool, ColumnDataSource, Label, RangeTool, LabelSet
 from bokeh.layouts import column, row
 
 
@@ -145,6 +145,10 @@ stream_by_artist = pd.DataFrame(data.groupby(["Artist"])["Stream"].mean().sort_v
                                                                                                   # ordenando da menor para a maior nº de streams e deixando
                                                                                                   # somente as últimas 30 linhas do data frame.
 
+stream_by_artist["stream_label"]= stream_by_artist["Stream"]/1000000000 # Criando coluna para as labels nas barras
+stream_by_artist["stream_label"] = stream_by_artist["stream_label"].round(2).astype(str) # Deixando com somente duas casas deciamais
+stream_by_artist["stream_label"] = stream_by_artist["stream_label"] + " bi"  # Adicionando "bi" na frente do número
+
 data_source_3 = ColumnDataSource(stream_by_artist) # Transformando em ColumnDataSource
 
 plot_3 = figure(y_range=stream_by_artist.index.tolist(), height=600, width=600, tools = "") # Criando a figura do gráfico 3
@@ -184,4 +188,12 @@ tooltips = [                       # Definindo as informações das músicas que
     ]
 plot_3.add_tools(HoverTool(tooltips=tooltips))
 
-layout = column(row(plot_1, plot_2), plot_3)
+labels = LabelSet(x="Stream", y="Artist", text="stream_label", x_offset=-50, y_offset=-7, source=data_source_3,  # Adicionando legenda nas barras
+                  level = "glyph", text_font_size="10pt", text_font = "Arial Black", text_font_style = "bold")
+plot_3.add_layout(labels)
+
+############################################################################################
+
+layout = column(row(plot_1, plot_2), plot_3) # Definindo layout
+
+show(layout)
