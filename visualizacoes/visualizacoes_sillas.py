@@ -5,8 +5,8 @@ from bokeh.layouts import column, row
 from bokeh.models import Select, Button, TextInput, Div, RangeTool, BoxAnnotation
 from bokeh.models import NumeralTickFormatter, HoverTool, Label
 from bokeh.transform import dodge
-import read_data
-import plot_style
+from . import read_data
+from . import plot_style
 
 # output_file("testando.html")
 
@@ -462,27 +462,29 @@ def gera_explicacoes_sillas():
     
     return row(column(scatter), column(colunas, linhas))
 
+# Função para gerar o layout final da página
+def gera_layout_sillas(path):
+    # Chamaremos as plotagens
+    plot_músicas = gera_plot_categorias_sillas(path)
+    plot_densidade = gera_plot_densidade_sillas(path)
+    plot_anos = gera_plot_anos_sillas(path)
 
-gráfico_músicas = gera_plot_categorias_sillas("visualizacoes/data/spotify_youtube_year.csv")
-gráfico_densidade = gera_plot_densidade_sillas("visualizacoes/data/spotify_youtube_year.csv")
-gráfico_anos = gera_plot_anos_sillas("visualizacoes/data/spotify_youtube_year.csv")
+    # Seus filtros
+    filtro_musicas = gera_filtros_música(path, plot_músicas, plot_densidade)
+    filtro_categorias = gera_filtros_categorias(path, plot_músicas, plot_densidade)
+    # Juntaremos algumas coisas
+    music_layout = column(row(filtro_musicas),
+                row(Div(text = "<br><br><br><br>")),
+                row(filtro_categorias))
+    
+    # As explicações
+    explicacoes = gera_explicacoes_sillas()
 
-filtro_musicas = gera_filtros_música("visualizacoes/data/spotify_youtube_year.csv", gráfico_músicas,
-                                     gráfico_densidade)
+    # Por fim, juntaremos as filtros, os filtros e as explicações ao layout final.
+    layout = column(row(music_layout, plot_músicas),
+                    row(plot_densidade, plot_anos),
+                    row(explicacoes))
+    
+    return layout
 
-filtro_categorias = gera_filtros_categorias("visualizacoes/data/spotify_youtube_year.csv", gráfico_músicas,
-                                     gráfico_densidade)
-
-explicacoes = gera_explicacoes_sillas()
-
-p1 = column(row(filtro_musicas),
-            row(Div(text = "<br><br><br><br>")),
-            row(filtro_categorias))
-
-
-# Iremos juntar as figuras e os filtros ao layout final.
-layout = column(row(p1, gráfico_músicas),
-                row(gráfico_densidade, gráfico_anos),
-                row(explicacoes))
-
-curdoc().add_root(layout)
+# curdoc().add_root(layout)

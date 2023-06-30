@@ -5,8 +5,8 @@ from bokeh.layouts import column, row
 from bokeh.models import Div, RangeTool, BoxAnnotation
 from bokeh.models import NumeralTickFormatter, HoverTool, Label
 from bokeh.transform import dodge
-import read_data
-import plot_style
+from . import read_data
+from . import plot_style
 
 ### A similaridade entre o nome das variáveis das funções se deve ao fato de que
 ### elas devem ser utilizadas em conjunto.
@@ -317,17 +317,19 @@ A energia é um traço da música que varia de 0 à 1, e por isso foi medida em 
     
     return row(column(scatter), column(colunas, linhas))
 
+# Agora juntaremos tudo ao layout.
+def gera_layout_estatico_sillas(path):
+    # primeiro geraremos as plotagens e o player.
+    gráfico_músicas = gera_plot_categorias_sillas(path)
+    gráfico_densidade = gera_plot_densidade_sillas(path)
+    gráfico_anos = gera_plot_anos_sillas(path)
+    palyer = gera_spotify_player(path)
+    # E então as explicações.
+    explicacoes = gera_explicacoes_sillas()
 
-
-gráfico_músicas = gera_plot_categorias_sillas("visualizacoes/data/spotify_youtube_year.csv")
-gráfico_densidade = gera_plot_densidade_sillas("visualizacoes/data/spotify_youtube_year.csv")
-gráfico_anos = gera_plot_anos_sillas("visualizacoes/data/spotify_youtube_year.csv")
-palyer = gera_spotify_player("visualizacoes/data/spotify_youtube_year.csv")
-explicacoes = gera_explicacoes_sillas()
-
-
-layout = column(row(palyer, gráfico_músicas),
-                row(gráfico_densidade, gráfico_anos),
-                row(explicacoes))
-
-show(layout)
+    # Por fim criamos o layout
+    layout = column(row(palyer, gráfico_músicas),
+                    row(gráfico_densidade, gráfico_anos),
+                    row(explicacoes))
+    # E o retornamos:
+    return layout
