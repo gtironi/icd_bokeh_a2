@@ -2,9 +2,9 @@
 import pandas as pd
 import numpy as np
 
-from plot_style import figure_generator_gustavo
-from generic_plot import boxplot
-from read_data import columndatasource_plot1_gustavo, columndatasource_plot2_gustavo, columndatasource_plot3_gustavo
+from .plot_style import figure_generator_gustavo
+from .generic_plot import boxplot
+from .read_data import columndatasource_plot1_gustavo, columndatasource_plot2_gustavo, columndatasource_plot3_gustavo
 
 from bokeh.layouts import column, row
 from bokeh.models import RangeTool, Div

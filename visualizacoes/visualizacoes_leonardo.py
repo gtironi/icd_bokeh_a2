@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-import read_data
+from . import read_data
 from bokeh.plotting import figure, curdoc
 from bokeh.io import output_file, save, show
 from bokeh.models import HoverTool, ColumnDataSource, Div

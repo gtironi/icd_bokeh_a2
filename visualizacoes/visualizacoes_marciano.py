@@ -6,7 +6,7 @@ from bokeh.io import show
 from bokeh.models.annotations import BoxAnnotation
 from bokeh.models import HoverTool, Label, RangeTool, LabelSet, Div
 from bokeh.layouts import column, row
-import read_data
+from . import read_data
 
 
 ########################################################################################################################
