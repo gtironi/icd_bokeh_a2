@@ -2,22 +2,21 @@
 import pandas as pd
 import numpy as np
 
-from .plot_style import figure_generator_gustavo
-from .generic_plot import boxplot
-from .read_data import columndatasource_plot1_gustavo, columndatasource_plot2_gustavo, columndatasource_plot3_gustavo
+from . import plot_style 
+from . import generic_plot
+from . import read_data 
 
 from bokeh.layouts import column, row
 from bokeh.models import RangeTool, Div
-from bokeh.plotting import figure, show
-
-df = pd.read_csv('visualizacoes/data/spotify_youtube_year.csv') #lê o csv
+from bokeh.plotting import figure
 
 # Plot 1 (lineplot)
 
-source = columndatasource_plot1_gustavo('visualizacoes/data/spotify_youtube_year.csv')
+def plot_1_gustavo(datapath):
 
-def plot_1_gustavo(datasource):
-    plot_1 = figure_generator_gustavo(figure(height=350, width=890, tools="xpan", toolbar_location=None, 
+    datasource = read_data.columndatasource_plot1_gustavo(datapath)
+    
+    plot_1 = plot_style.figure_generator_gustavo(figure(height=350, width=890, tools="xpan", toolbar_location=None, 
                                              x_axis_type="datetime", x_axis_location="above", 
                                              x_range=(np.datetime64('1970-01-01'), np.datetime64('2020-01-01'))))
 
@@ -30,7 +29,7 @@ def plot_1_gustavo(datasource):
 
     plot_1.line('year', 'Key', source=source)
 
-    barra_de_rolagem = figure_generator_gustavo(figure(height=230, width=890, y_range = plot_1.y_range,
+    barra_de_rolagem = plot_style.figure_generator_gustavo(figure(height=230, width=890, y_range = plot_1.y_range,
                                                        x_axis_type="datetime", y_axis_type=None, tools="", toolbar_location=None))
     
     barra_de_rolagem.title.text_font_size = '16px'
@@ -48,13 +47,11 @@ def plot_1_gustavo(datasource):
 
     return column(plot_1, barra_de_rolagem)
 
-p1 = plot_1_gustavo(source)
-
 # Plot 2 (scatterplot)
 
-source1 = columndatasource_plot2_gustavo('visualizacoes/data/spotify_youtube_year.csv')
+def plot_2_gustavo(datapath, column):
 
-def plot_2_gustavo(datasource, column):
+    datasource = read_data.columndatasource_plot2_gustavo(datapath)
 
     tooltips = [
     ("Nome", "@Track"),
@@ -62,7 +59,7 @@ def plot_2_gustavo(datasource, column):
     ("Views", "@Views"),
     ("URL", "@Url_youtube"),]
 
-    plot_2 = figure_generator_gustavo(figure(height=480, width=690, toolbar_location=None,
+    plot_2 = plot_style.figure_generator_gustavo(figure(height=480, width=690, toolbar_location=None,
                                              tools="hover", tooltips=tooltips))
 
     plot_2.circle(column, 'Views', size=8, source=datasource)
@@ -76,11 +73,13 @@ p2 = plot_2_gustavo(source1, 'Acousticness')
 
 # Plot 3 (boxplot)
 
-df = columndatasource_plot3_gustavo('visualizacoes/data/spotify_youtube_year.csv')
+df = read_data.columndatasource_plot3_gustavo('visualizacoes/data/spotify_youtube_year.csv')
 
-def plot_3_gustavo(dataframe):
+def plot_3_gustavo(datapath):
 
-    plot_3 = boxplot(dataframe, 'official_video', 'popularity')
+    dataframe = columndatasource_plot3_gustavo(datapath)
+
+    plot_3 = generic_plot.boxplot(dataframe, 'official_video', 'popularity')
 
     plot_3.yaxis.axis_label = 'Popularidade'
     plot_3.title.text = 'Boxplot - Oficial Vídeo'
@@ -89,11 +88,11 @@ def plot_3_gustavo(dataframe):
 
 p3 = plot_3_gustavo(df)
 
-def cria_layout_gustavo():
-    
-    plot_1 = plot_1_gustavo(source)
-    plot_2 = plot_2_gustavo(source1, 'Acousticness')
-    plot_3 = plot_3_gustavo(df)
+def cria_layout_gustavo(datapath):
+
+    plot_1 = plot_1_gustavo(datapath)
+    plot_2 = plot_2_gustavo(datapath, 'Acousticness')
+    plot_3 = plot_3_gustavo(datapath)
 
     text1 = Div(text=""" <h2>Gráfico de linha</h2>
     <p>Ao lado, foi plotado um gráfico de linha, o qual demonstra a quantidade de músicas, no dataset, lançadas por ano.<br>
