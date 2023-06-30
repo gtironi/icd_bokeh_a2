@@ -97,7 +97,9 @@ def csv_get_top_names(path, names_column, sort_column, num = 10):
     Lê o arquivo .csv, o transforma em um data frame e remove
     os nomes repetidos da coluna de nomes selecionada, depois
     ordena os valores a partir da coluna de ordenação e retorna
-    uma lista com a quantidade definida dos primeiros nomes.
+    uma lista com a quantidade definida dos primeiros nomes, se
+    apenas um nome for selecionado, retorna apenas a string
+    do primeiro valor.
 
     Parâmetros
         ----------
@@ -131,6 +133,9 @@ def csv_get_top_names(path, names_column, sort_column, num = 10):
     for each_name in sorted_df[names_column]:
         names.append(each_name)
     names.reverse()
+
+    if num == 1:
+        names = names[0]
 
     return names
 
