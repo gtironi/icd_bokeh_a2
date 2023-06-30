@@ -391,3 +391,19 @@ def get_statistic_by_year(path, years_column, target_column, interval = [1960, 2
               "Years": years}
 
     return ColumnDataSource(result)
+
+def columndatasource_plot1_gustavo(datapath):
+
+    df = pd.read_csv(datapath) #lê o csv
+
+    df.rename(columns={'release_date': 'year'}, inplace=True) #renomeia a coluna, para melhor legibilidade do código.
+
+    df['year'] = pd.to_datetime(df['year'], format='%Y') #transforma a o interio yyyy (ex: 2020), em datetime.
+
+    df.drop_duplicates('Track', inplace= True) #retira as musicas duplicadas
+
+    df_by_year = df.groupby('year').count() #agrupa por ano e conta a quantidade de musicas em cada ano
+
+    columndatasource = ColumnDataSource(df_by_year) #transforma o dataframe em ColumnDataSource
+
+    return columndatasource
