@@ -407,3 +407,17 @@ def columndatasource_plot1_gustavo(datapath):
     columndatasource = ColumnDataSource(df_by_year) #transforma o dataframe em ColumnDataSource
 
     return columndatasource
+
+def columndatasource_plot2_gustavo(datapath):
+
+    df = pd.read_csv(datapath) #lê o csv
+
+    df_views_por_track = df.sort_values(by = 'Views', ascending=False).drop_duplicates('Track') #organiza os dados em ordem decresente na coluna 'Views'. Também retira as míúsicas duplicadas
+
+    df_100_mais_vistos_completo = (df_views_por_track).head(100) #cria um dataframe contendo apenas as 100 musicas com mais views
+
+    df_100_mais_vistos_completo.loc[:, 'Views'] = df_100_mais_vistos_completo['Views']/1000000 #divide o valor de 'Views' por 1M, para ter o valor em milhoes de views
+
+    columndatasource = ColumnDataSource(df_100_mais_vistos_completo) #transforma o dataframe em ColumnDataSource
+
+    return columndatasource
