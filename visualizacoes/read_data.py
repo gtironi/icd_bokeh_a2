@@ -149,6 +149,8 @@ def csv_get_top_names(path, names_column, sort_column, num = 10):
 
     return names
 
+    return names
+
 def histogram_data(path, column, start = 0, end = 1, bins = 10, proportion_column = "",
                     base_proportion = 1):
     """Gera dados para criar um histograma a partir de um .csv
