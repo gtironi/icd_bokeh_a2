@@ -430,24 +430,24 @@ def gera_filtros_categorias(path, filter_plot, density_plot):
     return filter_category
 
 
-gráfico_músicas = gera_plot_categorias_sillas("visualizacoes/data/spotify_youtube_year.csv")
-gráfico_densidade = gera_plot_densidade_sillas("visualizacoes/data/spotify_youtube_year.csv")
-gráfico_anos = gera_plot_anos_sillas("visualizacoes/data/spotify_youtube_year.csv")
+# gráfico_músicas = gera_plot_categorias_sillas("visualizacoes/data/spotify_youtube_year.csv")
+# gráfico_densidade = gera_plot_densidade_sillas("visualizacoes/data/spotify_youtube_year.csv")
+# gráfico_anos = gera_plot_anos_sillas("visualizacoes/data/spotify_youtube_year.csv")
 
-filtro_musicas = gera_filtros_música("visualizacoes/data/spotify_youtube_year.csv", gráfico_músicas,
-                                     gráfico_densidade)
+# filtro_musicas = gera_filtros_música("visualizacoes/data/spotify_youtube_year.csv", gráfico_músicas,
+#                                      gráfico_densidade)
 
-filtro_categorias = gera_filtros_categorias("visualizacoes/data/spotify_youtube_year.csv", gráfico_músicas,
-                                     gráfico_densidade)
+# filtro_categorias = gera_filtros_categorias("visualizacoes/data/spotify_youtube_year.csv", gráfico_músicas,
+#                                      gráfico_densidade)
 
 
-p1 = column(row(filtro_musicas),
-            row(Div(text = "<br><br><br><br>")),
-            row(filtro_categorias))
+# p1 = column(row(filtro_musicas),
+#             row(Div(text = "<br><br><br><br>")),
+#             row(filtro_categorias))
 
 
 # Iremos juntar as figuras e os filtros ao layout final.
-layout = column(row(p1, gráfico_músicas),
-                row(gráfico_densidade, gráfico_anos))
+# layout = column(row(p1, gráfico_músicas),
+#                 row(gráfico_densidade, gráfico_anos))
 
-curdoc().add_root(layout)
+# curdoc().add_root(layout)
