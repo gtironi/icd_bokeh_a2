@@ -109,7 +109,12 @@ Para sua execução, o dataset foi filtrado, sobrando apenas as 100 músicas com
 styles = {'text-align': 'center', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
 
 text3 = Div(text=""" <h2>Gráfico Boxplot</h2>
-
+<p>Acima, foi plotado um <b>boxplot</b>, da popularidade das músicas, conforme a existência de um videoclipe.<br>
+Esse gráfico demonstra a distribuição dos valores em cada categoria, bem como identifica os <b>outliers</b>. 
+Para sua execução, foi definida uma função - baseada na documentação do bokeh - que monta cada parte do boxplot
+individualmente. Essa função, calcula todos os valores necessários, e plota cada elemento do boxplot a partir disso.<br>
+Superficialmente, observando o boxplot, podemos dizer que há um indicativo de maior popularidade em
+músicas com videoclipe.
 """,
 styles = {'text-align': 'center', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
 
