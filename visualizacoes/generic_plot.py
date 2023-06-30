@@ -26,8 +26,9 @@ def boxplot(dataframe, eixo_x, eixo_y):
     source = ColumnDataSource(dataframe)
 
     # Cria a figura que será usada
-    boxplot = figure_generator_gustavo(figure(height=480, width=640, x_range=valores_x, tools="", toolbar_location=None,
+    boxplot = figure_generator_gustavo(figure(height=480, width=690, x_range=valores_x, tools="", toolbar_location=None,
             y_range = (dataframe[eixo_y].min(), dataframe[eixo_y].max())))
+    
 
     # Adicona as linhas do boxplot à figura
     whisker = Whisker(base=eixo_x, upper="upper", lower="lower", source=source)
