@@ -421,3 +421,11 @@ def columndatasource_plot2_gustavo(datapath):
     columndatasource = ColumnDataSource(df_100_mais_vistos_completo) #transforma o dataframe em ColumnDataSource
 
     return columndatasource
+
+def columndatasource_plot3_gustavo(datapath):
+
+    df = pd.read_csv(datapath) #lê o csv
+
+    df['official_video'] = df['official_video'].astype(str) #transforma os valores true e false (boleanos) da coluna, para o tipo string.
+
+    return df

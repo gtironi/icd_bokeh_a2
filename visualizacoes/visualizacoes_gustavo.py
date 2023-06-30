@@ -4,10 +4,10 @@ import numpy as np
 
 from plot_style import figure_generator_gustavo
 from generic_plot import boxplot
-from read_data import columndatasource_plot1_gustavo, columndatasource_plot2_gustavo
+from read_data import columndatasource_plot1_gustavo, columndatasource_plot2_gustavo, columndatasource_plot3_gustavo
 
 from bokeh.layouts import column, row
-from bokeh.models import ColumnDataSource, RangeTool
+from bokeh.models import RangeTool, Div
 from bokeh.plotting import figure, show
 
 df = pd.read_csv('visualizacoes/data/spotify_youtube_year.csv') #lê o csv
@@ -17,7 +17,7 @@ df = pd.read_csv('visualizacoes/data/spotify_youtube_year.csv') #lê o csv
 source = columndatasource_plot1_gustavo('visualizacoes/data/spotify_youtube_year.csv')
 
 def plot_1_gustavo(datasource):
-    plot_1 = figure_generator_gustavo(figure(height=350, width=640, tools="xpan", toolbar_location=None, 
+    plot_1 = figure_generator_gustavo(figure(height=350, width=840, tools="xpan", toolbar_location=None, 
                                              x_axis_type="datetime", x_axis_location="above", 
                                              x_range=(np.datetime64('1970-01-01'), np.datetime64('2020-01-01'))))
 
@@ -30,7 +30,7 @@ def plot_1_gustavo(datasource):
 
     plot_1.line('year', 'Key', source=source)
 
-    barra_de_rolagem = figure_generator_gustavo(figure(height=130, width=640, y_range = plot_1.y_range,
+    barra_de_rolagem = figure_generator_gustavo(figure(height=130, width=840, y_range = plot_1.y_range,
                                                        x_axis_type="datetime", y_axis_type=None, tools="", toolbar_location=None))
     
     barra_de_rolagem.title.text_font_size = '16px'
@@ -75,17 +75,11 @@ p2 = plot_2_gustavo(source1, 'Acousticness')
 
 # Plot 3 (boxplot)
 
-def columndatasource_plot3_gustavo(datapath):
-
-    df = pd.read_csv(datapath) #lê o csv
-
-df = df[['official_video', 'popularity']].rename(columns= {'popularity': 'Likes'})
-
-df['official_video'] = df['official_video'].astype(str)
+df = columndatasource_plot3_gustavo('visualizacoes/data/spotify_youtube_year.csv')
 
 def plot_3_gustavo(dataframe):
 
-    plot_3 = boxplot(dataframe, 'official_video', 'Likes')
+    plot_3 = boxplot(dataframe, 'official_video', 'popularity')
 
     plot_3.yaxis.axis_label = 'Popularidade'
 
@@ -93,6 +87,18 @@ def plot_3_gustavo(dataframe):
 
 p3 = plot_3_gustavo(df)
 
-select_layout = column(p1, row(p2, p3))
+text1 = Div(text=""" text 1
+
+""")
+
+text2 = Div(text=""" text 2
+
+""")
+
+text3 = Div(text=""" text 3
+
+""")
+
+select_layout = column(row(p1, text1), row(column(p2, text2), column(p2, text3)))
 
 show(select_layout)
