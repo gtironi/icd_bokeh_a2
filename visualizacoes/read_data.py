@@ -203,17 +203,17 @@ def histogram_data(path, column, start = 0, end = 1, bins = 10, proportion_colum
     return ColumnDataSource(values)
 
 
-def column_as_size(path, column, parameter):
-    """Gera um objeto ColumnDataSource a partir de um arquivo .csv
+def column_as_size(dataframe, column, parameter):
+    """Gera um data frame do pandas a partir de um arquivo .csv
 
     Lê o arquivo .csv, o transforma em um data frame do pandas, e cria uma nova
     coluna chamada "size" a partir de uma coluna e do parâmetro selecionados. Atribui
     à coluna "size" os valores da coluna indicada divididos pelo parâmetro. E retorna
-    um ColumDataSource desse data frame.
+    o data frame.
 
     Parametros  
         ----------
-        path : str, path object or file-like object
+        dataframe : pandas.DataFrame
             Deve indicar o local onde está armazenado o .csv a ser lido. 
             Deve conter exatamente um valor.
         column : str
@@ -226,18 +226,14 @@ def column_as_size(path, column, parameter):
 
         Retorna
         -------
-        data_source
-            Retorna o ColumnDataSource gerado a partir do data frame
-            com a nova coluna.
+        df
+            Retorna o data frame com a nova coluna.
     """
+    
+    if 'size' not in dataframe.columns:
+        dataframe["size"] = dataframe[column] / parameter
 
-    df = pd.read_csv(path)
-
-    if 'size' not in df.columns:
-        df["size"] = df[column] / parameter
-        data_source = ColumnDataSource(df)
-
-        return data_source
+        return dataframe
 
 
 def csv_filter_by_name_to_cds(path, filter_column, value, lowercase = False):
