@@ -7,6 +7,7 @@ from bokeh.io import show
 from bokeh.models.annotations import BoxAnnotation
 from bokeh.models import HoverTool, ColumnDataSource, Label, RangeTool, LabelSet
 from bokeh.layouts import column, row
+import read_data
 
 
 ########################################################################################################################
@@ -15,25 +16,14 @@ data = pd.read_csv("visualizacoes/data/spotify_youtube_year.csv") # Lendo o .csv
 
 ########################################################################################################################
 # Primeiro gráfico: Scatter plot Liveness X Energy #
-
-
-color = [] # Criando lista vazia para posteriormente tranformar em coluna que define a cor dos glifos.
-
-for each_float in data["Liveness"]: # Loop para percorrer a coluna Liveness, e dependendo se o valor é maior que 0.8 é
-     if each_float >= 0.8:          # maior ou menor que 0.8, adiciona a palavra Blue ou Gray na lista vazia criada acima.
-         color.append("Blue")
-     else:
-         color.append("Gray")
-
-data["color"] = color # Criando a coluna que irá definir a cor dos glifos baseada na lista criada acima
+data_source_1 = read_data.marciano_plot1_data("visualizacoes/data/spotify_youtube_year.csv") # Função para gerar os dad
 
 plot_1 = figure(width=600, height = 600, tools = "box_zoom, pan, reset, save, wheel_zoom") # Criando a figura do gráfico 2
 
-data_source_1 = ColumnDataSource(data) # Tranforma o data frame em ColumDataSource
-
 plot_1.circle(x = "Liveness", y = "Energy", source = data_source_1, color = "color", alpha = 0.4, size = 8) #Criando scatter plot com os dados do data_source_1
 
-plot_1.background_fill_color = (243, 235, 34, 0.2) # Definindo cor de fundo do gráfico
+plot_1.background_fill_color = "Yellow" # Definindo cor de fundo do gráfico
+plot_1.background_fill_alpha = 0.1 # Definindo transparência do fundo do gráfico
 
 # Definindo o Título
 plot_1.title.text = "Liveness X Energy"
@@ -91,7 +81,8 @@ data_source_2 = ColumnDataSource(data_by_year_filtered) # Transformando em Colum
 
 plot_2.line(x = "release_date", y = "Duration_s", source = data_source_2, line_width=2) # Criando o line plot com os dados do ColumnDataSource
 
-plot_2.background_fill_color = (243, 235, 34, 0.2) # Definindo cor de fundo do gráfico
+plot_2.background_fill_color = "Yellow" # Definindo cor de fundo do gráfico
+plot_2.background_fill_alpha = 0.1 # Definindo transparência do fundo do gráfico
 
 # Definindo o Título
 plot_2.title.text = "Music Duration in Time"
@@ -123,7 +114,8 @@ select_years = figure(title = "Arraste para selecionar os anos observados",  # C
                     y_axis_type = None,
                     tools = "", toolbar_location = None)
 
-select_years.background_fill_color = (243, 235, 34, 0.2)  # Definindo cor de fundo do gráfico da barra de rolagem
+select_years.background_fill_color = "Yellow" # Definindo cor de fundo do gráfico
+select_years.background_fill_alpha = 0.1  # Definindo transparência do fundo do gráfico
 
 select_years_tool = RangeTool(x_range = plot_2.x_range)   # Definindo o range da ferramenta de rolagem
 select_years_tool.overlay.fill_color = "Blue"  # Cor da barra de rolagem
@@ -155,7 +147,8 @@ plot_3 = figure(y_range=stream_by_artist.index.tolist(), height=600, width=600, 
 
 plot_3.hbar(y='Artist', right='Stream', height=0.8, source=data_source_3) # Criando o horizontal bar plot com os dados co ColumnDataSource
 
-plot_3.background_fill_color = (243, 235, 34, 0.2) # Definindo cor de fundo do gráfico
+plot_3.background_fill_color = "Yellow" # Definindo cor de fundo do gráfico
+plot_3.background_fill_alpha = 0.1 # Definindo transparência do fundo do gráfico
 
 # Definindo o Título
 plot_3.title.text = "Top 30 Artists Streams"
@@ -189,7 +182,7 @@ tooltips = [                       # Definindo as informações das músicas que
 plot_3.add_tools(HoverTool(tooltips=tooltips))
 
 labels = LabelSet(x="Stream", y="Artist", text="stream_label", x_offset=-50, y_offset=-7, source=data_source_3,  # Adicionando legenda nas barras
-                  level = "glyph", text_font_size="10pt", text_font = "Arial Black", text_font_style = "bold")
+                  level = "glyph", text_font_size="10pt", text_font = "Arial Black", text_font_style = "bold", text_color = "#DEF8F9")
 plot_3.add_layout(labels)
 
 ############################################################################################

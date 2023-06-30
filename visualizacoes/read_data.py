@@ -320,3 +320,20 @@ def get_column_observations(path, column, sort_column = "", lowercase = False):
             values.append(value.lower())
 
     return values
+
+def marciano_plot1_data(path):
+    data = pd.read_csv(path) # Lendo o .csv como um data frame do pandas
+
+    color = [] # Criando lista vazia para posteriormente tranformar em coluna que define a cor dos glifos.
+
+    for each_float in data["Liveness"]: # Loop para percorrer a coluna Liveness, e dependendo se o valor é maior que 0.8 é
+        if each_float >= 0.8:          # maior ou menor que 0.8, adiciona a palavra Blue ou Gray na lista vazia criada acima.
+            color.append("Blue")
+        else:
+            color.append("Gray")
+
+    data["color"] = color # Criando a coluna que irá definir a cor dos glifos baseada na lista criada acima
+
+    data_source_1 = ColumnDataSource(data) # Tranforma o data frame em ColumDataSource
+
+    return(data_source_1)
