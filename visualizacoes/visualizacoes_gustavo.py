@@ -1,8 +1,10 @@
 # Arquivo para os códigos das  visualizacoes
 import pandas as pd
 import numpy as np
+
 from temporary import figure_generator_gustavo
 from generic_plot import boxplot
+from read_data import columndatasource_plot1_gustavo
 
 from bokeh.layouts import column, row
 from bokeh.io import curdoc
@@ -14,15 +16,7 @@ df = pd.read_csv('visualizacoes/data/spotify_youtube_year.csv') #lê o csv
 
 # Plot 1 (lineplot)
 
-df.rename(columns={'release_date': 'year'}, inplace=True) #renomeia a coluna, para melhor legibilidade do código.
-
-df['year'] = pd.to_datetime(df['year'], format='%Y') #transforma a o interio yyyy (ex: 2020), em datetime.
-
-df.drop_duplicates('Track', inplace= True) #retira as musicas duplicadas
-
-df_by_year = df.groupby('year').count() #agrupa por ano e conta a quantidade de musicas em cada ano
-
-source = ColumnDataSource(df_by_year) #transforma o .csv em ColumnDataSource
+source = columndatasource_plot1_gustavo('visualizacoes/data/spotify_youtube_year.csv')
 
 def plot_1_gustavo(datasource):
     plot_1 = figure_generator_gustavo(figure(height=350, width=640, tools="xpan", toolbar_location=None, 
