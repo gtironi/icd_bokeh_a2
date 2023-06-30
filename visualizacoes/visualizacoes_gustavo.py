@@ -4,13 +4,11 @@ import numpy as np
 
 from temporary import figure_generator_gustavo
 from generic_plot import boxplot
-from read_data import columndatasource_plot1_gustavo
+from read_data import columndatasource_plot1_gustavo, columndatasource_plot2_gustavo
 
 from bokeh.layouts import column, row
-from bokeh.io import curdoc
-from bokeh.models import ColumnDataSource, RangeTool, Whisker, PanTool
+from bokeh.models import ColumnDataSource, RangeTool
 from bokeh.plotting import figure, show
-from bokeh.transform import factor_cmap
 
 df = pd.read_csv('visualizacoes/data/spotify_youtube_year.csv') #lê o csv
 
@@ -53,13 +51,7 @@ p1 = plot_1_gustavo(source)
 
 # Plot 2 (scatterplot)
 
-df_views_por_track = df.sort_values(by = 'Views', ascending=False).drop_duplicates('Track')
-
-df_100_mais_vistos_completo = (df_views_por_track).head(100)
-
-df_100_mais_vistos_completo.loc[:, 'Views'] = df_100_mais_vistos_completo['Views']/1000000
-
-source1 = ColumnDataSource(df_100_mais_vistos_completo)
+source1 = columndatasource_plot2_gustavo('visualizacoes/data/spotify_youtube_year.csv')
 
 def plot_2_gustavo(datasource, column):
 
@@ -82,6 +74,10 @@ def plot_2_gustavo(datasource, column):
 p2 = plot_2_gustavo(source1, 'Acousticness')
 
 # Plot 3 (boxplot)
+
+def columndatasource_plot3_gustavo(datapath):
+
+    df = pd.read_csv(datapath) #lê o csv
 
 df = df[['official_video', 'popularity']].rename(columns= {'popularity': 'Likes'})
 
