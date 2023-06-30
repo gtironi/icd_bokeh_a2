@@ -289,12 +289,45 @@ def gera_spotify_player(path):
     return column(row(spotify_player_top_listened), row(spotify_player_top_popular))
 
 
+def gera_explicacoes_sillas():
+    colunas = Div(text = """<h2>Gráfico de colunas com categorias</h2>
+    <p>O primeiro gráfico é composto pela comparação entre as categorias Danceability, Energy, Valence, Speechiness, Acousticness.<br>
+    Todas as músicas possuem essas características, geradas automaticamente pelo spotify, o objetivo deste gráfico é, 
+    fazer uma comparação entre a música mais ouvida, Bliding Lights, com a música mais popular Peaches. Como o intuito é uma comparação, foi utilizado um gráfico de colunas lado a lado, e 
+    como todas as categorias vão de 0 à 1, é razoável medí-las em porcentagem, 
+    a paleta se mantém a mesma, com várias inspirações na do spotify..</p>""",
+            style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+    scatter = Div(text = """<h2>Gráfico de scatter plot com histograma</h2>
+    <p>O segundo gráfico é composto pela correlação entre o nível de energia da música e o número de vezes ouvidas
+    no spotify por músicas. <br> 
+A energia é um traço da música que varia de 0 à 1, e por isso foi medida em porcetagem, já a quantidade de vezes que a música foi escutada está na escala de bilhões, e por isso,
+    é possível ver como a distribuição da grande quantidade de músicas na base de dados não é uniforme, por isso foi gerado
+    um histograma no fundo com baixa opacidade para ajudar a estimar a densidade das músicas, a anotação se deve ao fato de que músicas que foram escutadas diversas vezes possuem níveis de energia mais elevados,
+        a paleta não só deste como dos outros gráficos busca trazer um verde referente ao Spotify e um roxo
+        que se destaca em conjunto com o verde,</p>""",
+                style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+
+    linhas = Div(text = """<h2>Gráfico de linhas</h2>
+    <p>O terceira gráfico busca exibir a o crescimento da popularidade médias das músicas lançadas
+    por ano, por isso há a escolha do gráfico de linhas para representar esta passagem de tempo,
+    além disso uma anotação de destaque foi feita para exibir o aumento da popularidade média
+    das músicas a partir do ano de 2017, uma ferramenta de destaque para esta plotagem é a de
+    deslizamento, que permite percorrer a linha temporal de maneira dinâmica.</p>""",
+                style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+    
+    return row(column(scatter), column(colunas, linhas))
+
+
+
 gráfico_músicas = gera_plot_categorias_sillas("visualizacoes/data/spotify_youtube_year.csv")
 gráfico_densidade = gera_plot_densidade_sillas("visualizacoes/data/spotify_youtube_year.csv")
 gráfico_anos = gera_plot_anos_sillas("visualizacoes/data/spotify_youtube_year.csv")
 palyer = gera_spotify_player("visualizacoes/data/spotify_youtube_year.csv")
+explicacoes = gera_explicacoes_sillas()
+
 
 layout = column(row(palyer, gráfico_músicas),
-                row(gráfico_densidade, gráfico_anos))
+                row(gráfico_densidade, gráfico_anos),
+                row(explicacoes))
 
 show(layout)
