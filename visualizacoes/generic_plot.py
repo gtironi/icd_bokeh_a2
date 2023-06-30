@@ -1,5 +1,5 @@
 import pandas as pd
-from plot_style import figure_generator_gustavo
+from .plot_style import figure_generator_gustavo
 
 from bokeh.models import ColumnDataSource, Whisker
 from bokeh.plotting import figure
