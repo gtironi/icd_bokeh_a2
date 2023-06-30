@@ -4,7 +4,7 @@
 import pandas as pd
 from bokeh.plotting import figure
 from bokeh.io import show
-from bokeh.models.annotations import BoxAnnotation
+from bokeh.models.annotations import BoxAnnotation, Span, Legend
 from bokeh.models import HoverTool, ColumnDataSource, Label, RangeTool, LabelSet
 from bokeh.layouts import column, row
 import read_data
@@ -12,7 +12,7 @@ import read_data
 
 ########################################################################################################################
 # Primeiro gráfico: Scatter plot Liveness X Energy #
-data_source_1 = read_data.marciano_plot1_data("visualizacoes/data/spotify_youtube_year.csv") # Função para gerar os dados do plot 1
+data_source_1 = read_data.columndatasource_plot1_marciano("visualizacoes/data/spotify_youtube_year.csv") # Função para gerar os dados do plot 1
 
 plot_1 = figure(width=600, height = 600, tools = "box_zoom, pan, reset, save, wheel_zoom") # Criando a figura do gráfico 2
 
@@ -40,12 +40,12 @@ plot_1.yaxis.axis_label_text_font = 'Arial Black' # Definindo fonte
 plot_1.yaxis.axis_label_text_font_size = '18px' # Definindo tamanho da letra
 plot_1.yaxis.axis_label_text_color = 'Black' # Definindo cor da letra
 
-box_annotation = BoxAnnotation(left=0.8, right=1, fill_color = "Blue", fill_alpha = 0.15) # Criando retângulo e adicionando ao gráfico
-plot_1.add_layout(box_annotation) 
+box_annotation_1 = BoxAnnotation(left=0.8, right=1, fill_color = "Blue", fill_alpha = 0.15) # Criando retângulo e adicionando ao gráfico
+plot_1.add_layout(box_annotation_1) 
 
-annotation = Label(x=0.775, y=0.1, text="Músicas ao vivo", text_font_size="10pt",text_font = "Arial Black"   # Criando uma anotação do gráfico
+annotation_1 = Label(x=0.775, y=0.1, text="Músicas ao vivo", text_font_size="10pt",text_font = "Arial Black"   # Criando uma anotação do gráfico
                    , text_color="Blue", background_fill_alpha=0.0)                                 
-plot_1.add_layout(annotation)                                                                            # Adicionando anotação por cima do gráfico
+plot_1.add_layout(annotation_1)                                                                            # Adicionando anotação por cima do gráfico
 
 tooltips = [                       # Definindo as informações das músicas que aparecerão ao passar o mouse sobre os glifos
     ('Música', '@Track'),
@@ -56,7 +56,7 @@ plot_1.add_tools(HoverTool(tooltips=tooltips))
 
 ########################################################################################################################
 # Segundo gráfico: Duração das músicas X Anos #
-data_source_2 = read_data.marciano_plot2_data("visualizacoes/data/spotify_youtube_year.csv")  # Função para gerar os dados do plot 2
+data_source_2, mean_duration = read_data.columndatasource_plot2_marciano("visualizacoes/data/spotify_youtube_year.csv")  # Função para gerar os dados do plot 2
 
 plot_2 = figure(width=600, height = 600, x_range = [2006, 2021], tools = "box_zoom, pan, reset, save, wheel_zoom") # Criando a figura do gráfico 2
  
@@ -66,20 +66,20 @@ plot_2.background_fill_color = "Yellow" # Definindo cor de fundo do gráfico
 plot_2.background_fill_alpha = 0.1 # Definindo transparência do fundo do gráfico
 
 # Definindo o Título
-plot_2.title.text = "Music Duration in Time"
+plot_2.title.text = "Duração da música pelo tempo"
 plot_2.title.text_color = "Black"
 plot_2.title.text_font = "Arial Black"
 plot_2.title.text_font_size = "30px"
 plot_2.title.align = "center"
 
 # Legenda do eixo X
-plot_2.xaxis.axis_label = "Years" # Definindo texto
+plot_2.xaxis.axis_label = "Anos" # Definindo texto
 plot_2.xaxis.axis_label_text_font = 'Arial Black' # Definindo fonte
 plot_2.xaxis.axis_label_text_font_size = '18px' # Definindo tamanho da letra
 plot_2.xaxis.axis_label_text_color = 'Black' # Definindo cor da letra
 
 # Legenda do eixo Y
-plot_2.yaxis.axis_label = "Music Duration (segundos)" # Definindo texto
+plot_2.yaxis.axis_label = "Duração da música (segundos)" # Definindo texto
 plot_2.yaxis.axis_label_text_font = 'Arial Black' # Definindo fonte
 plot_2.yaxis.axis_label_text_font_size = '18px' # Definindo tamanho da letra
 plot_2.yaxis.axis_label_text_color = 'Black' # Definindo cor da letra
@@ -89,6 +89,15 @@ tooltips = [                       # Definindo as informações das músicas que
     ('Duração Média', '@Duration_s'),
     ]
 plot_2.add_tools(HoverTool(tooltips=tooltips))
+
+box_annotation_2 = BoxAnnotation(left=2018.5, right=2021.5,top = 212, bottom = 196, fill_color = "Red", fill_alpha = 0.15) # Criando retângulo e adicionando ao gráfico
+plot_2.add_layout(box_annotation_2)
+
+plot_2.line(x="release_date", y= mean_duration, source= data_source_2, line_width=3, line_color = "Red", legend_label="Duração média total")
+
+annotation_2 = Label(x=2014, y=198, text="Decaimento da duração\n média das músicas\n nesses 3 anos", text_font_size="10pt",text_font = "Arial Black"   # Criando uma anotação do gráfico
+                   , text_color="Red", background_fill_alpha=0.0)                                 
+plot_2.add_layout(annotation_2)  
 
 select_years = figure(title = "Arraste para selecionar os anos observados",  # Criando a figura da barra de rolagem para selecionar os anos
                     height = 130, width = 600, y_range = plot_2.y_range,     # Definindo o tamanho da figura, o range Y e tirando a toolbar
@@ -112,7 +121,7 @@ plot_2 = column(plot_2,select_years)
 
 # Terceiro gráfico: Top 30 artistas #
 
-data_source_3, lista_30_artistas = read_data.marciano_plot3_data("visualizacoes/data/spotify_youtube_year.csv")  # Função para gerar os dados do plot 3
+data_source_3, lista_30_artistas = read_data.columndatasource_plot3_marciano("visualizacoes/data/spotify_youtube_year.csv")  # Função para gerar os dados do plot 3
 
 plot_3 = figure(y_range=lista_30_artistas, height=600, width=600, tools = "") # Criando a figura do gráfico 3
 
@@ -122,7 +131,7 @@ plot_3.background_fill_color = "Yellow" # Definindo cor de fundo do gráfico
 plot_3.background_fill_alpha = 0.1 # Definindo transparência do fundo do gráfico
 
 # Definindo o Título
-plot_3.title.text = "Top 30 Artists Streams"
+plot_3.title.text = "Top 30 Artistas mais ouvidos"
 plot_3.title.text_color = "Black"
 plot_3.title.text_font = "Arial Black"
 plot_3.title.text_font_size = "30px"
@@ -140,7 +149,7 @@ plot_3.xaxis.major_tick_line_alpha = 0 # Tirando as marcações maiores do eixo 
 plot_3.xaxis.major_label_text_alpha = 0 # Tirando as labels do eixo X
 
 # Eixo Y
-plot_3.yaxis.axis_label = "Artists" # Definindo texto
+plot_3.yaxis.axis_label = "Artistas" # Definindo texto
 plot_3.yaxis.axis_label_text_font = 'Arial Black' # Definindo fonte
 plot_3.yaxis.axis_label_text_font_size = '18px' # Definindo tamanho da letra
 plot_3.yaxis.axis_label_text_color = 'Black' # Definindo cor da letra

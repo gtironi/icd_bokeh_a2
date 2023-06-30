@@ -321,7 +321,7 @@ def get_column_observations(path, column, sort_column = "", lowercase = False):
 
     return values
 
-def marciano_plot1_data(path):
+def columndatasource_plot1_marciano(path):
     """Retorna um column data source de um arquivo .csv
     
     Lê o arquivo csv, manipula os dados, assim como explicado nos
@@ -356,7 +356,7 @@ def marciano_plot1_data(path):
 
 
 
-def marciano_plot2_data(path):
+def columndatasource_plot2_marciano(path):
     """Retorna um column data source de um arquivo .csv
         
     Lê o arquivo csv, manipula os dados, assim como explicado nos
@@ -372,6 +372,8 @@ def marciano_plot2_data(path):
         -------
         data_source_2
             ColumnDataSource pronto para a plotagem do gráfico
+        music_duration_mean
+            Média de duração das músicas em todos os anos
     """
     data = pd.read_csv(path) # Lendo o .csv como um data frame do pandas
 
@@ -391,11 +393,13 @@ def marciano_plot2_data(path):
 
     data_source_2 = ColumnDataSource(data_by_year_filtered) # Transformando em ColumnDataSource
 
-    return(data_source_2)
+    music_duration_mean = data_by_year["Duration_s"].mean()
+
+    return(data_source_2, music_duration_mean)
 
 
 
-def marciano_plot3_data(path):
+def columndatasource_plot3_marciano(path):
     """Retorna um column data source de um arquivo .csv
         
     Lê o arquivo csv, manipula os dados, assim como explicado nos
