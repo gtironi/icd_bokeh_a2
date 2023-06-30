@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from . import read_data
+import read_data
 from bokeh.plotting import figure, curdoc
 from bokeh.io import output_file, save, show
 from bokeh.models import HoverTool, ColumnDataSource, Div
@@ -20,7 +20,7 @@ def visualizacao_1_leonardo(datapath):
 
     # Criação da figura 1
 
-    plot_1 = figure()
+    plot_1 = figure(tools = "xpan", toolbar_location = None)
 
     # Construindo um gráfico de dispersão
 
@@ -128,11 +128,11 @@ def visualizacao_2_leonardo(datapath):
     # Configurando as dimensões
 
     spotify_player.width = 640
-    spotify_player.height = 360
+    spotify_player.height = 180
 
     # Criação da figura 2
 
-    plot_2 = figure(y_range = df_duration_per_track["Track"].values)
+    plot_2 = figure(tools = "xpan", toolbar_location = None, y_range = df_duration_per_track["Track"].values)
 
     # Construindo um gráfico de barras horizontais
 
@@ -166,7 +166,7 @@ def visualizacao_2_leonardo(datapath):
 
     # Retornando a segunda visualização
 
-    return row(spotify_player, plot_2)
+    return column(spotify_player, plot_2)
 
 plot_2_leonardo = visualizacao_2_leonardo(df_2)
 
@@ -210,7 +210,7 @@ def visualizacao_3_leonardo(datapath):
 
     # Criação da figura 3
 
-    plot_3 = figure()
+    plot_3 = figure(tools = "xpan", toolbar_location = None)
 
     # Construindo um gráfico de linhas
 
@@ -252,10 +252,81 @@ def visualizacao_3_leonardo(datapath):
 
 plot_3_leonardo = visualizacao_3_leonardo(df_3)
 
-# Layout da imagem
+# Apresentação das análises 
 
+text_1 = Div(text = """
+<h1> Spotify e YouTube </h1>
+<p> A partir de uma base de dados, do Kaggle, sobre músicas do Spotify e Youtube, foram elaboradas todas as 
+visualizações dessa página. <p>
+""",
+styles = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
+
+# Comentários sobre a primeira visualização
+
+text_2 = Div(text = """
+<h2> Energia x Danceabilidade </h2>
+<p> A partir de duas variáveis, danceabilidade e energia, produziu-se um gráfico de dispersão.
+A danceabilidade representa o quão dançante é a música no intervalo de 1 a 0 e a 
+energia indica o quão energizada uma música está no intervalo de 1 a 0. 
+Pelo gráfico, pode-se perceber que a danceabilidade de uma música tende a 
+aumentar conforme o aumento da sua energia.
+Além disso, ao passar o cursor do mouse por cima de algum ponto, quatro dados da música 
+são disponibilizados: música; artista; álbum; visualizações. <p>
+""",
+styles = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
+
+# Comentários sobre a segunda visualização
+
+text_3 = Div(text = """
+<h2> Ranking de Curtidas </h2>
+<p> Uma das principais formas de avaliar uma música é por meio da quantidade de 
+curtidas. 
+Nesse caso, o gráfico de barras é muito útil, pois, com o seu esboço, torna-se 
+possível a construção de um ranking.
+Como a base de dados possui a quantidade de curtidas das músicas no YouTube,
+o top 10 das músicas com mais curtidas pode ser representado em um gráfico de barras.
+Para isso, criou-se uma nova coluna de curtidas em milhões.
+Assim, as 10 músicas com mais curtidas, no YouTube, foram organizadas em ordem decrescente.
+Com essas 10 músicas, construiu-se um gráfico de barras horizontais.
+No gráfico, fica nítido que a música com mais curtidas é Despacito.
+Assim, elaborou-se um player da música Despacito no Spotify. <p>
+""",
+styles = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
+
+# Comentários sobre a terceira visualização
+
+text_4 = Div(text = """
+<h2> Média de Curtidas por Ano </h2>
+<p> Quando de trata de dados numéricos ao longo do tempo, a melhor opção de
+esboço é o gráfico de linhas.
+Na base de dados, existe uma coluna, que possui as datas de lançamento das músicas, chamada de release_date.
+Por outro lado, anteriormente, criou-se uma coluna de curtidas em milhões.
+Sob essa perspectiva, a média de curtidas por ano foi calculada mediante essa coluna.
+Dessa forma, plotou-se um gráfico de linhas com a média de curtidas das músicas, no Youtube, ao longo dos anos.
+Pelo gráfico, o leitor pode observar os aumentos e as quedas em determinados intervalos de tempo,
+o que possibilita a realização de comparações entre períodos. <p>
+""",
+styles = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
+
+def gera_layout_leonardo():
+    """ Gera o layout das visualizações"""
+
+    # Layout da imagem
+
+    layout = column(row(plot_1_leonardo, column(text_1, text_2)), row(plot_2_leonardo, text_3), row(plot_3_leonardo, text_4))
+
+    # Retornando o layout
+
+    return(layout)
+
+# Inserindo o layout em uma variável
+
+plotagem = gera_layout_leonardo()
+
+"""
 layout = column((plot_2_leonardo), row(plot_1_leonardo, plot_3_leonardo))
+"""
 
 # Exibição do layout
 
-show(layout)
+show(plotagem)
