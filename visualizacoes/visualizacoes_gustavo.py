@@ -1,30 +1,23 @@
 # Arquivo para os códigos das  visualizacoes
 import pandas as pd
 import numpy as np
-from temporary import figure_generator_gustavo
+
+from plot_style import figure_generator_gustavo
+from generic_plot import boxplot
+from read_data import columndatasource_plot1_gustavo, columndatasource_plot2_gustavo, columndatasource_plot3_gustavo
 
 from bokeh.layouts import column, row
-from bokeh.io import curdoc
-from bokeh.models import ColumnDataSource, RangeTool, Whisker, PanTool
+from bokeh.models import RangeTool, Div
 from bokeh.plotting import figure, show
-from bokeh.transform import factor_cmap
-
-
 
 df = pd.read_csv('visualizacoes/data/spotify_youtube_year.csv') #lê o csv
 
-df.rename(columns={'release_date': 'year'}, inplace=True) #Renomeia a coluna, para melhor legibilidade do código.
+# Plot 1 (lineplot)
 
-df['year'] = pd.to_datetime(df['year'], format='%Y') #Transforma a o interio yyyy (ex: 2020), em datetime.
-
-df.drop_duplicates('Track', inplace= True) #Retira as musicas duplicadas
-
-df_by_year = df.groupby('year').count() #Agrupa por ano e conta a quantidade de musicas em cada ano
-
-source = ColumnDataSource(df_by_year) #transforma o .csv em ColumnDataSource
+source = columndatasource_plot1_gustavo('visualizacoes/data/spotify_youtube_year.csv')
 
 def plot_1_gustavo(datasource):
-    plot_1 = figure_generator_gustavo(figure(height=350, width=640, tools="xpan", toolbar_location=None, 
+    plot_1 = figure_generator_gustavo(figure(height=350, width=840, tools="xpan", toolbar_location=None, 
                                              x_axis_type="datetime", x_axis_location="above", 
                                              x_range=(np.datetime64('1970-01-01'), np.datetime64('2020-01-01'))))
 
@@ -37,7 +30,7 @@ def plot_1_gustavo(datasource):
 
     plot_1.line('year', 'Key', source=source)
 
-    barra_de_rolagem = figure_generator_gustavo(figure(height=130, width=640, y_range = plot_1.y_range,
+    barra_de_rolagem = figure_generator_gustavo(figure(height=130, width=840, y_range = plot_1.y_range,
                                                        x_axis_type="datetime", y_axis_type=None, tools="", toolbar_location=None))
     
     barra_de_rolagem.title.text_font_size = '16px'
@@ -56,15 +49,9 @@ def plot_1_gustavo(datasource):
 
 p1 = plot_1_gustavo(source)
 
-####
+# Plot 2 (scatterplot)
 
-df_views_por_track = df.sort_values(by = 'Views', ascending=False).drop_duplicates('Track')
-
-df_100_mais_vistos_completo = (df_views_por_track).head(100)
-
-df_100_mais_vistos_completo.loc[:, 'Views'] = df_100_mais_vistos_completo['Views']/1000000
-
-source1 = ColumnDataSource(df_100_mais_vistos_completo)
+source1 = columndatasource_plot2_gustavo('visualizacoes/data/spotify_youtube_year.csv')
 
 def plot_2_gustavo(datasource, column):
 
@@ -86,44 +73,32 @@ def plot_2_gustavo(datasource, column):
 
 p2 = plot_2_gustavo(source1, 'Acousticness')
 
-####
+# Plot 3 (boxplot)
 
-df = df[['official_video', 'popularity']].rename(columns= {'popularity': 'Likes'})
+df = columndatasource_plot3_gustavo('visualizacoes/data/spotify_youtube_year.csv')
 
-df['official_video'] = df['official_video'].astype(str)
+def plot_3_gustavo(dataframe):
 
-kinds = ['True', 'False']
+    plot_3 = boxplot(dataframe, 'official_video', 'popularity')
 
-qs = df.groupby('official_video').Likes.quantile([0.25, 0.5, 0.75])
-qs = qs.unstack().reset_index()
-qs.columns = ['official_video', "q1", "q2", "q3"]
-df = pd.merge(df, qs, on='official_video', how="left")
+    plot_3.yaxis.axis_label = 'Popularidade'
 
-iqr = df.q3 - df.q1
-df["upper"] = df.q3 + 1.5*iqr
-df["lower"] = df.q1 - 1.5*iqr
+    return plot_3
 
-source = ColumnDataSource(df)
+p3 = plot_3_gustavo(df)
 
-p4 = figure(x_range=kinds, tools="", toolbar_location=None,
-           background_fill_color="#efefef", y_axis_label="Popularidade",
-           y_range = (df['Likes'].min(), df['Likes'].max()))
+text1 = Div(text=""" text 1
 
-whisker = Whisker(base='official_video', upper="upper", lower="lower", source=source)
-whisker.upper_head.size = whisker.lower_head.size = 20
-p4.add_layout(whisker)
+""")
 
-cmap = factor_cmap('official_video', "TolRainbow7", kinds)
-p4.vbar('official_video', 0.7, "q2", "q3", source=source, color=cmap, line_color="black")
-p4.vbar('official_video', 0.7, "q1", "q2", source=source, color=cmap, line_color="black")
+text2 = Div(text=""" text 2
 
-outliers = df[~df.Likes.between(df.lower, df.upper)]
-p4.scatter('official_video', "Likes", source=outliers, size=6, color="black", alpha=0.3)
+""")
 
-p4.xgrid.grid_line_color = None
-p4.axis.major_label_text_font_size="14px"
-p4.axis.axis_label_text_font_size="12px"
+text3 = Div(text=""" text 3
 
-select_layout = column(p1, row(p2, p4))
+""")
+
+select_layout = column(row(p1, text1), row(column(p2, text2), column(p2, text3)))
 
 show(select_layout)
