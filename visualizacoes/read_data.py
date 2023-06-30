@@ -1,9 +1,21 @@
 '''Módulo de leitura do arquivo .csv com os dados
 
-Este módulo contém funções para gerar objetos ColumnDataSource a partir de um arquivo .csv
+Este módulo contém funções de manipulação de dados. 
+Como funções para gerar objetos ColumnDataSource a partir de um arquivo .csv e 
+funções que manipulam dataframes
 
 Funcionalidades:
 - csv_to_columndatasouce: gera um objeto ColumnDataSource a partir de um arquivo .csv
+- csv_get_top: gera um objeto ColumnDataSource a partir de um arquivo .csv
+- csv_get_top_names: gera uma lista de nomes a partir de um arquivo .csv
+- histogram_data: gera dados para criar um histograma a partir de um .csv
+- column_as_size: gera um dataframe do pandas a partir de um arquivo .csv
+- csv_filter_by_name_to_cds: filtra dados de uma linha de um .csv e retorna um ColumnDataSource
+- get_column_observations: gera uma lista com os dados de uma coluna especificada de um arquivo .csv
+- get_statistic_by_year: gera um ColumDataSource e uma lista com as estatísticas do ano a partir de um arquivo .csv
+- columndatasource_plot3_gustavo: gera um objeto dataframe a partir de um arquivo .csv
+- columndatasource_plot2_gustavo: gera um objeto ColumnDataSource a partir de um arquivo .csv
+- columndatasource_plot1_gustavo: gera um objeto ColumnDataSource a partir de um arquivo .csv
 '''
 
 # Importando as bibliotecas usadas nesse modulo
@@ -47,7 +59,6 @@ def csv_to_columndatasource(path, colunas = []):
 
     return data_source
 
-
 def csv_get_top(path, sort_column, duplicated_column = "", num = 10):
     """Gera um objeto ColumnDataSource a partir de um arquivo .csv
 
@@ -89,7 +100,6 @@ def csv_get_top(path, sort_column, duplicated_column = "", num = 10):
     data_source = ColumnDataSource(top_values)
 
     return data_source
-
 
 def csv_get_top_names(path, names_column, sort_column, num = 10):
     """Gera uma lista de nomes a partir de um arquivo .csv
@@ -139,6 +149,7 @@ def csv_get_top_names(path, names_column, sort_column, num = 10):
 
     return names
 
+    return names
 
 def histogram_data(path, column, start = 0, end = 1, bins = 10, proportion_column = "",
                     base_proportion = 1):
@@ -240,7 +251,6 @@ def column_as_size(dataframe, column, parameter):
 
         return dataframe
 
-
 def csv_filter_by_name_to_cds(path, filter_column, value, lowercase = False):
     """Filtra dados de uma linha de um .csv e retorna um ColumnDataSource
 
@@ -291,7 +301,6 @@ def csv_filter_by_name_to_cds(path, filter_column, value, lowercase = False):
 
     return ColumnDataSource(filtered_data), ColumnDataSource(selected_row)
 
-
 def get_column_observations(path, column, sort_column = "", lowercase = False):
     """Gera uma lista com os dados de uma coluna especificada de um arquivo .csv
     
@@ -336,7 +345,6 @@ def get_column_observations(path, column, sort_column = "", lowercase = False):
             values.append(value.lower())
 
     return values
-
 
 def get_statistic_by_year(path, years_column, target_column, interval = [1960, 2021],
                           method = "mean"):
@@ -398,6 +406,28 @@ def get_statistic_by_year(path, years_column, target_column, interval = [1960, 2
     return ColumnDataSource(result)
 
 def columndatasource_plot1_gustavo(datapath):
+    '''Gera um objeto ColumnDataSource a partir de um arquivo .csv
+
+    Lê o arquivo .csv, armazenando o conteudo dele em um dataframe do 
+    pandas, então manipula o dado de acordo com o necessário para a execução
+    do plot 1 do gustavo e gera um objeto ColumnDataSource corespondente, que só
+    deve ser usado para o plot citado. 
+
+    Parâmetros
+        ----------
+        datapath : str, path object or file-like object
+            Deve indicar o local onde está armazenado o .csv a ser lido. 
+            Deve conter exatamente um valor.
+
+        Retorna
+        -------
+        columndatasource:
+            Retorna o ColumnDataSource gerado a partir dos paramentros fornecidos.
+
+        Examples
+        --------
+        >>> columndatasource_plot1_gustavo("data/spotify_youtube_year_year.csv")
+    '''
 
     df = pd.read_csv(datapath) #lê o csv
 
@@ -414,6 +444,28 @@ def columndatasource_plot1_gustavo(datapath):
     return columndatasource
 
 def columndatasource_plot2_gustavo(datapath):
+    '''Gera um objeto ColumnDataSource a partir de um arquivo .csv
+
+    Lê o arquivo .csv, armazena em um dataframe do pandas e filtra o
+    dataframe pelas 100 musicas mais vistas. Essa manipulação é 
+    especifica para a execução do plot 2 do gustavo e gera um objeto 
+    ColumnDataSource corespondente, que só deve ser usado para o plot citado. 
+
+    Parâmetros
+        ----------
+        datapath : str, path object or file-like object
+            Deve indicar o local onde está armazenado o .csv a ser lido. 
+            Deve conter exatamente um valor.
+
+        Retorna
+        -------
+        columndatasource:
+            Retorna o ColumnDataSource gerado a partir dos paramentros fornecidos.
+
+        Examples
+        --------
+        >>> columndatasource_plot2_gustavo("data/spotify_youtube_year_year.csv")
+    '''
 
     df = pd.read_csv(datapath) #lê o csv
 
@@ -428,6 +480,28 @@ def columndatasource_plot2_gustavo(datapath):
     return columndatasource
 
 def columndatasource_plot3_gustavo(datapath):
+    '''Gera um objeto dataframe a partir de um arquivo .csv
+
+    Lê o arquivo .csv, armazena em um dataframe do pandas e
+    transforma a coluna 'official_video' em string. Essa função
+    prepara os dados para o uso da função boxplot, que gerará
+    o plot 3 do gustavo. 
+
+    Parâmetros
+        ----------
+        datapath : str, path object or file-like object
+            Deve indicar o local onde está armazenado o .csv a ser lido. 
+            Deve conter exatamente um valor.
+
+        Retorna
+        -------
+        df:
+            Retorna o dataframe gerado a partir dos paramentros fornecidos.
+
+        Examples
+        --------
+        >>> columndatasource_plot3_gustavo("data/spotify_youtube_year_year.csv")
+    '''
 
     df = pd.read_csv(datapath) #lê o csv
 

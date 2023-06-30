@@ -9,6 +9,7 @@ def figure_generator_gustavo(final_figure):
     final_figure.xaxis.axis_label_standoff = 25
     final_figure.xaxis.axis_label_standoff = 15
     final_figure.grid.grid_line_color = None
+    final_figure.min_border_right = 50
     
     return final_figure
 
