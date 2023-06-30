@@ -40,6 +40,8 @@ def gera_plot_categorias_sillas(path):
     # E separaremos eles em seus valores brutos e a linha dos dados obtida.
     first_music_values, firts_music_row = firts_music_data
 
+    first_music_artist = firts_music_row.data["Artist"][0]
+
     # Agora iremos adicionar as médias das categorias aos dados:
     categories_means = []
 
@@ -92,7 +94,8 @@ def gera_plot_categorias_sillas(path):
     # e os adicionaremos ao gráfico.
     hover_medias = HoverTool(renderers = [médias], tooltips = [("Valor", "@Means")])
 
-    hover_musica = HoverTool(renderers = [selected_music], tooltips = [("Valor", "@Values")])
+    hover_musica = HoverTool(renderers = [selected_music], tooltips = [("Valor", "@Values"),
+                                                                       ("Artista", first_music_artist)])
 
     filter_plot.add_tools(hover_medias, hover_musica)
 
@@ -133,7 +136,7 @@ def gera_plot_densidade_sillas(path, initial_catefory = "Energy"):
     density_plot.xaxis.axis_label = initial_catefory
     density_plot.xaxis.ticker = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
     # Agora o eixo Y.
-    density_plot.yaxis.axis_label = "Número de vezes escutadas no Spotify"
+    density_plot.yaxis.axis_label = "Número de vezes tocadas no Spotify"
     density_plot.yaxis.ticker = [0, 500000000, 1000000000, 1500000000, 2000000000, 2500000000, 3000000000, 3500000000]
     # Removeremos as linhas de grid.
     density_plot.xgrid.grid_line_color = None
@@ -215,7 +218,7 @@ def gera_plot_anos_sillas(path):
     # Iremos adicionar um texto simples indicando o motivo da caixa de anotações.
     best_popularity_years_label = Label(x = 2015, y = 80,
                         text = "Popularidade média\nvem aumentando\ndesde 2017.",
-                        text_align = "center", text_font_size = "12px")
+                        text_align = "center", text_font_size = "14px", text_font = "Arial")
 
     years_plot.add_layout(best_popularity_years_label)
 
@@ -430,24 +433,24 @@ def gera_filtros_categorias(path, filter_plot, density_plot):
     return filter_category
 
 
-# gráfico_músicas = gera_plot_categorias_sillas("visualizacoes/data/spotify_youtube_year.csv")
-# gráfico_densidade = gera_plot_densidade_sillas("visualizacoes/data/spotify_youtube_year.csv")
-# gráfico_anos = gera_plot_anos_sillas("visualizacoes/data/spotify_youtube_year.csv")
+gráfico_músicas = gera_plot_categorias_sillas("visualizacoes/data/spotify_youtube_year.csv")
+gráfico_densidade = gera_plot_densidade_sillas("visualizacoes/data/spotify_youtube_year.csv")
+gráfico_anos = gera_plot_anos_sillas("visualizacoes/data/spotify_youtube_year.csv")
 
-# filtro_musicas = gera_filtros_música("visualizacoes/data/spotify_youtube_year.csv", gráfico_músicas,
-#                                      gráfico_densidade)
+filtro_musicas = gera_filtros_música("visualizacoes/data/spotify_youtube_year.csv", gráfico_músicas,
+                                     gráfico_densidade)
 
-# filtro_categorias = gera_filtros_categorias("visualizacoes/data/spotify_youtube_year.csv", gráfico_músicas,
-#                                      gráfico_densidade)
-
-
-# p1 = column(row(filtro_musicas),
-#             row(Div(text = "<br><br><br><br>")),
-#             row(filtro_categorias))
+filtro_categorias = gera_filtros_categorias("visualizacoes/data/spotify_youtube_year.csv", gráfico_músicas,
+                                     gráfico_densidade)
 
 
-# # Iremos juntar as figuras e os filtros ao layout final.
-# layout = column(row(p1, gráfico_músicas),
-#                 row(gráfico_densidade, gráfico_anos))
+p1 = column(row(filtro_musicas),
+            row(Div(text = "<br><br><br><br>")),
+            row(filtro_categorias))
 
-# curdoc().add_root(layout)
+
+# Iremos juntar as figuras e os filtros ao layout final.
+layout = column(row(p1, gráfico_músicas),
+                row(gráfico_densidade, gráfico_anos))
+
+curdoc().add_root(layout)

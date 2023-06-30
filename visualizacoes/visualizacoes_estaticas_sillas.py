@@ -6,7 +6,7 @@ from bokeh.models import Div, RangeTool, BoxAnnotation
 from bokeh.models import NumeralTickFormatter, HoverTool, Label
 from bokeh.transform import dodge
 import read_data
-import temporary
+import plot_style
 
 ### A similaridade entre o nome das variáveis das funções se deve ao fato de que
 ### elas devem ser utilizadas em conjunto.
@@ -53,7 +53,7 @@ def gera_plot_categorias_sillas(path):
     filter_plot.yaxis.ticker = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
 
     # Iremos carregar o tema pré definido de rótulos e cor de fundo.
-    filter_plot = temporary.figure_text_generator_sillas(filter_plot)
+    filter_plot = plot_style.figure_text_generator_sillas(filter_plot)
 
     # Alteraremos o formato do eixo Y para exibir porcentagem, como todas as categorias
     # vão de 0 à 1, é possível computar seus valores como porcentagens.
@@ -120,7 +120,7 @@ def gera_plot_densidade_sillas(path, initial_catefory = "Energy"):
     density_plot.ygrid.grid_line_color = None
 
     # Utilizaremos o tema pré definido.
-    density_plot = temporary.figure_text_generator_sillas(density_plot)
+    density_plot = plot_style.figure_text_generator_sillas(density_plot)
 
     # Alteraremos o formato dos eixos, o eixo x novamente irá de 0 à 1 pois é uma das categorias,
     # entretanto o eixo Y chega à escala de bilhões.
@@ -152,7 +152,6 @@ def gera_plot_densidade_sillas(path, initial_catefory = "Energy"):
     density_plot.add_layout(energy_level_annotation_label)
 
 
-
     # Adicionaremos um hover com os dados das músicas ao gráfico.
     musics_hover = HoverTool(renderers = [musics],
                     tooltips = [("Música", "@Track"), ("Artista", "@Artist")])
@@ -178,7 +177,7 @@ def gera_plot_anos_sillas(path):
                         x_range = [2001, 2021], y_range = [0, 100],
                         x_axis_label = "Anos", y_axis_label = "Popularidade Média",)
     # Adicionaremos o tema pré definido à figura.
-    years_plot = temporary.figure_text_generator_sillas(years_plot)
+    years_plot = plot_style.figure_text_generator_sillas(years_plot)
     # Removeremos o grid do eixo X para fins estéticos.
     years_plot.xgrid.grid_line_color = None
     # Adicionaremos os intervalos do eixo Y.
@@ -248,12 +247,54 @@ def gera_plot_anos_sillas(path):
     # E então retornálos juntos.
     return column_years
 
+def gera_spotify_player(path):
+    ### Leitura de dados para o player:
 
-# gráfico_músicas = gera_plot_categorias_sillas("visualizacoes/data/spotify_youtube_year.csv")
-# gráfico_densidade = gera_plot_densidade_sillas("visualizacoes/data/spotify_youtube_year.csv")
-# gráfico_anos = gera_plot_anos_sillas("visualizacoes/data/spotify_youtube_year.csv")
+    # Obteremos a música mais ouvida do Spotify
+    top_listened_music = read_data.csv_get_top_names(path, "Track", sort_column = "Stream", num = 1)
+    # Agora carregaremos os dados dela.
+    top_listened_music_data = read_data.csv_filter_by_name_to_cds(path, "Track", top_listened_music)
 
-# layout = column(row(gráfico_músicas),
-#                 row(gráfico_densidade, gráfico_anos))
+    # E separaremos eles em seus valores brutos e a linha dos dados obtida.
+    top_listened_music_values, top_listened_music_row = top_listened_music_data
 
-# show(layout)
+    top_listened_uri = top_listened_music_row.data["Uri"][0]
+
+    # E faremos o mesmo com a música mais popular, obteremos ela e separaremos seus dados.
+    top_popularity_music = read_data.csv_get_top_names(path, "Track", sort_column = "popularity", num = 1)
+
+    top_popularity_music_data = read_data.csv_filter_by_name_to_cds(path, "Track", top_popularity_music)
+    top_popularity_music_values, top_popularity_music_row = top_popularity_music_data
+
+    top_popularity_uri = top_popularity_music_row.data["Uri"][0]
+    
+    
+    # Criaremos um player do spotify simples com a música mais escutada.
+    spotify_player_1_html = f"""
+        <iframe src="https://open.spotify.com/embed?uri={top_listened_uri}"
+                width="640" height="160" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        """
+    # E renderizaremos o player
+    spotify_player_top_listened = Div(text = spotify_player_1_html)
+
+    # E agora para a mais popular
+    spotify_player_2_html = f"""
+        <iframe src="https://open.spotify.com/embed?uri={top_popularity_uri}"
+                width="640" height="160" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        """
+    
+    spotify_player_top_popular = Div(text = spotify_player_2_html)
+
+    # Assim devolveremos os dois players em sequência.
+    return column(row(spotify_player_top_listened), row(spotify_player_top_popular))
+
+
+gráfico_músicas = gera_plot_categorias_sillas("visualizacoes/data/spotify_youtube_year.csv")
+gráfico_densidade = gera_plot_densidade_sillas("visualizacoes/data/spotify_youtube_year.csv")
+gráfico_anos = gera_plot_anos_sillas("visualizacoes/data/spotify_youtube_year.csv")
+palyer = gera_spotify_player("visualizacoes/data/spotify_youtube_year.csv")
+
+layout = column(row(palyer, gráfico_músicas),
+                row(gráfico_densidade, gráfico_anos))
+
+show(layout)
