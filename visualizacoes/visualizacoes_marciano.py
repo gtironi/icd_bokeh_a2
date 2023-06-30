@@ -11,12 +11,8 @@ import read_data
 
 
 ########################################################################################################################
-
-data = pd.read_csv("visualizacoes/data/spotify_youtube_year.csv") # Lendo o .csv como um data frame do pandas
-
-########################################################################################################################
 # Primeiro gráfico: Scatter plot Liveness X Energy #
-data_source_1 = read_data.marciano_plot1_data("visualizacoes/data/spotify_youtube_year.csv") # Função para gerar os dad
+data_source_1 = read_data.marciano_plot1_data("visualizacoes/data/spotify_youtube_year.csv") # Função para gerar os dados do plot 1
 
 plot_1 = figure(width=600, height = 600, tools = "box_zoom, pan, reset, save, wheel_zoom") # Criando a figura do gráfico 2
 
@@ -60,25 +56,10 @@ plot_1.add_tools(HoverTool(tooltips=tooltips))
 
 ########################################################################################################################
 # Segundo gráfico: Duração das músicas X Anos #
+data_source_2 = read_data.marciano_plot2_data("visualizacoes/data/spotify_youtube_year.csv")  # Função para gerar os dados do plot 2
 
 plot_2 = figure(width=600, height = 600, x_range = [2006, 2021], tools = "box_zoom, pan, reset, save, wheel_zoom") # Criando a figura do gráfico 2
  
-data["Duration_s"] = data["Duration_ms"]/1000 # Mudando a coluna Duration_ms para segundos (dividindo por 1000)
-
-duration_by_year = pd.DataFrame(data.groupby(["release_date"])["Duration_s"].mean()) # Agrupando por ano de lançamento e calculando a média de
-                                                                                     # duração das músicas por ano em um pd.Series transformado em DataFrame
-
-count_by_year = pd.DataFrame(data.groupby(["release_date"])["Track"].count())  # Agrupando por ano de lançamento e contando o número de
-                                                                               # músicas por ano em um pd.Series transformado em DataFrame
-
-
-data_by_year = duration_by_year                         # Linhas para juntar os DataFrames em um só
-data_by_year["Track Count"] = count_by_year["Track"]
-
-data_by_year_filtered = data_by_year[data_by_year['Track Count'] > 90] # Filtrando o DataFrame para os anos com mais de 90 músicas
-
-data_source_2 = ColumnDataSource(data_by_year_filtered) # Transformando em ColumnDataSource
-
 plot_2.line(x = "release_date", y = "Duration_s", source = data_source_2, line_width=2) # Criando o line plot com os dados do ColumnDataSource
 
 plot_2.background_fill_color = "Yellow" # Definindo cor de fundo do gráfico
@@ -131,19 +112,9 @@ plot_2 = column(plot_2,select_years)
 
 # Terceiro gráfico: Top 30 artistas #
 
-data = data.dropna(subset=['Stream']) # Removendo as músicas que não possuiam o númeoro de streams
+data_source_3, lista_30_artistas = read_data.marciano_plot3_data("visualizacoes/data/spotify_youtube_year.csv")  # Função para gerar os dados do plot 3
 
-stream_by_artist = pd.DataFrame(data.groupby(["Artist"])["Stream"].mean().sort_values().tail(30)) # Agrupando por artista, calulando a média de streams,
-                                                                                                  # ordenando da menor para a maior nº de streams e deixando
-                                                                                                  # somente as últimas 30 linhas do data frame.
-
-stream_by_artist["stream_label"]= stream_by_artist["Stream"]/1000000000 # Criando coluna para as labels nas barras
-stream_by_artist["stream_label"] = stream_by_artist["stream_label"].round(2).astype(str) # Deixando com somente duas casas deciamais
-stream_by_artist["stream_label"] = stream_by_artist["stream_label"] + " bi"  # Adicionando "bi" na frente do número
-
-data_source_3 = ColumnDataSource(stream_by_artist) # Transformando em ColumnDataSource
-
-plot_3 = figure(y_range=stream_by_artist.index.tolist(), height=600, width=600, tools = "") # Criando a figura do gráfico 3
+plot_3 = figure(y_range=lista_30_artistas, height=600, width=600, tools = "") # Criando a figura do gráfico 3
 
 plot_3.hbar(y='Artist', right='Stream', height=0.8, source=data_source_3) # Criando o horizontal bar plot com os dados co ColumnDataSource
 
@@ -174,7 +145,6 @@ plot_3.yaxis.axis_label_text_font = 'Arial Black' # Definindo fonte
 plot_3.yaxis.axis_label_text_font_size = '18px' # Definindo tamanho da letra
 plot_3.yaxis.axis_label_text_color = 'Black' # Definindo cor da letra
 plot_3.ygrid.grid_line_color = None # Tirando o grid do eixo Y
-
 
 tooltips = [                       # Definindo as informações das músicas que aparecerão ao passar o mouse sobre as barras
     ('Nº Médio de Streams', '@Stream'),

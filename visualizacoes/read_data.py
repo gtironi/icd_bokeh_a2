@@ -322,6 +322,22 @@ def get_column_observations(path, column, sort_column = "", lowercase = False):
     return values
 
 def marciano_plot1_data(path):
+    """Retorna um column data source de um arquivo .csv
+    
+    Lê o arquivo csv, manipula os dados, assim como explicado nos
+    comentários do código, e retorna um ColumDataSource
+
+    Parâmetros
+        ----------
+        path : str, path object or file-like object
+            Deve indicar o local onde está armazenado o .csv a ser lido. 
+            Deve conter exatamente um valor.
+    
+        Retorna
+        -------
+        data_source_1
+            ColumnDataSource pronto para a plotagem do gráfico
+    """
     data = pd.read_csv(path) # Lendo o .csv como um data frame do pandas
 
     color = [] # Criando lista vazia para posteriormente tranformar em coluna que define a cor dos glifos.
@@ -337,3 +353,82 @@ def marciano_plot1_data(path):
     data_source_1 = ColumnDataSource(data) # Tranforma o data frame em ColumDataSource
 
     return(data_source_1)
+
+
+
+def marciano_plot2_data(path):
+    """Retorna um column data source de um arquivo .csv
+        
+    Lê o arquivo csv, manipula os dados, assim como explicado nos
+    comentários do código, e retorna um ColumDataSource
+
+    Parâmetros
+         ----------
+        path : str, path object or file-like object
+            Deve indicar o local onde está armazenado o .csv a ser lido. 
+            Deve conter exatamente um valor.
+        
+        Retorna
+        -------
+        data_source_2
+            ColumnDataSource pronto para a plotagem do gráfico
+    """
+    data = pd.read_csv(path) # Lendo o .csv como um data frame do pandas
+
+    data["Duration_s"] = data["Duration_ms"]/1000 # Mudando a coluna Duration_ms para segundos (dividindo por 1000)
+
+    duration_by_year = pd.DataFrame(data.groupby(["release_date"])["Duration_s"].mean()) # Agrupando por ano de lançamento e calculando a média de
+                                                                                        # duração das músicas por ano em um pd.Series transformado em DataFrame
+
+    count_by_year = pd.DataFrame(data.groupby(["release_date"])["Track"].count())  # Agrupando por ano de lançamento e contando o número de
+                                                                                # músicas por ano em um pd.Series transformado em DataFrame
+
+
+    data_by_year = duration_by_year                         # Linhas para juntar os DataFrames em um só
+    data_by_year["Track Count"] = count_by_year["Track"]
+
+    data_by_year_filtered = data_by_year[data_by_year['Track Count'] > 90] # Filtrando o DataFrame para os anos com mais de 90 músicas
+
+    data_source_2 = ColumnDataSource(data_by_year_filtered) # Transformando em ColumnDataSource
+
+    return(data_source_2)
+
+
+
+def marciano_plot3_data(path):
+    """Retorna um column data source de um arquivo .csv
+        
+    Lê o arquivo csv, manipula os dados, assim como explicado nos
+    comentários do código, e retorna um ColumDataSource
+
+    Parâmetros
+         ----------
+        path : str, path object or file-like object
+            Deve indicar o local onde está armazenado o .csv a ser lido. 
+            Deve conter exatamente um valor.
+        
+        Retorna
+        -------
+        data_source_3
+            ColumnDataSource pronto para a plotagem do gráfico
+
+        lista_top30_artistas
+            Lista para fazer o label dos artistas no eixo Y
+    """
+    data = pd.read_csv(path) # Lendo o .csv como um data frame do pandas
+
+    data = data.dropna(subset=['Stream']) # Removendo as músicas que não possuiam o númeoro de streams
+
+    stream_by_artist = pd.DataFrame(data.groupby(["Artist"])["Stream"].mean().sort_values().tail(30)) # Agrupando por artista, calulando a média de streams,
+                                                                                                    # ordenando da menor para a maior nº de streams e deixando
+                                                                                                    # somente as últimas 30 linhas do data frame.
+
+    stream_by_artist["stream_label"]= stream_by_artist["Stream"]/1000000000 # Criando coluna para as labels nas barras
+    stream_by_artist["stream_label"] = stream_by_artist["stream_label"].round(2).astype(str) # Deixando com somente duas casas deciamais
+    stream_by_artist["stream_label"] = stream_by_artist["stream_label"] + " bi"  # Adicionando "bi" na frente do número
+
+    data_source_3 = ColumnDataSource(stream_by_artist) # Transformando em ColumnDataSource
+
+    lista_top30_artistas = stream_by_artist.index.tolist()
+
+    return(data_source_3, lista_top30_artistas)
