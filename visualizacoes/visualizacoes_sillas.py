@@ -446,7 +446,6 @@ def gera_filtros_categorias(path, filter_plot, density_plot):
 #             row(filtro_categorias))
 
 
-# Iremos juntar as figuras e os filtros ao layout final.
 # layout = column(row(p1, gráfico_músicas),
 #                 row(gráfico_densidade, gráfico_anos))
 
