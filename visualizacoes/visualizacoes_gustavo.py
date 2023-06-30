@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 
-from temporary import figure_generator_gustavo
+from plot_style import figure_generator_gustavo
 from generic_plot import boxplot
 from read_data import columndatasource_plot1_gustavo, columndatasource_plot2_gustavo
 
