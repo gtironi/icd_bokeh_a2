@@ -464,20 +464,20 @@ def gera_explicacoes_sillas():
 
 # Função para gerar o layout final da página
 def gera_layout_sillas(path):
-    # Chamaremos as plotagens
+    # Chamaremos as plotagens:
     plot_músicas = gera_plot_categorias_sillas(path)
     plot_densidade = gera_plot_densidade_sillas(path)
     plot_anos = gera_plot_anos_sillas(path)
 
-    # Seus filtros
+    # Seus filtros:
     filtro_musicas = gera_filtros_música(path, plot_músicas, plot_densidade)
     filtro_categorias = gera_filtros_categorias(path, plot_músicas, plot_densidade)
-    # Juntaremos algumas coisas
+    # Criaremos o layout das músicas:
     music_layout = column(row(filtro_musicas),
                 row(Div(text = "<br><br><br><br>")),
                 row(filtro_categorias))
     
-    # As explicações
+    # As explicações:
     explicacoes = gera_explicacoes_sillas()
 
     # Por fim, juntaremos as filtros, os filtros e as explicações ao layout final.
@@ -485,6 +485,7 @@ def gera_layout_sillas(path):
                     row(plot_densidade, plot_anos),
                     row(explicacoes))
     
+    # E retornaremos o layout:
     return layout
 
 # curdoc().add_root(layout)
