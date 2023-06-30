@@ -15,7 +15,7 @@ def figure_generator_gustavo(final_figure):
 
 def figure_text_generator_sillas(figure):
 
-    figure.background_fill_color="WhiteSmoke"
+    figure.background_fill_color="GhostWhite"
 
     figure.title.text_color = "Black"
     figure.title.text_font = "Arial Black"
