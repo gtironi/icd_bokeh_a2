@@ -87,17 +87,25 @@ def plot_3_gustavo(dataframe):
 
 p3 = plot_3_gustavo(df)
 
-text1 = Div(text=""" text 1
-
-""")
+text1 = Div(text=""" 
+<h2>Gráfico de linha</h2>
+<p>Ao lado, foi plotado um gráfico de linha, o qual demosntra a quantidade de musicas, no dataset, lançadas por ano. <br>
+Para sua execução, o dataset foi agrupado por ano, então foi contado a quantidade de ocorrencias e utilizando o 
+metodo <b>line()</b> para fazer o plot principal. <br>
+Ainda, foi adiconado uma barra de rolagem abaixo do gráfico, que permite rolar o gráfico. Essa barra usa a ferramenta
+<b>RangeTool</b> e a conexão entre o plot e barra de rolagem, para gerar o efeito apresentado.<p>
+""", 
+styles = {'text-align': 'center', 'font-size': '16px'}, width=430, align = 'center', margin=( 10 ,0, 10, 30))
 
 text2 = Div(text=""" text 2
 
-""")
+""",
+styles = {'text-align': 'center', 'font-size': '16px'}, width=640, margin=( 10 ,20, 10, 20))
 
 text3 = Div(text=""" text 3
 
-""")
+""",
+styles = {'text-align': 'center', 'font-size': '16px'}, width=640, margin=( 10 ,20, 10, 20))
 
 select_layout = column(row(p1, text1), row(column(p2, text2), column(p2, text3)))
 
