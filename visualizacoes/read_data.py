@@ -135,14 +135,16 @@ def csv_get_top_names(path, names_column, sort_column, num = 10):
     return names
 
 
-def histogram_count(path, column, bins = 10, proportion_column = "",
-                    base_proportion = 1, interval = [0, 1]):
+def histogram_data(path, column, start = 0, end = 1, bins = 10, proportion_column = "",
+                    base_proportion = 1):
     """Gera dados para criar um histograma a partir de um .csv
 
     Lê o arquivo csv, gera os dados para a criação do histograma
     a partir do numpy, é possível alterar a quantidade de barras do
-    histograma, seu intervalo e sua proporção, retorna uma tupla 
-    com os intervalos e a contagem dos intervalos.
+    histograma, seu começo, fim e sua proporção, retorna um
+    ColumnDataSource contendo os parâmetros "top", a altura
+    do histograma, "start", os pontos do lado esquerdo e "end",
+    os pontos do lado direito.
 
     Parâmetros
         ----------
@@ -153,6 +155,12 @@ def histogram_count(path, column, bins = 10, proportion_column = "",
             Deve conter a coluna a qual haverá a contagem de ocorrências
             para o histograma.
             Deve conter exatamente um valor.
+        start : int, optional
+            Deve conter o ponto do eixo em que seu histograma começa.
+            (Por padrão 0).
+        end : int, optional
+            Deve conter o ponto do eixo em que seu histograma termina.
+            (Por padrão 1).
         bins : int, optional
             Deve conter a quantidade de barras do histograma
             (Por padrão 10).
@@ -163,24 +171,25 @@ def histogram_count(path, column, bins = 10, proportion_column = "",
         base_proportion : float, optional
             Deve conter um número que indique a proporção base
             do histograma (Por padrão 1/100%).
-        interval : list, optional
-            Deve conter uma lista com o intervalo do eixo x do 
-            Histograma, sendo o primeiro valor o início e o
-            segundo o fim (Por padrão [0, 1]).
 
         Retorna
         -------
-        (count, intervals)
-            Retorna uma tupla contendo a contagem dos intervalos
-            como primeiro valor e os intervalos como segundo.
+        values
+            Retorna um ColumnDataSource contendo os valores da
+            altura dos quadrados, "top", os pontos esquredos,
+            "start" e os pontos direitos, "end" para a geração
+            do histograma a partir do ".quad()".
     """
 
     df = pd.read_csv(path)
     data = df[column]
+    interval = [start, end]
 
     hist_count = np.histogram(data, bins = bins, range = interval)
     intervals = hist_count[1]
     count = hist_count[0]
+    starts = intervals[:-1]
+    ends = intervals[1:]
 
     if proportion_column != "":
         max_value = df[proportion_column].max()
@@ -188,7 +197,10 @@ def histogram_count(path, column, bins = 10, proportion_column = "",
         count = count * proportion
     count = count * base_proportion
 
-    return count, intervals
+    values = {"top": count, "start": starts,
+              "end": ends}
+
+    return ColumnDataSource(values)
 
 
 def column_as_size(dataframe, column, parameter):
@@ -269,15 +281,14 @@ def csv_filter_by_name_to_cds(path, filter_column, value, lowercase = False):
     columns = selected_row.columns
     values = selected_row.values[0]
 
-    filtered_data = dict()
-    filtered_data["Columns"] = columns
-    filtered_data["Values"] = values
+    filtered_data = {"Columns": columns,
+                     "Values": values}
 
     return ColumnDataSource(filtered_data), ColumnDataSource(selected_row)
 
 
 def get_column_observations(path, column, sort_column = "", lowercase = False):
-    """Retorna uma lista com os dados de uma coluna especificada de um arquivo .csv
+    """Gera uma lista com os dados de uma coluna especificada de um arquivo .csv
     
     Lê o arquivo csv, seleciona os dados de uma coluna, caso haja uma coluna
     de ordenação, ordena os dados com base nela, caso lowercase seja verdadeira,
@@ -320,3 +331,63 @@ def get_column_observations(path, column, sort_column = "", lowercase = False):
             values.append(value.lower())
 
     return values
+
+
+def get_statistic_by_year(path, years_column, target_column, interval = [1960, 2021],
+                          method = "mean"):
+    """Gera um ColumDataSource e uma lista com as estatísticas do ano a partir de um arquivo .csv
+
+    Lê o arquivo csv, ordena os dados do ano mais antigo para o mais recente,
+    e filtra para os anos do intervalo selecionado (Pré-definido de 1960 à 2021),
+    gera a lista dos anos e gera os valores a partir do agrupamento por ano e
+    da aplicação do método selecionado (Por padrão a média) na coluna dos
+    valores desejados.
+
+    Parâmetros
+        ----------
+        path : str, path object or file-like object
+            Deve indicar o local onde está armazenado o .csv a ser lido. 
+            Deve conter exatamente um valor.
+        years_column : srt
+            Deve indicar a coluna dos anos da base de dados.
+            Deve conter exatamente um valor.
+        target_column : str
+            Deve indicar a coluna onde será feita a coleta dos valores.
+            Deve conter exatamente um valor.
+        interval : list, optional
+            Deve conter uma lista com o intervalo dos anos da coleta, sendo
+            o primeiro valor o ano inicial e o segundo o ano final
+            (Por padrão [1960, 2021]).
+        method : str, optional
+            Deve indicar o método da coleta de valores, possíveis métodos são
+            a média ("mean"), a soma ("sum") e a contagem ("count")
+            (Por padrão "mean").
+
+        Retorna
+        -------
+        result
+            Retorna o dicionário result como ColumnDataSource, que contém
+            "Values", os valores coletados, e "Years" os anos em que foram
+            feitas as coletas, e years.
+    """
+
+    df = pd.read_csv(path)
+    df = df.sort_values(years_column)
+    data = df[(df[years_column] >= interval[0]) & (df[years_column] <= interval[1])]
+
+    years = data[years_column].unique()
+    years = list(years)
+
+    if method == "mean":
+        values = data.groupby(years_column)[target_column].mean()
+    elif method == "sum":
+        values = data.groupby(years_column)[target_column].sum()
+    elif method == "count":
+        values = data.groupby(years_column)[target_column].count()
+    
+    values = list(values)
+
+    result = {"Values": values,
+              "Years": years}
+
+    return ColumnDataSource(result)
