@@ -476,7 +476,7 @@ def gera_layout_sillas(path):
     # As explicações:
     explicacoes = gera_explicacoes_sillas()
 
-    densidade = column(filtro_categorias, plot_densidade)
+    densidade = column(row(filtro_categorias),row(Div(text = "<br>")),row(plot_densidade))
 
     # Por fim, juntaremos as filtros, os filtros e as explicações ao layout final.
     layout = column(row(filtro_musicas, plot_músicas),

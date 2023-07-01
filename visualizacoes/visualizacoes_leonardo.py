@@ -75,7 +75,7 @@ def visualizacao_1_leonardo(datapath):
 
     return plot_1
 
-plot_1_leonardo = visualizacao_1_leonardo(df)
+# plot_1_leonardo = visualizacao_1_leonardo(df)
 
 ################################################################################
 
@@ -157,7 +157,7 @@ def visualizacao_2_leonardo(datapath):
 
     return column(spotify_player, plot_2)
 
-plot_2_leonardo = visualizacao_2_leonardo(df_2)
+# plot_2_leonardo = visualizacao_2_leonardo(df_2)
 
 ################################################################################
 
@@ -231,20 +231,15 @@ def visualizacao_3_leonardo(datapath):
 
     return plot_3
 
-plot_3_leonardo = visualizacao_3_leonardo(df_3)
+# plot_3_leonardo = visualizacao_3_leonardo(df_3)
 
 # Apresentação das análises 
 def gera_textos_leo():
-    text_1 = Div(text = """
-    <h1> Spotify e YouTube </h1>
-    <p> A partir de uma base de dados, do Kaggle, sobre músicas do Spotify e Youtube, foram elaboradas todas as 
-    visualizações dessa página. <p>
-    """,
-    style = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
-
     # Comentários sobre a primeira visualização
 
-    text_2 = Div(text = """
+    text_2 = Div(text = """<h1> Spotify e YouTube </h1>
+    <p> A partir de uma base de dados, do Kaggle, sobre músicas do Spotify e Youtube, foram elaboradas todas as 
+    visualizações dessa página. <p>
     <h2> Energia x Danceabilidade </h2>
     <p> A partir de duas variáveis, danceabilidade e energia, produziu-se um gráfico de dispersão.
     A danceabilidade representa o quão dançante é a música no intervalo de 1 a 0 e a 
@@ -302,11 +297,10 @@ def gera_layout_leonardo(path):
     text_1 = comentarios[0]
     text_2 = comentarios[1]
     text_3 = comentarios[2]
-    text_4 = comentarios[3]
 
     # Layout da imagem
 
-    layout = column(row(plot_1_leonardo, column(text_1, text_2)), row(plot_2_leonardo, text_3), row(plot_3_leonardo, text_4))
+    layout = column(row(plot_1_leonardo, column(text_1)), row(plot_2_leonardo, text_2), row(plot_3_leonardo, text_3))
 
     # Retornando o layout
 
