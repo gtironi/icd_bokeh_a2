@@ -1,11 +1,11 @@
 # Arquivo para os códigos das  visualizacoes
-import pandas as pd
 import numpy as np
 
-from . import plot_style 
-from . import generic_plot
-from . import read_data 
+import plot_style 
+import generic_plot
+import read_data 
 
+from bokeh.io import show
 from bokeh.layouts import column, row
 from bokeh.models import RangeTool, Div
 from bokeh.plotting import figure
@@ -14,7 +14,7 @@ from bokeh.plotting import figure
 
 def plot_1_gustavo(datapath):
 
-    datasource = read_data.columndatasource_plot1_gustavo(datapath)
+    source = read_data.columndatasource_plot1_gustavo(datapath)
     
     plot_1 = plot_style.figure_generator_gustavo(figure(height=350, width=890, tools="xpan", toolbar_location=None, 
                                              x_axis_type="datetime", x_axis_location="above", 
@@ -69,15 +69,11 @@ def plot_2_gustavo(datapath, column):
 
     return plot_2
 
-p2 = plot_2_gustavo(source1, 'Acousticness')
-
 # Plot 3 (boxplot)
-
-df = read_data.columndatasource_plot3_gustavo('visualizacoes/data/spotify_youtube_year.csv')
 
 def plot_3_gustavo(datapath):
 
-    dataframe = columndatasource_plot3_gustavo(datapath)
+    dataframe = read_data.columndatasource_plot3_gustavo(datapath)
 
     plot_3 = generic_plot.boxplot(dataframe, 'official_video', 'popularity')
 
@@ -85,8 +81,6 @@ def plot_3_gustavo(datapath):
     plot_3.title.text = 'Boxplot - Oficial Vídeo'
 
     return plot_3
-
-p3 = plot_3_gustavo(df)
 
 def cria_layout_gustavo(datapath):
 
