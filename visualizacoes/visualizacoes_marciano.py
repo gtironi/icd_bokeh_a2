@@ -236,6 +236,7 @@ def cria_layout_marciano(path):
     mean_duration = read_data.columndatasource_plot2_marciano(path)[1]
     plot_2 = plot_2_marciano(source_2, mean_duration)
 
+    
     source_3 = read_data.columndatasource_plot3_marciano(path)[0]
     top_30_list = read_data.columndatasource_plot3_marciano(path)[1]
     plot_3 = plot_3_marciano(source_3, top_30_list)
