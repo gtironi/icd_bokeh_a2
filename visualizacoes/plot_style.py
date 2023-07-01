@@ -9,10 +9,14 @@ def figure_generator_gustavo(final_figure):
     final_figure.xaxis.axis_label_standoff = 25
     final_figure.xaxis.axis_label_standoff = 15
     final_figure.grid.grid_line_color = None
+    final_figure.min_border_right = 50
     
     return final_figure
 
 def figure_text_generator_sillas(figure):
+    # Função criada apenas para definir a padronização da criação de figuras
+    # modificações como mudança da cor de fundo, mudança dos rótulos dos textos,
+    # mudança da fonte e tamanho.
 
     figure.background_fill_color="GhostWhite"
 

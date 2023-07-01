@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from read_data import columndatasource_plot2_leonardo, columndatasource_plot3_leonardo
+from .read_data import columndatasource_plot2_leonardo, columndatasource_plot3_leonardo
 from bokeh.plotting import figure, curdoc
 from bokeh.io import output_file, save, show
 from bokeh.models import HoverTool, ColumnDataSource, Div

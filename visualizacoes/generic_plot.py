@@ -26,8 +26,9 @@ def boxplot(dataframe, eixo_x, eixo_y):
     source = ColumnDataSource(dataframe)
 
     # Cria a figura que será usada
-    boxplot = figure_generator_gustavo(figure(height=480, width=640, x_range=valores_x, tools="", toolbar_location=None,
+    boxplot = figure_generator_gustavo(figure(height=480, width=690, x_range=valores_x, tools="", toolbar_location=None,
             y_range = (dataframe[eixo_y].min(), dataframe[eixo_y].max())))
+    
 
     # Adicona as linhas do boxplot à figura
     whisker = Whisker(base=eixo_x, upper="upper", lower="lower", source=source)
@@ -35,7 +36,7 @@ def boxplot(dataframe, eixo_x, eixo_y):
     boxplot.add_layout(whisker)
 
     # Adicona o corpo do boxplot à figura
-    cmap = factor_cmap(eixo_x, "TolRainbow7", valores_x)
+    cmap = factor_cmap(eixo_x, ['#AF601A',  '#C70039'], valores_x)
     boxplot.vbar(eixo_x, 0.7, "q2", "q3", source=source, color=cmap, line_color="black")
     boxplot.vbar(eixo_x, 0.7, "q1", "q2", source=source, color=cmap, line_color="black")
 
