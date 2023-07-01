@@ -91,7 +91,7 @@ def visualizacao_2_leonardo(datapath):
     
     df_2 = columndatasource_plot2_leonardo(datapath)
 
-    # Contruindo nova coluna de curtidas em milhões
+    # Contruindo uma nova coluna de curtidas em milhões
 
     df["Curtidas"] = df["Likes"] / 1000000
 
@@ -169,11 +169,7 @@ df_3 = columndatasource_plot3_leonardo('visualizacoes/data/spotify_youtube_year.
 
 def visualizacao_3_leonardo(datapath):
 
-    df = pd.read_csv(datapath)
-    
-    df_3 = columndatasource_plot3_leonardo(datapath)
-
-    # Contruindo nova coluna de curtidas em milhões
+    # Contruindo uma nova coluna de curtidas em milhões
 
     df["Curtidas"] = df["Likes"] / 1000000
 
@@ -284,7 +280,7 @@ def gera_textos_leo():
     """,
     style = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
 
-    return [text_1, text_2, text_3, text_4]
+    return [text_2, text_3, text_4]
 
 
 def gera_layout_leonardo(path):
