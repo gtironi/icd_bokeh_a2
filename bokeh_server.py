@@ -37,7 +37,7 @@ def gera_bokeh_server(path):
     """
 
     home_page_div = Div(text = home_page_text,
-                            style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+                            styles = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
 
     main_page = column(home_page_div, Layout_Sillas, Layout_Marciano, Layout_Gustavo)
 

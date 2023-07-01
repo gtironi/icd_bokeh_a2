@@ -5,7 +5,7 @@ from bokeh.models import Select, Button, TextInput, Div, RangeTool, BoxAnnotatio
 from bokeh.models import NumeralTickFormatter, HoverTool, Label
 from bokeh.transform import dodge
 from . import read_data
-from . import plot_style
+from . import plot_styles
 
 # output_file("testando.html")
 
@@ -68,7 +68,7 @@ def gera_plot_categorias_sillas(path):
     filter_plot.yaxis.ticker = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
 
     # Iremos carregar o tema pré definido de rótulos e cor de fundo.
-    filter_plot = plot_style.figure_text_generator_sillas(filter_plot)
+    filter_plot = plot_styles.figure_text_generator_sillas(filter_plot)
 
     # Alteraremos o formato do eixo Y para exibir porcentagem, como todas as categorias
     # vão de 0 à 1, é possível computar seus valores como porcentagens.
@@ -142,7 +142,7 @@ def gera_plot_densidade_sillas(path, initial_catefory = "Energy"):
     density_plot.ygrid.grid_line_color = None
 
     # Utilizaremos o tema pré definido.
-    density_plot = plot_style.figure_text_generator_sillas(density_plot)
+    density_plot = plot_styles.figure_text_generator_sillas(density_plot)
 
     # Alteraremos o formato dos eixos, o eixo x novamente irá de 0 à 1 pois é uma das categorias,
     # entretanto o eixo Y chega à escala de bilhões.
@@ -188,7 +188,7 @@ def gera_plot_anos_sillas(path):
                         x_range = [2001, 2021], y_range = [0, 100],
                         x_axis_label = "Anos", y_axis_label = "Popularidade Média",)
     # Adicionaremos o tema pré definido à figura.
-    years_plot = plot_style.figure_text_generator_sillas(years_plot)
+    years_plot = plot_styles.figure_text_generator_sillas(years_plot)
     # Removeremos o grid do eixo X para fins estéticos.
     years_plot.xgrid.grid_line_color = None
     # Adicionaremos os intervalos do eixo Y.
@@ -439,7 +439,7 @@ def gera_explicacoes_sillas():
     uma música, com o seletor ao lado do gráfico, fazer uma comparação entre as categorias da música selecionada com a média das categorias das
     top 10 músicas mais ouvidas no Spotify. Como o intuito é uma comparação, foi utilizado um gráfico de colunas lado a lado, a paleta se mantém a mesma,
     com várias inspirações na do spotify, como todas as categorias vão de 0 à 1, é razoável medi-lás em porcentagem.</p>""",
-            style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+            styles = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
 
     scatter = Div(text = """<h2>Gráfico de scatter plot com histograma</h2>
     <p>O segundo gráfico é composto pela correlação entre a categoria selecionada e o número de vezes ouvidas
@@ -449,7 +449,7 @@ def gera_explicacoes_sillas():
     é possível ver como a distribuição da grande quantidade de músicas na base de dados não é uniforme, por isso foi gerado
     um histograma no fundo com baixa opacidade para ajudar a estimar a densidade das músicas, e a paleta
     não só deste como dos outros gráficos busca trazer um verde referente ao Spotify e um roxo que se destaca em conjunto com o verde.</p>""",
-                style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+                styles = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
 
     linhas = Div(text = """<h2>Gráfico de linhas</h2>
     <p>O terceira gráfico busca exibir a o crescimento da popularidade médias das músicas lançadas
@@ -457,7 +457,7 @@ def gera_explicacoes_sillas():
     além disso uma anotação de destaque foi feita para exibir o aumento da popularidade média
     das músicas a partir do ano de 2017, uma ferramenta de destaque para esta plotagem é a de
     deslizamento, que permite percorrer a linha temporal de maneira dinâmica.</p>""",
-                style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+                styles = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
     
     return row(column(scatter), column(colunas, linhas))
 

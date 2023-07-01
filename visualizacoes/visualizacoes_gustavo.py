@@ -1,9 +1,9 @@
 # Arquivo para os códigos das  visualizacoes
 import numpy as np
 
-import plot_style 
-import generic_plot
-import read_data 
+from . import plot_styles 
+from . import generic_plot
+from . import read_data 
 
 from bokeh.io import show
 from bokeh.layouts import column, row
@@ -16,7 +16,7 @@ def plot_1_gustavo(datapath):
 
     source = read_data.columndatasource_plot1_gustavo(datapath)
     
-    plot_1 = plot_style.figure_generator_gustavo(figure(height=350, width=890, tools="xpan", toolbar_location=None, 
+    plot_1 = plot_styles.figure_generator_gustavo(figure(height=350, width=890, tools="xpan", toolbar_location=None, 
                                              x_axis_type="datetime", x_axis_location="above", 
                                              x_range=(np.datetime64('1970-01-01'), np.datetime64('2020-01-01'))))
 
@@ -29,7 +29,7 @@ def plot_1_gustavo(datapath):
 
     plot_1.line('year', 'Key', source=source)
 
-    barra_de_rolagem = plot_style.figure_generator_gustavo(figure(height=230, width=890, y_range = plot_1.y_range,
+    barra_de_rolagem = plot_styles.figure_generator_gustavo(figure(height=230, width=890, y_range = plot_1.y_range,
                                                        x_axis_type="datetime", y_axis_type=None, tools="", toolbar_location=None))
     
     barra_de_rolagem.title.text_font_size = '16px'
@@ -59,7 +59,7 @@ def plot_2_gustavo(datapath, column):
     ("Views", "@Views"),
     ("URL", "@Url_youtube"),]
 
-    plot_2 = plot_style.figure_generator_gustavo(figure(height=480, width=690, toolbar_location=None,
+    plot_2 = plot_styles.figure_generator_gustavo(figure(height=480, width=690, toolbar_location=None,
                                              tools="hover", tooltips=tooltips))
 
     plot_2.circle(column, 'Views', size=8, source=datasource)

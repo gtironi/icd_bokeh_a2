@@ -174,7 +174,7 @@ def plot_3_marciano(data_source, top_30_list):
     plot_3.add_tools(HoverTool(tooltips=tooltips))
 
     labels = LabelSet(x="Stream", y="Artist", text="stream_label", x_offset=-50, y_offset=-7, source=data_source_3,  # Adicionando legenda nas barras
-                    level = "glyph", text_font_size="10pt", text_font = "Arial Black", text_font_style = "bold", text_color = "#DEF8F9")
+                    level = "glyph", text_font_size="10pt", text_font = "Arial Black", text_font_styles = "bold", text_color = "#DEF8F9")
     plot_3.add_layout(labels)
 
     return(plot_3)
@@ -195,7 +195,7 @@ def cria_explicacoes_marciano():
     ao vivo, foi utilizada a cor e a anotação para dar ênfase. As músicas na área azul e com o glifo em azul, são gravações ao vivo. O usuário pode passar
     o mouse sobre os pontos para obter mais informações sobre as músicas, além de dar zoom e mexer navegar pelo gráfico.
     ''',
-    style = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
+    styles = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
 
     text_2 = Div(text = '''
     <h2>Duração das músicas X Anos</h2>
@@ -210,7 +210,7 @@ def cria_explicacoes_marciano():
     que mostra a média geral de duração das músicas. Há uma barra para deslizar no tempo abaixo do gráfico.
     O usuário pode passar o mouse sobre a linha para obter mais informações em cada ano, além de dar zoom e mexer navegar pelo gráfico.</p>
     ''',
-    style = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
+    styles = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
 
 
     text_3 = Div(text = '''
@@ -222,7 +222,7 @@ def cria_explicacoes_marciano():
     Por fim, foi realizado o gráfico de barras horizontais com os 30 maiores valores do data frame criado. O usuário pode passar
     o mouse sobre as barras para obter o número exato de streams, mas não pode navegar pelo gráfico, visto que é um ranking.</p>
     ''',
-    style = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
+    styles = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
 
     return [text_1, text_2, text_3]
 
@@ -236,7 +236,6 @@ def cria_layout_marciano(path):
     mean_duration = read_data.columndatasource_plot2_marciano(path)[1]
     plot_2 = plot_2_marciano(source_2, mean_duration)
 
-    
     source_3 = read_data.columndatasource_plot3_marciano(path)[0]
     top_30_list = read_data.columndatasource_plot3_marciano(path)[1]
     plot_3 = plot_3_marciano(source_3, top_30_list)
