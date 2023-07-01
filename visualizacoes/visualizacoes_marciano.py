@@ -185,48 +185,68 @@ top_30_list = read_data.columndatasource_plot3_marciano("visualizacoes/data/spot
 plot_3 = plot_3_marciano(source_3, top_30_list)   # Criando efetivamente o plot 3
 ######################################################################################################################################
 # Criando as explicações #
+def cria_explicacoes_marciano():
+    text_1 = Div(text = '''
+    <h2>Scatter Plot Liveness X Energy</h2>
+    A partir dos dados da base de dados, encontrada no Kaggle, sobre músicas do Spotify e YouTube, foi feita a visualização ao lado.
+    O objetivo do gráfico é observar a possível correlação entre a "energia" da música e o fato dela ser ao vivo.
+    A variável Energy é uma medida que representa o percentual de intensidade e atividade na música, já a Liveness mede a presença de audiencia na gravação.
+    No site da base de dados no Kaggle foi dito que as músicas com valores de Liveness superiores a 0.8 são, muito provavelmente, gravações de músicas ao vivo. Com o intuito de observar se músicas ao vivo são mais "animadas", com maior percentual de "Energy", foi criado o gráfico de distribuição das duas variáveis. Como o objetivo é destacar as músicas 
+    ao vivo, foi utilizada a cor e a anotação para dar ênfase. As músicas na área azul e com o glifo em azul, são gravações ao vivo. O usuário pode passar
+    o mouse sobre os pontos para obter mais informações sobre as músicas, além de dar zoom e mexer navegar pelo gráfico.
+    ''',
+    style = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
 
-text_1 = Div(text = '''
-<h2>Scatter Plot Liveness X Energy</h2>
-A partir dos dados da base de dados, encontrada no Kaggle, sobre músicas do Spotify e YouTube, foi feita a visualização ao lado.
- O objetivo do gráfico é observar a possível correlação entre a "energia" da música e o fato dela ser ao vivo.
- A variável Energy é uma medida que representa o percentual de intensidade e atividade na música, já a Liveness mede a presença de audiencia na gravação.
- No site da base de dados no Kaggle foi dito que as músicas com valores de Liveness superiores a 0.8 são, muito provavelmente, gravações de músicas ao vivo. Com o intuito de observar se músicas ao vivo são mais "animadas", com maior percentual de "Energy", foi criado o gráfico de distribuição das duas variáveis. Como o objetivo é destacar as músicas 
-ao vivo, foi utilizada a cor e a anotação para dar ênfase. As músicas na área azul e com o glifo em azul, são gravações ao vivo. O usuário pode passar
-o mouse sobre os pontos para obter mais informações sobre as músicas, além de dar zoom e mexer navegar pelo gráfico.
-''',
-style = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
-
-text_2 = Div(text = '''
-<h2>Duração das músicas X Anos</h2>
-<p>A partir dos dados da base de dados, encontrada no Kaggle, sobre músicas do Spotify e YouTube, foi feita a visualização.
- O objetivo do gráfico é observar com variou a duração das músicas pelo anos.
- Foram utilizadas as colunas Duration_ms, duração da música em milissegundos, e release_date, ano de lançamento da música, para fazer esse gráfico
- de linha. A variável Duration_ms foi transformada para segundos, dividindo os valores por 1000.
- Foi realizado um agrupamento das músicas por ano de lançamento, calculando a média de duração das músicas em cada ano.
- Foi realizado uma filtragem para utilizar somente os anos que possuiam um número considerável de músicas, que no caso foi mais que 90 músicas no ano,
- visto que haviam anos com somente uma música na base de dados. Por fim, foi feito o
- gráfico de linha para observar como a média de duração das músicas variou no tempo além de uma linha horizontal para fim de comparação
-  que mostra a média geral de duração das músicas. Há uma barra para deslizar no tempo abaixo do gráfico.
- O usuário pode passar o mouse sobre a linha para obter mais informações em cada ano, além de dar zoom e mexer navegar pelo gráfico.</p>
-''',
-style = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
+    text_2 = Div(text = '''
+    <h2>Duração das músicas X Anos</h2>
+    <p>A partir dos dados da base de dados, encontrada no Kaggle, sobre músicas do Spotify e YouTube, foi feita a visualização.
+    O objetivo do gráfico é observar com variou a duração das músicas pelo anos.
+    Foram utilizadas as colunas Duration_ms, duração da música em milissegundos, e release_date, ano de lançamento da música, para fazer esse gráfico
+    de linha. A variável Duration_ms foi transformada para segundos, dividindo os valores por 1000.
+    Foi realizado um agrupamento das músicas por ano de lançamento, calculando a média de duração das músicas em cada ano.
+    Foi realizado uma filtragem para utilizar somente os anos que possuiam um número considerável de músicas, que no caso foi mais que 90 músicas no ano,
+    visto que haviam anos com somente uma música na base de dados. Por fim, foi feito o
+    gráfico de linha para observar como a média de duração das músicas variou no tempo além de uma linha horizontal para fim de comparação
+    que mostra a média geral de duração das músicas. Há uma barra para deslizar no tempo abaixo do gráfico.
+    O usuário pode passar o mouse sobre a linha para obter mais informações em cada ano, além de dar zoom e mexer navegar pelo gráfico.</p>
+    ''',
+    style = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
 
 
-text_3 = Div(text = '''
-<h2>Top 30 artistas</h2>
-<p>A partir dos dados da base de dados, encontrada no Kaggle, sobre músicas do Spotify e YouTube, foi feita a visualização.
- O objetivo do gráfico é fazer um raking dos 30 artistas com maior média de streams da base de dados.
- Foram utilizadas as colunas Artist, artista da música, e Stream, número de reproduções da música, para fazer esse gráfico de barras.
- Foi realizado um agrupamento das músicas por artista, calculando a média de reproduções de cada artista.
- Por fim, foi realizado o gráfico de barras horizontais com os 30 maiores valores do data frame criado. O usuário pode passar
-o mouse sobre as barras para obter o número exato de streams, mas não pode navegar pelo gráfico, visto que é um ranking.</p>
-''',
-style = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
+    text_3 = Div(text = '''
+    <h2>Top 30 artistas</h2>
+    <p>A partir dos dados da base de dados, encontrada no Kaggle, sobre músicas do Spotify e YouTube, foi feita a visualização.
+    O objetivo do gráfico é fazer um raking dos 30 artistas com maior média de streams da base de dados.
+    Foram utilizadas as colunas Artist, artista da música, e Stream, número de reproduções da música, para fazer esse gráfico de barras.
+    Foi realizado um agrupamento das músicas por artista, calculando a média de reproduções de cada artista.
+    Por fim, foi realizado o gráfico de barras horizontais com os 30 maiores valores do data frame criado. O usuário pode passar
+    o mouse sobre as barras para obter o número exato de streams, mas não pode navegar pelo gráfico, visto que é um ranking.</p>
+    ''',
+    style = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
+
+    return [text_1, text_2, text_3]
 
 #####################################################################################################################
 
-def cria_layout_marciano():
+def cria_layout_marciano(path):
+    source_1 = read_data.columndatasource_plot1_marciano(path)
+    plot_1 = plot_1_marciano(source_1)
+
+    source_2 = read_data.columndatasource_plot2_marciano(path)[0]
+    mean_duration = read_data.columndatasource_plot2_marciano(path)[1]
+    plot_2 = plot_2_marciano(source_2, mean_duration)
+
+    
+    source_3 = read_data.columndatasource_plot3_marciano(path)[0]
+    top_30_list = read_data.columndatasource_plot3_marciano(path)[1]
+    plot_3 = plot_3_marciano(source_3, top_30_list)
+    
+    explicacoes = cria_explicacoes_marciano()
+
+    text_1 = explicacoes[0]
+    text_2 = explicacoes[1]
+    text_3 = explicacoes[2]
+
     layout = column(row(plot_1, text_1), row(plot_2, text_2), row(plot_3, text_3)) # Definindo layout
     return layout
 

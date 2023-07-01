@@ -1,6 +1,5 @@
 # Importações do módulo de visualização
-from bokeh.io import save, show, output_file
-from bokeh.plotting import figure, curdoc
+from bokeh.plotting import figure
 from bokeh.layouts import column, row
 from bokeh.models import Select, Button, TextInput, Div, RangeTool, BoxAnnotation
 from bokeh.models import NumeralTickFormatter, HoverTool, Label
