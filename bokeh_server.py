@@ -1,23 +1,23 @@
 
 from bokeh.models import Select, Div
-from bokeh.layouts import column
+from bokeh.layouts import column, row
 from bokeh.plotting import curdoc
 from visualizacoes.visualizacoes_marciano import cria_layout_marciano
-from visualizacoes.visualizacoes_gustavo import cria_layout_gustavo
+# from visualizacoes.visualizacoes_gustavo import cria_layout_gustavo
 from visualizacoes.visualizacoes_sillas import gera_layout_sillas
 
 # path = "visualizacoes/data/spotify_youtube_year.csv"
 
 def gera_bokeh_server(path):
 
-    Layout_Sillas = gera_layout_sillas(path)
-    Layout_Marciano = cria_layout_marciano(path)
-    Layout_Gustavo = cria_layout_gustavo(path)
+    layout_sillas = gera_layout_sillas(path)
+    layout_marciano = cria_layout_marciano(path)
+    # Layout_Gustavo = cria_layout_gustavo(path)
 
-    # layouts = [Layout_Sillas]
+    
+    layout_sillas.visible = False
+    layout_marciano.visible = False
 
-    # select_button_layout = Select(title = "Selecione um dos layouts, o carregamento pode demorar um pouco.", value = "",
-    #                                   options = layouts, width = 1300)
         
     home_page_text = """<h3 id="trabalho-de-introdu-o-ci-ncia-de-dados-">Trabalho de Introdução à ciência de dados:</h3>
     <p>Os alunos Leonardo Alexandre, Sillas Rocha, Gustavo Tironi e Luís Felipe elaboraram visualizações a partir de uma base e dados, encontrada no Kaggle, sobre músicas do Spotify e do YouTube.
@@ -39,20 +39,25 @@ def gera_bokeh_server(path):
     home_page_div = Div(text = home_page_text,
                             style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
 
-    main_page = column(home_page_div, Layout_Sillas, Layout_Marciano, Layout_Gustavo)
+    
+    layouts = {"Home Page": home_page_div, "Sillas": layout_sillas, "Marciano": layout_marciano}
+    layouts_list = list(layouts.values())
 
-    # Layout_Sillas.visible = False
-    # Layout_Marciano.visible = False
+    select_button_layout = Select(title = "Selecione um dos layouts, o carregamento pode demorar um pouco.",
+                                  value = "Home Page" , options = ["Home Page","Sillas", "Marciano"], width = 1400)
 
-    # def update_layout(attr, old, new):
-    #     selected_layout = select_button_layout.value
-    #     home_page_div.visible = False
-    #     Layout_Sillas.visible = False
-    #     # Layout_Marciano.visible = False
+    def update_layout(attr, old, new):
+        selected_layout = layouts[select_button_layout.value]
 
-    #     selected_layout.visible = True
+        for layout in layouts_list:
+            if layout != selected_layout:
+                layout.visible = False
+        selected_layout.visible = True
 
-    # select_button_layout.on_change("value", update_layout)
+
+    select_button_layout.on_change("value", update_layout)
+    
+    main_page = column(row(select_button_layout), row(home_page_div, layout_sillas, layout_marciano))
 
     return main_page
 

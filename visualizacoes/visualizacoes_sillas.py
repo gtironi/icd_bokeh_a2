@@ -459,7 +459,7 @@ def gera_explicacoes_sillas():
     deslizamento, que permite percorrer a linha temporal de maneira dinâmica.</p>""",
                 style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
     
-    return row(column(scatter), column(colunas, linhas))
+    return column(row(scatter, colunas),row(linhas))
 
 # Função para gerar o layout final da página
 def gera_layout_sillas(path):
@@ -472,16 +472,15 @@ def gera_layout_sillas(path):
     filtro_musicas = gera_filtros_música(path, plot_músicas, plot_densidade)
     filtro_categorias = gera_filtros_categorias(path, plot_músicas, plot_densidade)
     # Criaremos o layout das músicas:
-    music_layout = column(row(filtro_musicas),
-                row(Div(text = "<br><br><br><br>")),
-                row(filtro_categorias))
     
     # As explicações:
     explicacoes = gera_explicacoes_sillas()
 
+    densidade = column(filtro_categorias, plot_densidade)
+
     # Por fim, juntaremos as filtros, os filtros e as explicações ao layout final.
-    layout = column(row(music_layout, plot_músicas),
-                    row(plot_densidade, plot_anos),
+    layout = column(row(filtro_musicas, plot_músicas),
+                    row(densidade, plot_anos),
                     row(explicacoes))
     
     # E retornaremos o layout:

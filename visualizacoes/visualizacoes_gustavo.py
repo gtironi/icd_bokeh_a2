@@ -106,7 +106,7 @@ def cria_layout_gustavo(datapath):
     Ainda, foi adicionado uma barra de rolagem abaixo do gráfico, que permite rolar o gráfico. Essa barra usa a ferramenta
     <b>RangeTool</b> e a conexão entre o plot e barra de rolagem, para gerar o efeito apresentado.<p>
     """, 
-    style = {'text-align': 'center', 'font-size': '16px'}, width=430, align = 'center') #Define o texto de explicação do plot 1
+    style = {'text-align': 'center', 'font-size': '16px'}, width=430, align = 'center')
 
     text2 = Div(text=""" <h2>Gráfico de dispersão</h2>
     <p>Acima, foi plotado um gráfico de dispersão, dessa vez, considerando apenas as <b>100 músicas mais visualizadas</b><br>
@@ -116,7 +116,7 @@ def cria_layout_gustavo(datapath):
     Para sua execução, o dataset foi filtrado, sobrando apenas as 100 músicas com mais views, e então utilizado o método 
     <b>circle()</b> para fazer o plot.<p>
     """,
-    style = {'text-align': 'center', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40)) #Define o texto de explicação do plot 2
+    style = {'text-align': 'center', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
 
     text3 = Div(text=""" <h2>Gráfico Boxplot</h2>
     <p>Acima, foi plotado um <b>boxplot</b>, da popularidade das músicas, conforme a existência de um videoclipe.<br>
@@ -126,7 +126,7 @@ def cria_layout_gustavo(datapath):
     Superficialmente, observando o boxplot, podemos dizer que há um indicativo de maior popularidade em
     músicas com videoclipe.
     """,
-    style = {'text-align': 'center', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40)) #Define o texto de explicação do plot 3
+    style = {'text-align': 'center', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
     
     layout_final = column(row(plot_1, text1), row(column(plot_2, text2), column(plot_3, text3))) #Define o layout final, juntando os textos e os gráficos
 
