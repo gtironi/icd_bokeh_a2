@@ -441,25 +441,23 @@ def gera_explicacoes_sillas():
     com várias inspirações na do spotify, como todas as categorias vão de 0 à 1, é razoável medi-lás em porcentagem.</p>""",
             style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
 
-    scatter = Div(text = """<h2>Gráfico de scatter plot com histograma</h2>
+    scatter_linhas = Div(text = """<h2>Gráfico de scatter plot com histograma</h2>
     <p>O segundo gráfico é composto pela correlação entre a categoria selecionada e o número de vezes ouvidas
     no spotify por músicas, deste modo foi possível trazer um destaque para a música selecionada como uma estrela,
     as categorias disponíveis são as do primeiro gráfico que vão de 0 a 1 e representam o quanto o traço daquela categoria
     está presente na música, já a quantidade de vezes que a música foi escutada está na escala de bilhões, e por isso,
     é possível ver como a distribuição da grande quantidade de músicas na base de dados não é uniforme, por isso foi gerado
     um histograma no fundo com baixa opacidade para ajudar a estimar a densidade das músicas, e a paleta
-    não só deste como dos outros gráficos busca trazer um verde referente ao Spotify e um roxo que se destaca em conjunto com o verde.</p>""",
-                style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
-
-    linhas = Div(text = """<h2>Gráfico de linhas</h2>
+    não só deste como dos outros gráficos busca trazer um verde referente ao Spotify e um roxo que se destaca em conjunto com o verde.</p>
+    <h2>Gráfico de linhas</h2>
     <p>O terceira gráfico busca exibir a o crescimento da popularidade médias das músicas lançadas
     por ano, por isso há a escolha do gráfico de linhas para representar esta passagem de tempo,
     além disso uma anotação de destaque foi feita para exibir o aumento da popularidade média
     das músicas a partir do ano de 2017, uma ferramenta de destaque para esta plotagem é a de
     deslizamento, que permite percorrer a linha temporal de maneira dinâmica.</p>""",
                 style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
-    
-    return column(row(scatter, colunas),row(linhas))
+
+    return row(scatter_linhas, colunas)
 
 # Função para gerar o layout final da página
 def gera_layout_sillas(path):
@@ -476,7 +474,7 @@ def gera_layout_sillas(path):
     # As explicações:
     explicacoes = gera_explicacoes_sillas()
 
-    densidade = column(filtro_categorias, plot_densidade)
+    densidade = column(row(filtro_categorias),row(Div(text = "<br>")),row(plot_densidade))
 
     # Por fim, juntaremos as filtros, os filtros e as explicações ao layout final.
     layout = column(row(filtro_musicas, plot_músicas),
