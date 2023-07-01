@@ -89,7 +89,11 @@ def plot_3_gustavo(dataframe):
 
 p3 = plot_3_gustavo(df)
 
-def cria_layout_gustavo():
+def cria_layout_gustavo(datapath):
+
+    source = columndatasource_plot1_gustavo(datapath)
+    source1 = columndatasource_plot2_gustavo(datapath)
+    df = pd.read_csv(datapath)
     
     plot_1 = plot_1_gustavo(source)
     plot_2 = plot_2_gustavo(source1, 'Acousticness')

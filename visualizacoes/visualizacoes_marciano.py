@@ -250,5 +250,5 @@ def cria_layout_marciano(path):
     layout = column(row(plot_1, text_1), row(plot_2, text_2), row(plot_3, text_3)) # Definindo layout
     return layout
 
-layout = cria_layout_marciano()
+# layout = cria_layout_marciano()
 # show(layout)
