@@ -3,10 +3,9 @@
 import pandas as pd
 
 from .read_data import columndatasource_plot2_leonardo, columndatasource_plot3_leonardo
-from bokeh.plotting import figure, curdoc
-from bokeh.io import output_file, save, show
+from bokeh.plotting import figure
 from bokeh.models import HoverTool, ColumnDataSource, Div
-from bokeh.layouts import column, row, gridplot
+from bokeh.layouts import column, row
 
 # Leitura do arquivo
 
@@ -290,15 +289,3 @@ def gera_layout_leonardo():
     # Retornando o layout
 
     return layout
-
-# Inserindo o layout em uma variável
-
-plotagem = gera_layout_leonardo()
-
-"""
-layout = column((plot_2_leonardo), row(plot_1_leonardo, plot_3_leonardo))
-"""
-
-# Exibição do layout
-
-show(plotagem)
