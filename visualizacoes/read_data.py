@@ -509,6 +509,61 @@ def columndatasource_plot3_gustavo(datapath):
 
     return df
 
+def columndatasource_plot2_leonardo(datapath):
+    """ Gera um objeto ColumnDataSource a partir de um arquivo .csv """
+    """ O objeto será utilizado para elaborar a segunda visualização """
+
+    # Leitura do arquivo
+
+    df = pd.read_csv(datapath)
+
+    df["Curtidas"] = df["Likes"] / 1000000
+
+    # Agrupamento das 10 músicas com mais curtidas
+
+    df_duration_per_track = df.groupby("Track")["Curtidas"].mean().sort_values(ascending = False).head(10).reset_index()
+
+    # Ordenando de forma decrescente
+
+    df_duration_per_track = df_duration_per_track.sort_values(by = "Curtidas", ascending = True)
+
+    # Gerando um ColumnDataSource
+
+    to_cds_2 = ColumnDataSource(df_duration_per_track)
+
+    # Retornando a CDS da segunda visualização
+
+    return to_cds_2
+
+def columndatasource_plot3_leonardo(datapath):
+    """ Gera um objeto ColumnDataSource a partir de um arquivo .csv """
+    """ O objeto será utilizado para elaborar a terceira visualização """
+
+    # Leitura do arquivo
+
+    df = pd.read_csv(datapath)
+
+    # Média de curtidas por ano (em milhões)
+
+    likes_by_year = df.groupby(["release_date"])["Curtidas"].mean() 
+   
+    # Transformando a pd.Series em uma DataFrame
+
+    likes_by_year = pd.DataFrame(likes_by_year)
+
+    # Transformando a pd.Series em uma DataFrame
+
+    likes_by_year = pd.DataFrame(likes_by_year)
+
+    # Gerando um ColumnDataSource
+
+    to_cds_3 = ColumnDataSource(likes_by_year)
+
+    # Retornando a CDS da terceira visualização
+
+    return to_cds_3
+  
+  
 def columndatasource_plot1_marciano(path):
     """Retorna um column data source de um arquivo .csv
     
@@ -624,3 +679,4 @@ def columndatasource_plot3_marciano(path):
     lista_top30_artistas = stream_by_artist.index.tolist()
 
     return(data_source_3, lista_top30_artistas)
+  
