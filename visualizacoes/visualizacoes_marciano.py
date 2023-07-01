@@ -195,7 +195,7 @@ def cria_explicacoes_marciano():
     ao vivo, foi utilizada a cor e a anotação para dar ênfase. As músicas na área azul e com o glifo em azul, são gravações ao vivo. O usuário pode passar
     o mouse sobre os pontos para obter mais informações sobre as músicas, além de dar zoom e mexer navegar pelo gráfico.
     ''',
-    style = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
+    styles = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
 
     text_2 = Div(text = '''
     <h2>Duração das músicas X Anos</h2>
@@ -210,7 +210,7 @@ def cria_explicacoes_marciano():
     que mostra a média geral de duração das músicas. Há uma barra para deslizar no tempo abaixo do gráfico.
     O usuário pode passar o mouse sobre a linha para obter mais informações em cada ano, além de dar zoom e mexer navegar pelo gráfico.</p>
     ''',
-    style = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
+    styles = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
 
 
     text_3 = Div(text = '''
@@ -222,7 +222,7 @@ def cria_explicacoes_marciano():
     Por fim, foi realizado o gráfico de barras horizontais com os 30 maiores valores do data frame criado. O usuário pode passar
     o mouse sobre as barras para obter o número exato de streams, mas não pode navegar pelo gráfico, visto que é um ranking.</p>
     ''',
-    style = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
+    styles = {"text-align" : "center", "font-size" : "16px"}, width=430, align = "center", margin =(10,0,10,30))
 
     return [text_1, text_2, text_3]
 
