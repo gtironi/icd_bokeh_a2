@@ -259,7 +259,7 @@ text_1 = Div(text = """
 <p> A partir de uma base de dados, do Kaggle, sobre músicas do Spotify e Youtube, foram elaboradas todas as 
 visualizações dessa página. <p>
 """,
-styles = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
+style = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
 
 # Comentários sobre a primeira visualização
 
@@ -273,7 +273,7 @@ aumentar conforme o aumento da sua energia.
 Além disso, ao passar o cursor do mouse por cima de algum ponto, quatro dados da música 
 são disponibilizados: música; artista; álbum; visualizações. <p>
 """,
-styles = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
+style = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
 
 # Comentários sobre a segunda visualização
 
@@ -291,7 +291,7 @@ Com essas 10 músicas, construiu-se um gráfico de barras horizontais.
 No gráfico, fica nítido que a música com mais curtidas é Despacito.
 Assim, elaborou-se um player da música Despacito no Spotify. <p>
 """,
-styles = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
+style = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
 
 # Comentários sobre a terceira visualização
 
@@ -306,7 +306,7 @@ Dessa forma, plotou-se um gráfico de linhas com a média de curtidas das músic
 Pelo gráfico, o leitor pode observar os aumentos e as quedas em determinados intervalos de tempo,
 o que possibilita a realização de comparações entre períodos. <p>
 """,
-styles = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
+style = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
 
 def gera_layout_leonardo():
     """ Gera o layout das visualizações"""

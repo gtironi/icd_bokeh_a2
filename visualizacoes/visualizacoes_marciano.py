@@ -174,7 +174,7 @@ def plot_3_marciano(data_source, top_30_list):
     plot_3.add_tools(HoverTool(tooltips=tooltips))
 
     labels = LabelSet(x="Stream", y="Artist", text="stream_label", x_offset=-50, y_offset=-7, source=data_source_3,  # Adicionando legenda nas barras
-                    level = "glyph", text_font_size="10pt", text_font = "Arial Black", text_font_styles = "bold", text_color = "#DEF8F9")
+                    level = "glyph", text_font_size="10pt", text_font = "Arial Black", text_font_style = "bold", text_color = "#DEF8F9")
     plot_3.add_layout(labels)
 
     return(plot_3)

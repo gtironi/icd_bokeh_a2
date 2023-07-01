@@ -1,7 +1,7 @@
 # Arquivo para os códigos das  visualizacoes
 import numpy as np
 
-from . import plot_styles 
+from . import plot_style 
 from . import generic_plot
 from . import read_data 
 
@@ -16,7 +16,7 @@ def plot_1_gustavo(datapath):
 
     source = read_data.columndatasource_plot1_gustavo(datapath)
     
-    plot_1 = plot_styles.figure_generator_gustavo(figure(height=350, width=890, tools="xpan", toolbar_location=None, 
+    plot_1 = plot_style.figure_generator_gustavo(figure(height=350, width=890, tools="xpan", toolbar_location=None, 
                                              x_axis_type="datetime", x_axis_location="above", 
                                              x_range=(np.datetime64('1970-01-01'), np.datetime64('2020-01-01'))))
 
@@ -29,7 +29,7 @@ def plot_1_gustavo(datapath):
 
     plot_1.line('year', 'Key', source=source)
 
-    barra_de_rolagem = plot_styles.figure_generator_gustavo(figure(height=230, width=890, y_range = plot_1.y_range,
+    barra_de_rolagem = plot_style.figure_generator_gustavo(figure(height=230, width=890, y_range = plot_1.y_range,
                                                        x_axis_type="datetime", y_axis_type=None, tools="", toolbar_location=None))
     
     barra_de_rolagem.title.text_font_size = '16px'
@@ -59,7 +59,7 @@ def plot_2_gustavo(datapath, column):
     ("Views", "@Views"),
     ("URL", "@Url_youtube"),]
 
-    plot_2 = plot_styles.figure_generator_gustavo(figure(height=480, width=690, toolbar_location=None,
+    plot_2 = plot_style.figure_generator_gustavo(figure(height=480, width=690, toolbar_location=None,
                                              tools="hover", tooltips=tooltips))
 
     plot_2.circle(column, 'Views', size=8, source=datasource)
@@ -95,7 +95,7 @@ def cria_layout_gustavo(datapath):
     Ainda, foi adicionado uma barra de rolagem abaixo do gráfico, que permite rolar o gráfico. Essa barra usa a ferramenta
     <b>RangeTool</b> e a conexão entre o plot e barra de rolagem, para gerar o efeito apresentado.<p>
     """, 
-    styles = {'text-align': 'center', 'font-size': '16px'}, width=430, align = 'center')
+    style = {'text-align': 'center', 'font-size': '16px'}, width=430, align = 'center')
 
     text2 = Div(text=""" <h2>Gráfico de dispersão</h2>
     <p>Acima, foi plotado um gráfico de dispersão, dessa vez, considerando apenas as <b>100 músicas mais visualizadas</b><br>
@@ -105,7 +105,7 @@ def cria_layout_gustavo(datapath):
     Para sua execução, o dataset foi filtrado, sobrando apenas as 100 músicas com mais views, e então utilizado o método 
     <b>circle()</b> para fazer o plot.<p>
     """,
-    styles = {'text-align': 'center', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+    style = {'text-align': 'center', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
 
     text3 = Div(text=""" <h2>Gráfico Boxplot</h2>
     <p>Acima, foi plotado um <b>boxplot</b>, da popularidade das músicas, conforme a existência de um videoclipe.<br>
@@ -115,7 +115,7 @@ def cria_layout_gustavo(datapath):
     Superficialmente, observando o boxplot, podemos dizer que há um indicativo de maior popularidade em
     músicas com videoclipe.
     """,
-    styles = {'text-align': 'center', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+    style = {'text-align': 'center', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
     
     select_layout = column(row(plot_1, text1), row(column(plot_2, text2), column(plot_3, text3)))
 
