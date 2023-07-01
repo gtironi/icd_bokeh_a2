@@ -1,11 +1,11 @@
 # Arquivo para os códigos das  visualizacoes
-import pandas as pd
 import numpy as np
 
-from . import plot_style 
-from . import generic_plot
-from . import read_data 
+import plot_style 
+import generic_plot
+import read_data 
 
+from bokeh.io import show
 from bokeh.layouts import column, row
 from bokeh.models import RangeTool, Div
 from bokeh.plotting import figure
