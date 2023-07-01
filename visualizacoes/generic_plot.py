@@ -1,3 +1,11 @@
+'''Módulo que gera plots genericos
+
+Este módulo contém funções que geram plot mais avançados.
+
+Funcionalidades:
+- boxplot: Gera um boxplot a partir de um dataframe
+'''
+
 import pandas as pd
 from .plot_style import figure_generator_gustavo
 
@@ -6,6 +14,32 @@ from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
 
 def boxplot(dataframe, eixo_x, eixo_y):
+    '''Gera um boxplot a partir de um dataframe
+
+    Usa funções e metodos do bokeh para gerar um boxplot.
+    Deve receber um dataframe, uma coluna referente ao eixo x
+    e uma coluna referente ao eixo y.
+
+    Parâmetros
+        ----------
+        dataframe : dataframe
+            Deve conter um dataframe com os dados
+        eixo_x : str
+            Deve conter exatamente uma string, com o nome da coluna a ser
+            usada de referencia para os valores do eixo x.
+        eixo_y: str
+            Deve conter exatamente uma string, com o nome da coluna a ser
+            usada de referencia para os valores do eixo y.
+
+        Retorna
+        -------
+        boxplot
+            Retorna uma figura referente a um boxplot, de acordo com os parametros passados
+
+        Examples
+        --------
+        >>> boxplot(dataframe, 'official_video', 'popularity')
+    '''
 
     # Determina os valores categoricos que aparecerão no eixo x
     valores_x = list(dataframe[eixo_x].unique())
