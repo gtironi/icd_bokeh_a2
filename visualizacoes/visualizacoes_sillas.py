@@ -439,7 +439,7 @@ def gera_explicacoes_sillas():
     uma música, com o seletor ao lado do gráfico, fazer uma comparação entre as categorias da música selecionada com a média das categorias das
     top 10 músicas mais ouvidas no Spotify. Como o intuito é uma comparação, foi utilizado um gráfico de colunas lado a lado, a paleta se mantém a mesma,
     com várias inspirações na do spotify, como todas as categorias vão de 0 à 1, é razoável medi-lás em porcentagem.</p>""",
-            styles = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+            style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
 
     scatter = Div(text = """<h2>Gráfico de scatter plot com histograma</h2>
     <p>O segundo gráfico é composto pela correlação entre a categoria selecionada e o número de vezes ouvidas
@@ -449,7 +449,7 @@ def gera_explicacoes_sillas():
     é possível ver como a distribuição da grande quantidade de músicas na base de dados não é uniforme, por isso foi gerado
     um histograma no fundo com baixa opacidade para ajudar a estimar a densidade das músicas, e a paleta
     não só deste como dos outros gráficos busca trazer um verde referente ao Spotify e um roxo que se destaca em conjunto com o verde.</p>""",
-                styles = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+                style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
 
     linhas = Div(text = """<h2>Gráfico de linhas</h2>
     <p>O terceira gráfico busca exibir a o crescimento da popularidade médias das músicas lançadas
@@ -457,9 +457,9 @@ def gera_explicacoes_sillas():
     além disso uma anotação de destaque foi feita para exibir o aumento da popularidade média
     das músicas a partir do ano de 2017, uma ferramenta de destaque para esta plotagem é a de
     deslizamento, que permite percorrer a linha temporal de maneira dinâmica.</p>""",
-                styles = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+                style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
     
-    return row(column(scatter), column(colunas, linhas))
+    return column(row(scatter, colunas),row(linhas))
 
 # Função para gerar o layout final da página
 def gera_layout_sillas(path):
@@ -472,16 +472,15 @@ def gera_layout_sillas(path):
     filtro_musicas = gera_filtros_música(path, plot_músicas, plot_densidade)
     filtro_categorias = gera_filtros_categorias(path, plot_músicas, plot_densidade)
     # Criaremos o layout das músicas:
-    music_layout = column(row(filtro_musicas),
-                row(Div(text = "<br><br><br><br>")),
-                row(filtro_categorias))
     
     # As explicações:
     explicacoes = gera_explicacoes_sillas()
 
+    densidade = column(filtro_categorias, plot_densidade)
+
     # Por fim, juntaremos as filtros, os filtros e as explicações ao layout final.
-    layout = column(row(music_layout, plot_músicas),
-                    row(plot_densidade, plot_anos),
+    layout = column(row(filtro_musicas, plot_músicas),
+                    row(densidade, plot_anos),
                     row(explicacoes))
     
     # E retornaremos o layout:
