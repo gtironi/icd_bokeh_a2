@@ -44,7 +44,7 @@ def gera_html(path):
     espaço_sillas = Div(text = 'Gráficos Sillas (Servidor Bokeh)', height=120, style = {'text-align': 'center', 'font-size': '70px'}, margin=(40, 0, 40, 0), align = 'center')
 
     home_page_div = Div(text = home_page_text,
-                            style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+                            style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40), align = 'center')
 
     main_page = column(home_page_div, espaço_marciano, layout_marciano, espaço_gustavo, layout_gustavo, espaço_leonardo, layout_leonardo, espaço_sillas, layout_sillas)
 
