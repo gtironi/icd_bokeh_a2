@@ -1,5 +1,5 @@
 import pandas as pd
-from plot_style import figure_generator_gustavo
+from .plot_style import figure_generator_gustavo
 
 from bokeh.models import ColumnDataSource, Whisker
 from bokeh.plotting import figure
@@ -18,9 +18,9 @@ def boxplot(dataframe, eixo_x, eixo_y):
     dataframe = pd.merge(dataframe, df_quantils, on=eixo_x, how="left")
 
     # Calcula a distância interquantils e os limites do boxplot (fator: 1,5)
-    iqr = dataframe.q3 - dataframe.q1
-    dataframe["upper"] = dataframe.q3 + 1.5*iqr
-    dataframe["lower"] = dataframe.q1 - 1.5*iqr
+    distancia_interquantil = dataframe.q3 - dataframe.q1
+    dataframe["upper"] = dataframe.q3 + 1.5*distancia_interquantil
+    dataframe["lower"] = dataframe.q1 - 1.5*distancia_interquantil
 
     # Transforma o df em ColumnDataSource
     source = ColumnDataSource(dataframe)
