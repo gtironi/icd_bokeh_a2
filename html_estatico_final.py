@@ -10,7 +10,7 @@ from visualizacoes.visualizacoes_leonardo import gera_layout_leonardo
 
 def gera_html(path):
 
-    output_file("visualizacao_final.html")
+    output_file("index.html")
 
     layout_sillas = gera_layout_estatico_sillas(path)
     layout_marciano = cria_layout_marciano(path)
