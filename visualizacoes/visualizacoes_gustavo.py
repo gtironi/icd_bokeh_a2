@@ -1,11 +1,11 @@
 # Arquivo para os códigos das  visualizacoes
-import pandas as pd
 import numpy as np
 
-from . import plot_style 
+from . import plot_style
 from . import generic_plot
 from . import read_data 
 
+from bokeh.io import show
 from bokeh.layouts import column, row
 from bokeh.models import RangeTool, Div
 from bokeh.plotting import figure
@@ -14,7 +14,7 @@ from bokeh.plotting import figure
 
 def plot_1_gustavo(datapath):
 
-    datasource = read_data.columndatasource_plot1_gustavo(datapath)
+    source = read_data.columndatasource_plot1_gustavo(datapath)
     
     plot_1 = plot_style.figure_generator_gustavo(figure(height=350, width=890, tools="xpan", toolbar_location=None, 
                                              x_axis_type="datetime", x_axis_location="above", 
@@ -69,15 +69,11 @@ def plot_2_gustavo(datapath, column):
 
     return plot_2
 
-p2 = plot_2_gustavo(source1, 'Acousticness')
-
 # Plot 3 (boxplot)
-
-df = read_data.columndatasource_plot3_gustavo('visualizacoes/data/spotify_youtube_year.csv')
 
 def plot_3_gustavo(datapath):
 
-    dataframe = columndatasource_plot3_gustavo(datapath)
+    dataframe = read_data.columndatasource_plot3_gustavo(datapath)
 
     plot_3 = generic_plot.boxplot(dataframe, 'official_video', 'popularity')
 
@@ -85,8 +81,6 @@ def plot_3_gustavo(datapath):
     plot_3.title.text = 'Boxplot - Oficial Vídeo'
 
     return plot_3
-
-p3 = plot_3_gustavo(df)
 
 def cria_layout_gustavo(datapath):
 
@@ -101,7 +95,7 @@ def cria_layout_gustavo(datapath):
     Ainda, foi adicionado uma barra de rolagem abaixo do gráfico, que permite rolar o gráfico. Essa barra usa a ferramenta
     <b>RangeTool</b> e a conexão entre o plot e barra de rolagem, para gerar o efeito apresentado.<p>
     """, 
-    styles = {'text-align': 'center', 'font-size': '16px'}, width=430, align = 'center')
+    style = {'text-align': 'center', 'font-size': '16px'}, width=430, align = 'center')
 
     text2 = Div(text=""" <h2>Gráfico de dispersão</h2>
     <p>Acima, foi plotado um gráfico de dispersão, dessa vez, considerando apenas as <b>100 músicas mais visualizadas</b><br>
@@ -111,7 +105,7 @@ def cria_layout_gustavo(datapath):
     Para sua execução, o dataset foi filtrado, sobrando apenas as 100 músicas com mais views, e então utilizado o método 
     <b>circle()</b> para fazer o plot.<p>
     """,
-    styles = {'text-align': 'center', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+    style = {'text-align': 'center', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
 
     text3 = Div(text=""" <h2>Gráfico Boxplot</h2>
     <p>Acima, foi plotado um <b>boxplot</b>, da popularidade das músicas, conforme a existência de um videoclipe.<br>
@@ -121,7 +115,7 @@ def cria_layout_gustavo(datapath):
     Superficialmente, observando o boxplot, podemos dizer que há um indicativo de maior popularidade em
     músicas com videoclipe.
     """,
-    styles = {'text-align': 'center', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
+    style = {'text-align': 'center', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40))
     
     select_layout = column(row(plot_1, text1), row(column(plot_2, text2), column(plot_3, text3)))
 
