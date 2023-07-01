@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from . import read_data
+from .read_data import columndatasource_plot2_leonardo, columndatasource_plot3_leonardo
 from bokeh.plotting import figure, curdoc
 from bokeh.io import output_file, save, show
 from bokeh.models import HoverTool, ColumnDataSource, Div
@@ -78,34 +78,6 @@ plot_1_leonardo = visualizacao_1_leonardo(df)
 
 # Segunda plotagem
 
-# Contruindo nova coluna de curtidas em milhões
-
-df["Curtidas"] = df["Likes"] / 1000000
-
-# Agrupamento das 10 músicas com mais curtidas
-
-df_duration_per_track = df.groupby("Track")["Curtidas"].mean().sort_values(ascending = False).head(10).reset_index()
-
-# Ordenando de forma decrescente
-
-df_duration_per_track = df_duration_per_track.sort_values(by = "Curtidas", ascending = True)
-
-def columndatasource_plot2_leonardo(datapath):
-    """ Gera um objeto ColumnDataSource a partir de um arquivo .csv """
-    """ O objeto será utilizado para elaborar a segunda visualização """
-
-    # Leitura do arquivo
-
-    df = pd.read_csv(datapath)
-
-    # Gerando um ColumnDataSource
-
-    to_cds_2 = ColumnDataSource(df_duration_per_track)
-
-    # Retornando a CDS da segunda visualização
-
-    return to_cds_2
-
 # Inserindo o CDS em uma variável
 
 df_2 = columndatasource_plot2_leonardo('visualizacoes/data/spotify_youtube_year.csv')
@@ -113,6 +85,18 @@ df_2 = columndatasource_plot2_leonardo('visualizacoes/data/spotify_youtube_year.
 # Elaborando a função que cria o objeto do segundo gráfico
 
 def visualizacao_2_leonardo(datapath):
+
+    # Contruindo nova coluna de curtidas em milhões
+
+    df["Curtidas"] = df["Likes"] / 1000000
+
+    # Agrupamento das 10 músicas com mais curtidas
+
+    df_duration_per_track = df.groupby("Track")["Curtidas"].mean().sort_values(ascending = False).head(10).reset_index()
+
+    # Ordenando de forma decrescente
+
+    df_duration_per_track = df_duration_per_track.sort_values(by = "Curtidas", ascending = True)
 
     # Criando um player da Música Despacito no Spotify
 
@@ -174,39 +158,27 @@ plot_2_leonardo = visualizacao_2_leonardo(df_2)
 
 # Terceira plotagem
 
-# Média de curtidas por ano (em milhões)
-
-likes_by_year = df.groupby(["release_date"])["Curtidas"].mean() 
-
-# Transformando a pd.Series em uma DataFrame
-
-likes_by_year = pd.DataFrame(likes_by_year)
-
-# Transformando a pd.Series em uma DataFrame
-
-likes_by_year = pd.DataFrame(likes_by_year)
-
-def columndatasource_plot3_leonardo(datapath):
-    """ Gera um objeto ColumnDataSource a partir de um arquivo .csv """
-    """ O objeto será utilizado para elaborar a terceira visualização """
-
-    # Leitura do arquivo
-
-    df = pd.read_csv(datapath)
-
-    # Gerando um ColumnDataSource
-
-    to_cds_3 = ColumnDataSource(likes_by_year)
-
-    # Retornando a CDS da terceira visualização
-
-    return to_cds_3
-
 # Inserindo o CDS em uma variável
 
 df_3 = columndatasource_plot3_leonardo('visualizacoes/data/spotify_youtube_year.csv')
 
 def visualizacao_3_leonardo(datapath):
+
+    # Contruindo nova coluna de curtidas em milhões
+
+    df["Curtidas"] = df["Likes"] / 1000000
+
+    # Média de curtidas por ano (em milhões)
+
+    likes_by_year = df.groupby(["release_date"])["Curtidas"].mean() 
+
+    # Transformando a pd.Series em uma DataFrame
+
+    likes_by_year = pd.DataFrame(likes_by_year)
+
+    # Transformando a pd.Series em uma DataFrame
+
+    likes_by_year = pd.DataFrame(likes_by_year)
 
     # Criação da figura 3
 
