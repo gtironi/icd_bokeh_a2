@@ -542,7 +542,7 @@ def columndatasource_plot3_leonardo(datapath):
     # Leitura do arquivo
 
     df = pd.read_csv(datapath)
-
+    df["Curtidas"] = df["Likes"] / 1000000
     # Média de curtidas por ano (em milhões)
 
     likes_by_year = df.groupby(["release_date"])["Curtidas"].mean() 

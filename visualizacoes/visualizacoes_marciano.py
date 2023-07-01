@@ -185,6 +185,7 @@ top_30_list = read_data.columndatasource_plot3_marciano("visualizacoes/data/spot
 plot_3 = plot_3_marciano(source_3, top_30_list)   # Criando efetivamente o plot 3
 ######################################################################################################################################
 # Criando as explicações #
+
 def cria_explicacoes_marciano():
     text_1 = Div(text = '''
     <h2>Scatter Plot Liveness X Energy</h2>
