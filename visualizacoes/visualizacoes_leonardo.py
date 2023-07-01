@@ -233,7 +233,7 @@ def visualizacao_3_leonardo(datapath):
 def gera_textos_leo():
     # Comentários sobre a primeira visualização
 
-    text_2 = Div(text = """<h1> Spotify e YouTube </h1>
+    text_1 = Div(text = """<h1> Spotify e YouTube </h1>
     <p> A partir de uma base de dados, do Kaggle, sobre músicas do Spotify e Youtube, foram elaboradas todas as 
     visualizações dessa página. <p>
     <h2> Energia x Danceabilidade </h2>
@@ -249,7 +249,7 @@ def gera_textos_leo():
 
     # Comentários sobre a segunda visualização
 
-    text_3 = Div(text = """
+    text_2 = Div(text = """
     <h2> Ranking de Curtidas </h2>
     <p> Uma das principais formas de avaliar uma música é por meio da quantidade de 
     curtidas. 
@@ -267,7 +267,7 @@ def gera_textos_leo():
 
     # Comentários sobre a terceira visualização
 
-    text_4 = Div(text = """
+    text_3 = Div(text = """
     <h2> Média de Curtidas por Ano </h2>
     <p> Quando de trata de dados numéricos ao longo do tempo, a melhor opção de
     esboço é o gráfico de linhas.
@@ -280,7 +280,7 @@ def gera_textos_leo():
     """,
     style = {"text-align": "center", "font-size": "16px"}, width = 430, align = "center", margin = (10, 0, 10, 30))
 
-    return [text_2, text_3, text_4]
+    return [text_1, text_2, text_3]
 
 
 def gera_layout_leonardo(path):

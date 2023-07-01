@@ -71,7 +71,7 @@ def gera_bokeh_server(path):
     return main_page
 
 
-page = gera_bokeh_server("visualizacoes/data/spotify_youtube_year.csv")
+# page = gera_bokeh_server("visualizacoes/data/spotify_youtube_year.csv")
 
-curdoc().add_root(page)
+# curdoc().add_root(page)
 
