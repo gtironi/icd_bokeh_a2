@@ -16,6 +16,9 @@ Funcionalidades:
 - columndatasource_plot3_gustavo: gera um objeto dataframe a partir de um arquivo .csv
 - columndatasource_plot2_gustavo: gera um objeto ColumnDataSource a partir de um arquivo .csv
 - columndatasource_plot1_gustavo: gera um objeto ColumnDataSource a partir de um arquivo .csv
+- columndatasource_plot1_marciano: Retorna um column data source de um arquivo .csv
+- columndatasource_plot2_marciano: Retorna um column data source de um arquivo .csv
+- columndatasource_plot3_marciano: Retorna um column data source de um arquivo .csv
 '''
 
 # Importando as bibliotecas usadas nesse modulo
@@ -597,8 +600,6 @@ def columndatasource_plot1_marciano(path):
 
     return(data_source_1)
 
-
-
 def columndatasource_plot2_marciano(path):
     """Retorna um column data source de um arquivo .csv
         
@@ -639,8 +640,6 @@ def columndatasource_plot2_marciano(path):
     music_duration_mean = data_by_year["Duration_s"].mean()
 
     return(data_source_2, music_duration_mean)
-
-
 
 def columndatasource_plot3_marciano(path):
     """Retorna um column data source de um arquivo .csv
