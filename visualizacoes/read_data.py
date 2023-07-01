@@ -520,6 +520,8 @@ def columndatasource_plot2_leonardo(datapath):
 
     df = pd.read_csv(datapath)
 
+    # Contruindo uma nova coluna de curtidas em milhões
+
     df["Curtidas"] = df["Likes"] / 1000000
 
     # Agrupamento das 10 músicas com mais curtidas
@@ -545,6 +547,10 @@ def columndatasource_plot3_leonardo(datapath):
     # Leitura do arquivo
 
     df = pd.read_csv(datapath)
+
+    # Contruindo uma nova coluna de curtidas em milhões
+
+    df["Curtidas"] = df["Likes"] / 1000000
 
     # Média de curtidas por ano (em milhões)
 

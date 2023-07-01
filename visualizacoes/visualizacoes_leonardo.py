@@ -86,7 +86,7 @@ df_2 = columndatasource_plot2_leonardo('visualizacoes/data/spotify_youtube_year.
 
 def visualizacao_2_leonardo(datapath):
 
-    # Contruindo nova coluna de curtidas em milhões
+    # Contruindo uma nova coluna de curtidas em milhões
 
     df["Curtidas"] = df["Likes"] / 1000000
 
@@ -164,7 +164,7 @@ df_3 = columndatasource_plot3_leonardo('visualizacoes/data/spotify_youtube_year.
 
 def visualizacao_3_leonardo(datapath):
 
-    # Contruindo nova coluna de curtidas em milhões
+    # Contruindo uma nova coluna de curtidas em milhões
 
     df["Curtidas"] = df["Likes"] / 1000000
 
