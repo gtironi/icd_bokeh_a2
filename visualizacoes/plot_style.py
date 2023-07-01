@@ -1,4 +1,7 @@
 def figure_generator_gustavo(final_figure):
+    # Função criada apenas para definir a padronização da criação de figuras
+    # modificações como mudança da cor de fundo, mudança dos rótulos dos textos,
+    # mudança da fonte e tamanho.
 
     final_figure.background_fill_color = "#efefef"
     final_figure.background_fill_alpha - 0.7
