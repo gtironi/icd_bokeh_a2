@@ -16,7 +16,7 @@ def gera_html(path):
     layout_gustavo = cria_layout_gustavo(path)
     layout_leonardo = gera_layout_leonardo(path)
     layout_sillas =  Div(text="""
-                <iframe src='https://icd-bokeh-server.streamlit.app/?embed=true' width='1500px' height='1600px' style='border: none; scrolling: no;'></iframe>""")
+                <iframe src='https://icd-bokeh-server.streamlit.app/?embed=true' width='1500px' height='1660px' style='border: none; scrolling: no;'></iframe>""")
     
     home_page_title = Div(text = 'Trabalho de Introdução à ciência de dados:', height=120, style = {'text-align': 'center', 'font-size': '70px'}, margin=(0, 0, 0, 0), align = 'center')
 
