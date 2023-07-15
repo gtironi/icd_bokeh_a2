@@ -1,12 +1,12 @@
 from bokeh.models import Div
 from bokeh.layouts import column
 from bokeh.io import output_file
-from visualizacoes.visualizacoes_marciano import cria_layout_marciano
-from visualizacoes.visualizacoes_gustavo import cria_layout_gustavo
-from visualizacoes.visualizacoes_estaticas_sillas import gera_layout_estatico_sillas
-from visualizacoes.visualizacoes_leonardo import gera_layout_leonardo
+from visualizacoes import cria_layout_marciano
+from visualizacoes import cria_layout_gustavo
+from visualizacoes import gera_layout_estatico_sillas
+from visualizacoes import gera_layout_leonardo
 
-# path = "visualizacoes/data/spotify_youtube_year.csv"
+# path = "data/spotify_youtube_year.csv"
 
 def gera_html(path):
 
@@ -15,10 +15,12 @@ def gera_html(path):
     layout_marciano = cria_layout_marciano(path)
     layout_gustavo = cria_layout_gustavo(path)
     layout_leonardo = gera_layout_leonardo(path)
-    layout_sillas =  Div(text="<iframe src='https://bokeh-server-aad0ecb16fba.herokuapp.com/app' width='1500px' height='1637px' scrolling='no' style='border: none;'></iframe>")
+    layout_sillas =  Div(text="""
+                <iframe src='https://icd-bokeh-server.streamlit.app/?embed=true' width='1500px' height='1600px' style='border: none; scrolling: no;'></iframe>""")
     
+    home_page_title = Div(text = 'Trabalho de Introdução à ciência de dados:', height=120, style = {'text-align': 'center', 'font-size': '70px'}, margin=(0, 0, 0, 0), align = 'center')
 
-    home_page_text = """<h3 id="trabalho-de-introdu-o-ci-ncia-de-dados-">Trabalho de Introdução à ciência de dados:</h3>
+    home_page_text = """
     <p>Os alunos Leonardo Alexandre, Sillas Rocha, Gustavo Tironi e Luís Felipe elaboraram visualizações a partir de uma base e dados, encontrada no Kaggle, sobre músicas do Spotify e do YouTube.
     A base de dados possui diversas variáveis, como autor, nome, data de lançamento e duração.
     Além disso, contém variáveis pouco conhecidas. Algumas estão listadas abaixo.</p>
@@ -46,6 +48,6 @@ def gera_html(path):
     home_page_div = Div(text = home_page_text,
                             style = {'text-align': 'justify', 'font-size': '16px'}, width=580, margin=(0, 40, 50, 40), align = 'center')
 
-    main_page = column(home_page_div, espaço_marciano, layout_marciano, espaço_gustavo, layout_gustavo, espaço_leonardo, layout_leonardo, espaço_sillas, layout_sillas)
+    main_page = column(home_page_title, home_page_div, espaço_marciano, layout_marciano, espaço_gustavo, layout_gustavo, espaço_leonardo, layout_leonardo, espaço_sillas, layout_sillas)
 
     return main_page

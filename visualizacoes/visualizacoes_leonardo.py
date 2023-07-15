@@ -9,7 +9,7 @@ from bokeh.layouts import column, row
 
 # Leitura do arquivo
 
-df = pd.read_csv("visualizacoes/data/spotify_youtube_year.csv")
+df = pd.read_csv("data/spotify_youtube_year.csv")
 
 # Primeira plotagem
 
@@ -82,7 +82,7 @@ def visualizacao_1_leonardo(datapath):
 
 # Inserindo o CDS em uma variável
 
-df_2 = columndatasource_plot2_leonardo('visualizacoes/data/spotify_youtube_year.csv')
+df_2 = columndatasource_plot2_leonardo('data/spotify_youtube_year.csv')
 
 # Elaborando a função que cria o objeto do segundo gráfico
 
@@ -164,7 +164,7 @@ def visualizacao_2_leonardo(datapath):
 
 # Inserindo o CDS em uma variável
 
-df_3 = columndatasource_plot3_leonardo('visualizacoes/data/spotify_youtube_year.csv')
+df_3 = columndatasource_plot3_leonardo('data/spotify_youtube_year.csv')
 
 def visualizacao_3_leonardo(datapath):
 

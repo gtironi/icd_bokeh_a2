@@ -56,7 +56,7 @@ def plot_1_marciano(data_source):
 
     return(plot_1)
 
-source_1 = read_data.columndatasource_plot1_marciano("visualizacoes/data/spotify_youtube_year.csv")
+source_1 = read_data.columndatasource_plot1_marciano("data/spotify_youtube_year.csv")
 plot_1 = plot_1_marciano(source_1) # Criando efetivamente o plot 1
 
 ########################################################################################################################
@@ -125,15 +125,15 @@ def plot_2_marciano(data_source, mean_duration):
 
     return(plot_2)
 
-source_2 = read_data.columndatasource_plot2_marciano("visualizacoes/data/spotify_youtube_year.csv")[0]
-mean_duration = read_data.columndatasource_plot2_marciano("visualizacoes/data/spotify_youtube_year.csv")[1]
+source_2 = read_data.columndatasource_plot2_marciano("data/spotify_youtube_year.csv")[0]
+mean_duration = read_data.columndatasource_plot2_marciano("data/spotify_youtube_year.csv")[1]
 plot_2 = plot_2_marciano(source_2, mean_duration) # Criando efetivamente o plot 2
 
 ########################################################################################################################
 
 # Terceiro gráfico: Top 30 artistas #
 
-data_source_3, lista_30_artistas = read_data.columndatasource_plot3_marciano("visualizacoes/data/spotify_youtube_year.csv")  # Função para gerar os dados do plot 3
+data_source_3, lista_30_artistas = read_data.columndatasource_plot3_marciano("data/spotify_youtube_year.csv")  # Função para gerar os dados do plot 3
 def plot_3_marciano(data_source, top_30_list):
 
     plot_3 = figure(y_range=top_30_list, height=600, width=600, tools = "") # Criando a figura do gráfico 3
@@ -180,8 +180,8 @@ def plot_3_marciano(data_source, top_30_list):
     return(plot_3)
 
 
-source_3 = read_data.columndatasource_plot3_marciano("visualizacoes/data/spotify_youtube_year.csv")[0]
-top_30_list = read_data.columndatasource_plot3_marciano("visualizacoes/data/spotify_youtube_year.csv")[1]
+source_3 = read_data.columndatasource_plot3_marciano("data/spotify_youtube_year.csv")[0]
+top_30_list = read_data.columndatasource_plot3_marciano("data/spotify_youtube_year.csv")[1]
 plot_3 = plot_3_marciano(source_3, top_30_list)   # Criando efetivamente o plot 3
 ######################################################################################################################################
 # Criando as explicações #

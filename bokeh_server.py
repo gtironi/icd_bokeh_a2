@@ -2,12 +2,12 @@
 from bokeh.models import Select, Div
 from bokeh.layouts import column, row
 from bokeh.plotting import curdoc
-from visualizacoes.visualizacoes_marciano import cria_layout_marciano
-from visualizacoes.visualizacoes_gustavo import cria_layout_gustavo
-from visualizacoes.visualizacoes_sillas import gera_layout_sillas
-from visualizacoes.visualizacoes_leonardo import gera_layout_leonardo
+from visualizacoes import cria_layout_marciano
+from visualizacoes import cria_layout_gustavo
+from visualizacoes import gera_layout_sillas
+from visualizacoes import gera_layout_leonardo
 
-# path = "visualizacoes/data/spotify_youtube_year.csv"
+# path = "data/spotify_youtube_year.csv"
 
 def gera_bokeh_server(path):
 
@@ -71,7 +71,7 @@ def gera_bokeh_server(path):
     return main_page
 
 
-# page = gera_bokeh_server("visualizacoes/data/spotify_youtube_year.csv")
+# page = gera_bokeh_server("data/spotify_youtube_year.csv")
 
 # curdoc().add_root(page)
 
